@@ -2,6 +2,16 @@
   command = "npm run build"
   publish = ".next"
 
+# Public, non-secret build-time config (these NEXT_PUBLIC_* values ship in the
+# browser bundle anyway). Secrets — DATABASE_URL, RESEND_API_KEY, EMAIL_FROM,
+# ADMIN_EMAIL, SANITY_API_WRITE_TOKEN, CRON_SECRET, RATE_LIMIT_SALT,
+# NEXT_PUBLIC_POSTHOG_KEY — must be set in the Netlify site env, NOT committed here.
+[build.environment]
+  NEXT_PUBLIC_SANITY_PROJECT_ID = "7vdz7vm0"
+  NEXT_PUBLIC_SANITY_DATASET = "production"
+  NEXT_PUBLIC_SANITY_API_VERSION = "2025-12-30"
+  NEXT_PUBLIC_SITE_URL = "https://lanework.ai"
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
