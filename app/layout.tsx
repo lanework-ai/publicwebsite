@@ -3,6 +3,7 @@ import "./globals.css";
 import "./labs-theme.css";
 import LabsNav from "@/components/labs/LabsNav";
 import LabsFooter from "@/components/labs/LabsFooter";
+import SectionReveal from "@/components/labs/SectionReveal";
 import Pixels from "@/components/Analytics/Pixels";
 import PostHogProvider from "@/components/Analytics/PostHogProvider";
 
@@ -67,6 +68,7 @@ export default function RootLayout({
             <LabsNav />
             <main id="main">{children}</main>
             <LabsFooter />
+            <SectionReveal />
           </div>
         </PostHogProvider>
       </body>

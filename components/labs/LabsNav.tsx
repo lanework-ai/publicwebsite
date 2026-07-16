@@ -34,7 +34,7 @@ export default function LabsNav() {
         }}
       >
         <Link href="/" className="ll-brand-link" aria-label="Lanework home" onClick={() => setOpen(false)}>
-          <Logo size={34} />
+          <Logo size={34} animateOnMount />
         </Link>
 
         <button

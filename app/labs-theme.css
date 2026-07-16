@@ -416,6 +416,71 @@
   }
 }
 
+/* ---- Scroll reveal: content sections draw in once as they enter view ---- */
+.ll-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.ll-reveal.is-revealed {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+}
+
+/* ---- Button: hover feedback + arrow travel ---- */
+.ll-btn {
+  transition: opacity var(--dur-fast) var(--ease-standard), background var(--dur-fast),
+    border-color var(--dur-fast), color var(--dur-fast), filter var(--dur-fast);
+}
+.ll-btn-arrow {
+  display: inline-block;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.ll-btn:hover .ll-btn-arrow {
+  transform: translateX(3px);
+}
+.ll-btn[data-variant='outline']:hover,
+.ll-btn[data-variant='ghost']:hover {
+  border-color: var(--lw-accent);
+  color: var(--lw-fg);
+  background: rgba(79, 107, 255, 0.08);
+}
+.ll-btn[data-variant='solid']:hover,
+.ll-btn[data-variant='accent']:hover {
+  filter: brightness(1.06);
+}
+
+/* ---- Card / StatCard: hairline border warms toward indigo on hover ---- */
+.ll-card {
+  transition: border-color var(--dur-fast) var(--ease-standard), background var(--dur-fast);
+}
+.ll-card:hover {
+  border-color: rgba(127, 149, 255, 0.35);
+}
+
+/* ---- DomainRow (as link): panel-fill + inset accent lane on hover ---- */
+.ll-domainrow {
+  transition: background var(--dur-fast) var(--ease-standard), box-shadow var(--dur-fast),
+    color var(--dur-fast);
+}
+a.ll-domainrow:hover {
+  background: var(--lw-panel-accent);
+  box-shadow: inset 3px 0 0 var(--lw-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ll-reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .ll-btn,
+  .ll-btn-arrow,
+  .ll-card,
+  .ll-domainrow {
+    transition: none;
+  }
+}
+
 /* The Lanework logo (graduated "lanes" mark + resolve-on-hover interaction) is
  * driven entirely by the Logo component (components/labs/LaneworkLogo.tsx) via
  * inline transitions + React state, so no keyframes live here. */

@@ -26,6 +26,7 @@ export function Logo({
   size = 34,
   color,
   interaction = 'resolve',
+  animateOnMount = false,
   progress,
   className,
   style,
@@ -36,6 +37,7 @@ export function Logo({
   size?: number
   color?: string
   interaction?: 'resolve' | 'lead' | 'none'
+  animateOnMount?: boolean
   progress?: number
   className?: string
   style?: CSSProperties
@@ -50,6 +52,18 @@ export function Logo({
     mq.addEventListener?.('change', on)
     return () => mq.removeEventListener?.('change', on)
   }, [])
+
+  // One-time "resolve" on load: the lanes extend to a full aligned stack, then settle.
+  useEffect(() => {
+    if (!animateOnMount || interaction === 'none') return
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return
+    const t1 = setTimeout(() => setHover(true), 160)
+    const t2 = setTimeout(() => setHover(false), 1050)
+    return () => {
+      clearTimeout(t1)
+      clearTimeout(t2)
+    }
+  }, [animateOnMount, interaction])
 
   const fills = mono
     ? ['currentColor', 'currentColor', 'currentColor']

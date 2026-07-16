@@ -51,7 +51,8 @@ export function Button({
     <Tag
       href={href}
       disabled={Tag === 'button' ? disabled : undefined}
-      className={className}
+      data-variant={variant}
+      className={['ll-btn', className].filter(Boolean).join(' ')}
       style={{
         display: 'inline-flex',
         alignItems: 'center',
@@ -74,7 +75,7 @@ export function Button({
       {...rest}
     >
       {children}
-      {arrow && <span aria-hidden="true">→</span>}
+      {arrow && <span className="ll-btn-arrow" aria-hidden="true">→</span>}
     </Tag>
   )
 }
@@ -148,7 +149,7 @@ export function Card({
   const Tag: ElementType = as
   return (
     <Tag
-      className={className}
+      className={['ll-card', className].filter(Boolean).join(' ')}
       style={{
         border: accent ? '1px solid rgba(127,149,255,0.3)' : '1px solid var(--lw-line-2)',
         borderRadius: radius,
@@ -270,7 +271,7 @@ export function StatCard({
   style?: CSSProperties
 } & Extra) {
   return (
-    <div className={className} style={{ border: '1px solid var(--lw-line-2)', borderRadius: 10, padding: 18, ...style }} {...rest}>
+    <div className={['ll-card', className].filter(Boolean).join(' ')} style={{ border: '1px solid var(--lw-line-2)', borderRadius: 10, padding: 18, ...style }} {...rest}>
       <div style={{ fontFamily: FONT_MONO, fontSize: 26, color: 'var(--lw-fg)' }}>{value}</div>
       <div style={{ fontSize: 12.5, color: 'var(--lw-fg-2)', margin: '6px 0 4px', lineHeight: 1.5 }}>{label}</div>
       {source && <div style={{ fontSize: 11, color: 'var(--lw-dim)', lineHeight: 1.5 }}>Source: {source}</div>}
@@ -299,7 +300,7 @@ export function DomainRow({
   return (
     <Tag
       href={href}
-      className={className}
+      className={['ll-domainrow', className].filter(Boolean).join(' ')}
       style={{
         background: 'var(--lw-panel)',
         padding: '16px 18px',
