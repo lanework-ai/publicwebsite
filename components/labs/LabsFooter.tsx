@@ -46,20 +46,8 @@ export default function LabsFooter() {
       >
         <div>
           <Logo wordmark size={32} interaction="lead" />
-          <p style={{ fontSize: 13, color: 'var(--lw-muted)', lineHeight: 1.55, marginTop: 16, maxWidth: 260 }}>
-            Logistics runs on fragmented data. We turn it into research, and the AI systems that act on it.
-          </p>
-          <p
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: 10,
-              letterSpacing: '0.1em',
-              color: 'var(--lw-dim)',
-              marginTop: 12,
-              textTransform: 'uppercase',
-            }}
-          >
-            Applied AI research · logistics
+          <p style={{ fontSize: 13.5, color: 'var(--lw-muted)', lineHeight: 1.6, marginTop: 16, maxWidth: 300, textWrap: 'balance' }}>
+            We turn the fragmented data the freight industry already holds into independent research, and the AI systems that put it to work.
           </p>
         </div>
         {cols.map((c) => (
@@ -94,8 +82,8 @@ export default function LabsFooter() {
         <span style={{ fontSize: 12, color: 'var(--lw-dim)' }}>
           © {year} Lanework. All rights reserved.
         </span>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10.5, letterSpacing: '0.08em', color: 'var(--lw-dim)' }}>
-          PRIVATE PREVIEW
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.1em', color: 'var(--lw-dim)', textTransform: 'uppercase' }}>
+          Applied AI research · logistics
         </span>
       </div>
     </footer>
