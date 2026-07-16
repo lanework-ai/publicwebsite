@@ -31,9 +31,9 @@ model Contact {
 model Newsletter {
   id        String   @id @default(cuid())
   email     String   @unique
-  // Which brand the subscriber signed up under: "rapidrelay" | "lanework".
-  // Drives which blog-broadcast template they receive.
-  brand     String   @default("rapidrelay")
+  // Standalone Lanework DB: every subscriber here is Lanework. Kept as a column
+  // (not dropped) so the shared email code paths keep working unchanged.
+  brand     String   @default("lanework")
   createdAt DateTime @default(now())
 
   @@map("newsletters")
@@ -64,9 +64,9 @@ model GatedContentLead {
   email               String
   name                String
   company             String
-  // Which brand captured this lead: "rapidrelay" | "lanework". Drives which
-  // email templates (day-0, drip) the lead receives.
-  brand               String    @default("rapidrelay")
+  // Standalone Lanework DB: every lead here is Lanework. Kept as a column (not
+  // dropped) so the shared email code paths keep working unchanged.
+  brand               String    @default("lanework")
   downloadToken       String    @unique
   tokenExpiresAt      DateTime
   downloadedAt        DateTime?
