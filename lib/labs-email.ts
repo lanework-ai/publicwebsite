@@ -14,12 +14,10 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 const FROM_EMAIL = process.env.EMAIL_FROM || 'onboarding@resend.dev'
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || ''
 const REPLY_TO = process.env.SALES_REPLY_TO || 'support@rapidrelay.ai'
-// Lanework links always point at the Lanework site, independent of which app
-// sends the mail. In the standalone Lanework app NEXT_PUBLIC_SITE_URL already is
-// lanework.ai; in the Rapid Relay app (whose cron sends Lanework drips against
-// the shared DB) set LANEWORK_SITE_URL so those links don't fall back to rapidrelay.ai.
-const SITE_ROOT =
-  process.env.LANEWORK_SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://lanework.ai'
+// Lanework emails always link to the Lanework site. Default straight to
+// lanework.ai (override via LANEWORK_SITE_URL) — identical to the copy in the
+// Rapid Relay app, whose cron also sends Lanework drips against the shared DB.
+const SITE_ROOT = process.env.LANEWORK_SITE_URL || 'https://lanework.ai'
 
 const FONT = "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif"
 const ACCENT = '#4f6bff'
