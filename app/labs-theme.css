@@ -427,14 +427,21 @@
   transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
 }
 
-/* ---- Button: hover feedback + arrow travel ---- */
+/* ---- Button: hover feedback (lift + fill) + arrow travel ---- */
 .ll-btn {
   transition: opacity var(--dur-fast) var(--ease-standard), background var(--dur-fast),
-    border-color var(--dur-fast), color var(--dur-fast), filter var(--dur-fast);
+    border-color var(--dur-fast), color var(--dur-fast), filter var(--dur-fast),
+    transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast);
 }
 .ll-btn-arrow {
   display: inline-block;
   transition: transform var(--dur-fast) var(--ease-out);
+}
+.ll-btn:hover {
+  transform: translateY(-1px);
+}
+.ll-btn:active {
+  transform: translateY(0);
 }
 .ll-btn:hover .ll-btn-arrow {
   transform: translateX(3px);
@@ -443,7 +450,8 @@
 .ll-btn[data-variant='ghost']:hover {
   border-color: var(--lw-accent);
   color: var(--lw-fg);
-  background: rgba(79, 107, 255, 0.08);
+  background: rgba(79, 107, 255, 0.14);
+  box-shadow: inset 0 0 0 1px rgba(79, 107, 255, 0.25);
 }
 .ll-btn[data-variant='solid']:hover,
 .ll-btn[data-variant='accent']:hover {
@@ -478,6 +486,9 @@ a.ll-domainrow:hover {
   .ll-card,
   .ll-domainrow {
     transition: none;
+  }
+  .ll-btn:hover {
+    transform: none;
   }
 }
 
