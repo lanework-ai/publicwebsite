@@ -1,0 +1,136 @@
+{
+  "authors": [
+    {
+      "_type": "author",
+      "_id": "author-rapid-relay-team",
+      "name": "Rapid Relay Team",
+      "slug": {
+        "_type": "slug",
+        "current": "rapid-relay-team"
+      },
+      "bio": "The Rapid Relay team brings together industry expertise in freight optimization, relay operations, and supply chain innovation. Our writers share insights drawn from years of working with carriers and understanding the complexities of long-haul logistics."
+    },
+    {
+      "_type": "author",
+      "_id": "author-compliance-team",
+      "name": "Compliance Team",
+      "slug": {
+        "_type": "slug",
+        "current": "compliance-team"
+      },
+      "bio": "Specialized in trucking regulations, permitting requirements, and regulatory compliance. Our compliance experts ensure carriers stay informed about the latest industry standards and legal requirements."
+    },
+    {
+      "_type": "author",
+      "_id": "author-finance-team",
+      "name": "Finance Team",
+      "slug": {
+        "_type": "slug",
+        "current": "finance-team"
+      },
+      "bio": "Expert advisors on carrier financial management, cash flow optimization, and strategic growth. The Finance Team helps carriers build sustainable business models and make data-driven financial decisions."
+    },
+    {
+      "_type": "author",
+      "_id": "author-operations-team",
+      "name": "Operations Team",
+      "slug": {
+        "_type": "slug",
+        "current": "operations-team"
+      },
+      "bio": "Focused on operational efficiency, cost management, and logistics optimization. The Operations Team provides actionable insights to help carriers streamline their operations and improve profitability."
+    }
+  ],
+  "categories": [
+    {
+      "_type": "category",
+      "_id": "category-trucking",
+      "title": "Trucking",
+      "slug": {
+        "_type": "slug",
+        "current": "trucking"
+      },
+      "description": "Industry insights, best practices, and operational strategies for trucking carriers"
+    },
+    {
+      "_type": "category",
+      "_id": "category-regulation",
+      "title": "Regulation",
+      "slug": {
+        "_type": "slug",
+        "current": "regulation"
+      },
+      "description": "Compliance requirements, permits, and regulatory guidance for carriers"
+    },
+    {
+      "_type": "category",
+      "_id": "category-logistics-news",
+      "title": "Logistics News",
+      "slug": {
+        "_type": "slug",
+        "current": "logistics-news"
+      },
+      "description": "Latest news and trends in logistics and freight transportation"
+    },
+    {
+      "_type": "category",
+      "_id": "category-eld",
+      "title": "Electronic Logging Devices (ELD)",
+      "slug": {
+        "_type": "slug",
+        "current": "electronic-logging-devices-eld"
+      },
+      "description": "ELD compliance, technology, and best practices for carriers"
+    },
+    {
+      "_type": "category",
+      "_id": "category-autonomous-trucking",
+      "title": "Autonomous Trucking",
+      "slug": {
+        "_type": "slug",
+        "current": "autonomous-trucking"
+      },
+      "description": "Self-driving technology, automation trends, and the future of trucking"
+    },
+    {
+      "_type": "category",
+      "_id": "category-tms",
+      "title": "Transportation Management System",
+      "slug": {
+        "_type": "slug",
+        "current": "transportation-management-system"
+      },
+      "description": "TMS platforms, software selection, and fleet technology solutions"
+    },
+    {
+      "_type": "category",
+      "_id": "category-iot",
+      "title": "Internet of Things (IoT)",
+      "slug": {
+        "_type": "slug",
+        "current": "internet-of-things-iot"
+      },
+      "description": "IoT sensors, telematics, fleet visibility, and connected vehicle technology"
+    },
+    {
+      "_type": "category",
+      "_id": "category-investment-news",
+      "title": "Investment News",
+      "slug": {
+        "_type": "slug",
+        "current": "investment-news"
+      },
+      "description": "Financial news, funding rounds, and investment trends in logistics"
+    },
+    {
+      "_type": "category",
+      "_id": "category-data-mining",
+      "title": "Data Mining",
+      "slug": {
+        "_type": "slug",
+        "current": "data-mining"
+      },
+      "description": "Data analytics, business intelligence, and insights from freight data"
+    }
+  ]
+}

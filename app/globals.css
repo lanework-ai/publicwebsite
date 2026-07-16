@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0a0a0f;
+  --foreground: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0f;
+    --foreground: #ffffff;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .gradient-text {
+    background: linear-gradient(to right, #4d9eff, #40a8c4, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline;
+    padding: 0.05em 0.1em;
+    margin: 0 -0.1em;
+  }
+
+  .glass-effect {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  }
+
+  .glow-effect {
+    box-shadow: 0 0 20px rgba(35, 87, 132, 0.3);
+  }
+
+  .text-emphasis {
+    @apply text-white font-semibold;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #235784;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #40a8c4;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Account for fixed header */
+}
+
+/* Grid background effect */
+.grid-background {
+  background-image:
+    linear-gradient(to right, rgba(35, 87, 132, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(35, 87, 132, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Smoke effect */
+@keyframes smoke-rise {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-50px) scale(2);
+    opacity: 0;
+  }
+}
+
+.smoke-particle {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: rgba(100, 100, 100, 0.9);
+  border-radius: 50%;
+  filter: blur(4px);
+  animation: smoke-rise 1.8s ease-out infinite;
+  box-shadow: 0 0 8px rgba(80, 80, 80, 0.8);
+}
+
+.smoke-particle.delay-1 {
+  animation-delay: 0.4s;
+  left: -8px;
+}
+
+.smoke-particle.delay-2 {
+  animation-delay: 0.8s;
+  left: 8px;
+}
+

@@ -1,0 +1,114 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Contact {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  company   String
+  fleetSize String
+  message   String?
+  ipHash    String?
+  flagged   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([ipHash, createdAt])
+  @@index([email, createdAt])
+  @@map("contacts")
+}
+
+model Newsletter {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  // Which brand the subscriber signed up under: "rapidrelay" | "lanework".
+  // Drives which blog-broadcast template they receive.
+  brand     String   @default("rapidrelay")
+  createdAt DateTime @default(now())
+
+  @@map("newsletters")
+}
+
+model NewsletterSend {
+  id             String   @id @default(cuid())
+  postSlug       String   @unique
+  postId         String
+  postTitle      String
+  recipientCount Int
+  failedCount    Int      @default(0)
+  status         String
+  errorMessage   String?
+  sentAt         DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("newsletter_sends")
+  @@index([postSlug])
+  @@index([status])
+}
+
+model GatedContentLead {
+  id                  String    @id @default(cuid())
+  contentType         String    // "whitepaper" | "benchmark"
+  contentSlug         String
+  contentTitle        String
+  email               String
+  name                String
+  company             String
+  // Which brand captured this lead: "rapidrelay" | "lanework". Drives which
+  // email templates (day-0, drip) the lead receives.
+  brand               String    @default("rapidrelay")
+  downloadToken       String    @unique
+  tokenExpiresAt      DateTime
+  downloadedAt        DateTime?
+  downloadCount       Int       @default(0)
+  sanityId            String?
+  // Attribution
+  utmSource           String?
+  utmMedium           String?
+  utmCampaign         String?
+  utmContent          String?
+  utmTerm             String?
+  referrer            String?
+  landingPage         String?
+  // Drip sequence state (Phase 2). 3-email sequence after the day-0 confirmation.
+  // dripStep: 0 = day-0 confirmation sent, day-2 next
+  //           1 = day-2 sent, day-5 next
+  //           2 = day-5 sent, final (day-12) next
+  //           3 = final sent, sequence complete
+  dripStep            Int       @default(0)
+  dripNextSendAt      DateTime?
+  dripUnsubscribedAt  DateTime?
+  createdAt           DateTime  @default(now())
+
+  @@map("gated_content_leads")
+  @@index([email])
+  @@index([contentType, contentSlug])
+  @@index([downloadToken])
+  @@index([dripStep, dripNextSendAt])
+}
+
+model SanitySync {
+  id         String   @id @default(cuid())
+  entityType String
+  entityId   String
+  sanityId   String?
+  status     String
+  attempts   Int      @default(0)
+  lastError  String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("sanity_syncs")
+  @@index([entityType, entityId])
+  @@index([status])
+}
