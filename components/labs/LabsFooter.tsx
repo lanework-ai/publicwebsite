@@ -45,7 +45,7 @@ export default function LabsFooter() {
         }}
       >
         <div>
-          <Logo wordmark size={32} />
+          <Logo wordmark size={32} interaction="lead" />
           <p style={{ fontSize: 13, color: 'var(--lw-muted)', lineHeight: 1.55, marginTop: 16, maxWidth: 260 }}>
             Logistics runs on fragmented data. We turn it into research, and the AI systems that act on it.
           </p>
@@ -70,10 +70,7 @@ export default function LabsFooter() {
             <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: 9 }}>
               {c.links.map((l) => (
                 <li key={l.href}>
-                  <Link
-                    href={l.href}
-                    style={{ fontSize: 13, color: 'var(--lw-muted)' }}
-                  >
+                  <Link href={l.href} className="ll-foot-link" style={{ fontSize: 13 }}>
                     {l.label}
                   </Link>
                 </li>

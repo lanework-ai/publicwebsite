@@ -272,6 +272,148 @@
     width: 100%;
     padding: 6px 0 4px;
   }
+  /* underline reads odd on the stacked mobile menu */
+  .ll-nav-link::after {
+    display: none;
+  }
+}
+
+/* ---- Header / footer engagement motion (ported from the Lanework DS) ---- */
+/* Translucent, blurred sticky header. */
+.ll-head {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid var(--lw-line);
+  background: rgba(8, 9, 10, 0.82);
+  backdrop-filter: saturate(140%) blur(10px);
+  -webkit-backdrop-filter: saturate(140%) blur(10px);
+}
+.ll-brand-link {
+  display: inline-flex;
+  border-radius: var(--radius-md);
+  outline-offset: 4px;
+  transition: opacity var(--dur-fast) var(--ease-standard);
+}
+.ll-brand-link:hover {
+  opacity: 0.82;
+}
+
+/* Nav links: sweep-in underline + active dot. */
+.ll-nav-link {
+  position: relative;
+  color: var(--lw-muted);
+  text-decoration: none;
+  padding: 6px 2px;
+  white-space: nowrap;
+  transition: color var(--dur-fast) ease;
+}
+.ll-nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--lw-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.22s var(--ease-out);
+}
+.ll-nav-link:hover {
+  color: var(--lw-fg);
+}
+.ll-nav-link:hover::after {
+  transform: scaleX(0.4);
+  background: var(--lw-line-3);
+}
+.ll-nav-link.is-active {
+  color: var(--lw-fg);
+}
+.ll-nav-link.is-active::after {
+  transform: scaleX(1);
+  background: var(--lw-accent);
+}
+.ll-nav-dot {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  margin-right: 7px;
+  vertical-align: middle;
+  background: var(--lw-accent);
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity 0.2s ease, transform 0.2s var(--ease-out);
+}
+.ll-nav-link.is-active .ll-nav-dot {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Hamburger morphs into an X. */
+.ll-nav-toggle {
+  transition: border-color var(--dur-fast) ease, background var(--dur-fast) ease;
+}
+.ll-nav-toggle:hover {
+  border-color: var(--lw-accent);
+  background: rgba(79, 107, 255, 0.08);
+}
+.ll-nav-toggle svg line {
+  transition: transform 0.26s var(--ease-out), opacity 0.2s ease;
+  transform-origin: center;
+}
+.ll-nav-toggle.is-open .l-top {
+  transform: translateY(5px) rotate(45deg);
+}
+.ll-nav-toggle.is-open .l-mid {
+  opacity: 0;
+}
+.ll-nav-toggle.is-open .l-bot {
+  transform: translateY(-5px) rotate(-45deg);
+}
+
+/* Footer links: underline reveal + a small nudge. */
+.ll-foot-link {
+  position: relative;
+  display: inline-block;
+  color: var(--lw-muted);
+  text-decoration: none;
+  transition: color var(--dur-fast) ease, transform var(--dur-fast) var(--ease-out);
+}
+.ll-foot-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 100%;
+  background: var(--lw-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.22s var(--ease-out);
+}
+.ll-foot-link:hover {
+  color: var(--lw-fg);
+  transform: translateX(2px);
+}
+.ll-foot-link:hover::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ll-nav-link::after,
+  .ll-nav-dot,
+  .ll-nav-toggle svg line,
+  .ll-brand-link,
+  .ll-foot-link,
+  .ll-foot-link::after {
+    transition: none;
+  }
+  .ll-foot-link:hover {
+    transform: none;
+  }
 }
 
 /* The Lanework logo (graduated "lanes" mark + resolve-on-hover interaction) is

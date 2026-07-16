@@ -20,15 +20,7 @@ export default function LabsNav() {
   const isActive = (href: string) => pathname === href || pathname?.startsWith(href + '/')
 
   return (
-    <header
-      style={{
-        borderBottom: '1px solid var(--lw-line)',
-        position: 'sticky',
-        top: 0,
-        zIndex: 50,
-        background: 'var(--lw-bg)',
-      }}
-    >
+    <header className="ll-head">
       <nav
         className="ll-section"
         style={{
@@ -41,30 +33,21 @@ export default function LabsNav() {
           paddingBottom: 16,
         }}
       >
-        <Link href="/" aria-label="Lanework home" onClick={() => setOpen(false)}>
+        <Link href="/" className="ll-brand-link" aria-label="Lanework home" onClick={() => setOpen(false)}>
           <Logo size={34} />
         </Link>
 
         <button
           type="button"
-          className="ll-nav-toggle"
-          aria-label="Toggle menu"
+          className={`ll-nav-toggle${open ? ' is-open' : ''}`}
+          aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
           onClick={() => setOpen((o) => !o)}
         >
-          <svg width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden="true">
-            {open ? (
-              <>
-                <line x1="2" y1="2" x2="18" y2="12" stroke="currentColor" strokeWidth="1.6" />
-                <line x1="18" y1="2" x2="2" y2="12" stroke="currentColor" strokeWidth="1.6" />
-              </>
-            ) : (
-              <>
-                <line x1="1" y1="2" x2="19" y2="2" stroke="currentColor" strokeWidth="1.6" />
-                <line x1="1" y1="7" x2="19" y2="7" stroke="currentColor" strokeWidth="1.6" />
-                <line x1="1" y1="12" x2="19" y2="12" stroke="currentColor" strokeWidth="1.6" />
-              </>
-            )}
+          <svg width="20" height="16" viewBox="0 0 20 16" fill="none" aria-hidden="true">
+            <line className="l-top" x1="1" y1="2" x2="19" y2="2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            <line className="l-mid" x1="1" y1="8" x2="19" y2="8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            <line className="l-bot" x1="1" y1="14" x2="19" y2="14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
           </svg>
         </button>
 
@@ -75,7 +58,6 @@ export default function LabsNav() {
             fontSize: 12,
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
-            color: 'var(--lw-muted)',
           }}
         >
           {links.map((l) => {
@@ -84,10 +66,11 @@ export default function LabsNav() {
               <Link
                 key={l.href}
                 href={l.href}
+                className={`ll-nav-link${active ? ' is-active' : ''}`}
                 aria-current={active ? 'page' : undefined}
                 onClick={() => setOpen(false)}
-                style={{ color: active ? 'var(--lw-fg)' : 'var(--lw-muted)' }}
               >
+                <span className="ll-nav-dot" aria-hidden="true" />
                 {l.label}
               </Link>
             )
