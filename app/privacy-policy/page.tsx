@@ -1,4 +1,5 @@
 import { LegalPage, type LegalSection } from '@/components/labs/LegalPage'
+import { lw } from '@/lib/labs/config'
 
 export const metadata = { title: 'Privacy Policy · Lanework' }
 
@@ -50,7 +51,7 @@ const sections: LegalSection[] = [
           'Update the information you have shared with us',
           'Unsubscribe from research and marketing emails at any time',
           'Disable location and analytics through your device or browser settings',
-          'Request deletion of your data via support@rapidrelay.ai',
+          'Request deletion of your data through our contact form',
         ],
       },
     ],
@@ -81,7 +82,7 @@ const sections: LegalSection[] = [
   },
   {
     heading: '10. Contact',
-    blocks: [{ p: 'Email: support@rapidrelay.ai' }],
+    blocks: [{ p: 'Questions about this policy? Submit them through our contact form:', link: { href: lw('/connect'), label: 'Contact us' } }],
   },
 ]
 

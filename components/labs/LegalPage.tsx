@@ -1,5 +1,8 @@
 /** Shared Lanework legal document renderer (privacy, terms). */
-export type LegalBlock = { p: string } | { ul: string[] }
+import Link from 'next/link'
+import { lw } from '@/lib/labs/config'
+
+export type LegalBlock = { p: string; link?: { href: string; label: string } } | { ul: string[] }
 export type LegalSection = { heading: string; blocks: LegalBlock[] }
 
 export function LegalPage({
@@ -39,6 +42,14 @@ export function LegalPage({
                 'p' in b ? (
                   <p key={j} style={{ fontSize: 15, lineHeight: 1.7, color: 'var(--lw-fg-2)', margin: 0 }}>
                     {b.p}
+                    {b.link && (
+                      <>
+                        {' '}
+                        <Link href={b.link.href} style={{ color: 'var(--lw-accent-soft)' }}>
+                          {b.link.label}
+                        </Link>
+                      </>
+                    )}
                   </p>
                 ) : (
                   <ul key={j} style={{ margin: 0, paddingLeft: 20, display: 'grid', gap: 8 }}>
@@ -56,8 +67,8 @@ export function LegalPage({
       </div>
 
       <p style={{ fontSize: 12.5, color: 'var(--lw-dim)', lineHeight: 1.6, marginTop: 48 }}>
-        Questions about this document? Email{' '}
-        <a href="mailto:support@rapidrelay.ai" style={{ color: 'var(--lw-accent-soft)' }}>support@rapidrelay.ai</a>.
+        Questions about this document?{' '}
+        <Link href={lw('/connect')} style={{ color: 'var(--lw-accent-soft)' }}>Submit them through our contact form</Link>.
       </p>
     </section>
   )

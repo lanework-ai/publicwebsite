@@ -1,4 +1,5 @@
 import { LegalPage, type LegalSection } from '@/components/labs/LegalPage'
+import { lw } from '@/lib/labs/config'
 
 export const metadata = { title: 'Terms & Conditions · Lanework' }
 
@@ -50,7 +51,7 @@ const sections: LegalSection[] = [
   {
     heading: 'Account management',
     blocks: [
-      { p: 'Users may request account termination via support@rapidrelay.ai. Lanework retains the right to suspend or terminate access for policy violations.' },
+      { p: 'Users may request account termination through our contact form. Lanework retains the right to suspend or terminate access for policy violations.' },
     ],
   },
   {
@@ -59,7 +60,7 @@ const sections: LegalSection[] = [
   },
   {
     heading: 'Contact',
-    blocks: [{ p: 'For questions regarding these Terms of Service, contact support@rapidrelay.ai.' }],
+    blocks: [{ p: 'For questions regarding these Terms of Service, reach us through our contact form:', link: { href: lw('/connect'), label: 'Contact us' } }],
   },
 ]
 
