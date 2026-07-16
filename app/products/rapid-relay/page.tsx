@@ -48,9 +48,9 @@ export default function RapidRelayPage() {
 
       {/* Product mark — the proof carries its own brand */}
       <section className="ll-section" style={{ paddingBottom: 28 }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 14, border: '1px solid var(--lw-line-2)', borderRadius: 10, padding: '12px 18px' }}>
-          <Image src="/rapid-relay-logo.png" alt="Rapid Relay" width={140} height={32} style={{ height: 26, width: 'auto' }} />
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10.5, letterSpacing: '0.08em', color: 'var(--lw-muted)', textTransform: 'uppercase', borderLeft: '1px solid var(--lw-line-2)', paddingLeft: 14 }}>
+        <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'flex-start', gap: 18, border: '1px solid var(--lw-line-2)', borderRadius: 14, padding: '30px 36px' }}>
+          <Image src="/rapid-relay-logo.png" alt="Rapid Relay" width={1280} height={969} priority style={{ height: 108, width: 'auto' }} />
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '0.08em', color: 'var(--lw-muted)', textTransform: 'uppercase' }}>
             A Lanework proof · live with carriers
           </span>
         </div>

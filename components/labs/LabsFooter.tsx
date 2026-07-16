@@ -45,8 +45,8 @@ export default function LabsFooter() {
         }}
       >
         <div>
-          <Logo wordmark={false} size={28} />
-          <p style={{ fontSize: 13, color: 'var(--lw-muted)', lineHeight: 1.55, marginTop: 14, maxWidth: 260 }}>
+          <Logo wordmark size={32} />
+          <p style={{ fontSize: 13, color: 'var(--lw-muted)', lineHeight: 1.55, marginTop: 16, maxWidth: 260 }}>
             Logistics runs on fragmented data. We turn it into research, and the AI systems that act on it.
           </p>
           <p
