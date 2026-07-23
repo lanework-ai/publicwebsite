@@ -32,9 +32,9 @@ const audiences = [
 ]
 
 const promise = [
-  { t: 'Start with a study', d: 'A question or your data, not a statement of work. We run the applied research first.' },
+  { t: 'Start embedded', d: 'A question or your data, not a statement of work. We forward-deploy on one bounded problem first.' },
   { t: 'Evidence, then software', d: 'We deploy a proof only when the research earns it. Research is the moat; software is the evidence.' },
-  { t: 'Partnership, not consulting', d: 'We build alongside you, publish what we find, and stand behind the work.' },
+  { t: 'Partnership, not consulting', d: 'We work inside your operation, publish what we find, and stand behind the work.' },
 ]
 
 export default function LabsWhoWeServe() {
@@ -43,7 +43,7 @@ export default function LabsWhoWeServe() {
       <PageHeader
         eyebrow="WHO WE SERVE"
         title="Built for the people who move freight."
-        sub="Lanework works with the operators, intermediaries, capital, and software teams across the logistics stack, leading with independent research and deploying proofs when the evidence earns it."
+        sub="Lanework embeds with the operators, intermediaries, capital, and software teams across the logistics stack, leading with independent research, improving the process from inside, and deploying proofs when the evidence earns it."
       />
 
       <section className="ll-section" style={{ paddingBottom: 8 }}>
@@ -73,7 +73,7 @@ export default function LabsWhoWeServe() {
         </div>
       </section>
 
-      <CtaBand title="Start with a study, not a contract." body="Bring us a network, a dataset, or a question. We run the applied research and deploy a proof only when the evidence earns it." />
+      <CtaBand title="Start with a study, not a contract." body="Bring us a network, a dataset, or a question. We embed a small team on one bounded problem and deploy a proof only when the evidence earns it." />
     </>
   )
 }

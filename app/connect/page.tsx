@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 const intents = [
-  { value: 'study', label: 'Run an applied study with us' },
+  { value: 'study', label: 'Embed a team on one problem (applied study)' },
   { value: 'platform', label: 'Deploy a proof (Rapid Relay / Rapid Load)' },
   { value: 'careers', label: 'Join the team' },
   { value: 'other', label: 'Something else' },
@@ -66,9 +66,10 @@ export default function LabsConnect() {
         Start with a study.
       </h1>
       <p style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--lw-muted)', margin: '0 0 36px' }}>
-        The easiest way in is a question. Bring us one, or your data, and we&rsquo;ll run the applied
-        research. Platform deployments and roles too. No sales pitch, and we typically reply within one
-        business day.
+        The easiest way in is a question. Bring us one, or your data, and we forward-deploy a small
+        team on one bounded problem: we work it alongside your operators, improve the process, and show
+        you the result. Platform deployments and roles too. No sales pitch, and we typically reply
+        within one business day.
       </p>
 
       {status === 'sent' ? (

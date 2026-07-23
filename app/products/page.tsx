@@ -14,7 +14,7 @@ export default function ProductsIndex() {
       <PageHeader
         eyebrow="PROOFS"
         title="Research that shipped."
-        sub="Our software exists to prove the research holds in production. Two proofs are live with operators today and one is in pilot; each one started as a finding, not a roadmap."
+        sub="Our software is what remained after we embedded with operators and the research held in production. Two proofs are live with operators today and one is in pilot; each one started as a finding, not a roadmap."
       />
 
       <section className="ll-section" style={{ paddingBottom: 8 }}>

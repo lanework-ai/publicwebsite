@@ -6,7 +6,7 @@ const cols: { title: string; links: { href: string; label: string }[] }[] = [
     title: 'Research',
     links: [
       { href: '/research', label: 'White papers' },
-      { href: '/case-studies', label: 'Applied research' },
+      { href: '/case-studies', label: 'Field work' },
       { href: '/blog', label: 'Notes' },
     ],
   },
@@ -47,7 +47,7 @@ export default function LabsFooter() {
         <div>
           <Logo wordmark size={32} interaction="lead" />
           <p style={{ fontSize: 13.5, color: 'var(--lw-muted)', lineHeight: 1.6, marginTop: 16, maxWidth: 300, textWrap: 'balance' }}>
-            We turn the fragmented data the freight industry already holds into independent research, and the AI systems that put it to work.
+            We embed with freight operators, turn the data they already hold into independent research, and build the AI systems that put it to work.
           </p>
         </div>
         {cols.map((c) => (

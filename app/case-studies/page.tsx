@@ -12,7 +12,7 @@ export default function CaseStudiesIndex() {
       <PageHeader
         eyebrow="CASE STUDIES"
         title="What the platforms do in the field."
-        sub="Measured outcomes from carriers running Lanework platforms across retention, utilization, transit time, and empty miles."
+        sub="Measured outcomes from operations we embedded in: what changed across retention, utilization, transit time, and empty miles."
       />
 
       <section className="ll-section" style={{ paddingBottom: 52, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>

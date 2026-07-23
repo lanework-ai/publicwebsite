@@ -10,7 +10,7 @@ import PostHogProvider from "@/components/Analytics/PostHogProvider";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://lanework.ai";
 
 const DESCRIPTION =
-  "An applied research lab for logistics. We turn the operational data the freight industry already holds into independent research, and into software when it proves out.";
+  "An applied research lab for logistics. We embed with freight operators, turn the data they already hold into independent research, and build the software that proves it.";
 
 export const metadata: Metadata = {
   title: "Lanework | Applied research for logistics",

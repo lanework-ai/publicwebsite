@@ -18,14 +18,14 @@ const stats = [
 
 const howWeWork = [
   { step: 'Study', desc: 'We run independent research on the operational data the freight industry already holds, and publish what we find.' },
-  { step: 'Prove', desc: 'We pressure-test findings with operators, then build working software to prove the research holds in production.' },
-  { step: 'Build', desc: 'When a proof earns its keep, it becomes a product. Research is the moat; software is the evidence.' },
+  { step: 'Embed', desc: 'We forward-deploy a small team into your operation. We work your real data alongside your planners and dispatchers, and improve the process on the ground.' },
+  { step: 'Build', desc: 'What survives contact with the operation becomes a product. Research is the moat; the software is what remains.' },
 ]
 
 const workWithUs = [
-  { t: 'Run an applied study', d: 'We study your network or a shared question against real data.' },
-  { t: 'Deploy a proof', d: 'Put Rapid Relay or Rapid Load to work on your lanes.' },
-  { t: 'Careers', d: 'A lean team reimagining freight from the evidence up.' },
+  { t: 'Run an embedded study', d: 'We forward-deploy on one bounded problem, work your real data alongside your operators, and show the result.' },
+  { t: 'Deploy a proof', d: 'Put Rapid Relay or Rapid Load to work on your lanes, with our team embedded alongside yours.' },
+  { t: 'Careers', d: 'Forward-deployed work: engineers and researchers who sit with operators, not behind a backlog.' },
 ]
 
 interface TeaserItem {
@@ -54,8 +54,9 @@ export default async function LabsHome() {
           Research on how freight actually moves.
         </h1>
         <p style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 540, margin: '0 0 32px' }}>
-          Lanework is an applied research lab for logistics. We turn the operational data the freight
-          industry already holds into independent research, and into software when it proves out.
+          Lanework is an applied research lab for logistics. We embed alongside your operators, turn
+          the data you already hold into evidence, and improve how the network runs. What proves out
+          becomes software.
         </p>
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
           <Button as={Link} href={lw('/research')} arrow>Read the research</Button>
@@ -108,7 +109,7 @@ export default async function LabsHome() {
         <Card>
           <SectionHeader index="03" label="Proofs" style={{ marginBottom: 20 }} />
           <p style={{ fontSize: 13, color: 'var(--lw-faint)', lineHeight: 1.6, margin: '0 0 6px' }}>
-            Research that shipped. Software we built to prove the findings hold in production.
+            Research that shipped. The software that remained after we embedded with operators and the findings held.
           </p>
           {products.map((p) => (
             <Link key={p.name} href={p.href} style={{ display: 'block', borderTop: '1px solid var(--lw-line)', paddingTop: 10, marginTop: 10 }}>
@@ -148,8 +149,8 @@ export default async function LabsHome() {
             Start with a study, not a contract.
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 520, margin: '0 0 28px' }}>
-            Bring us a question or your data. We run the applied research, share what we find, and
-            build only when the evidence earns it.
+            Bring us a question or your data. We embed a small team on one bounded problem, improve
+            the process, and share what we find. We build software only when the evidence earns it.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16, marginBottom: 30 }}>
             {workWithUs.map((c) => (

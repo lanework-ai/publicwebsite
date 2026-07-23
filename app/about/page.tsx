@@ -10,15 +10,15 @@ const pillars = [
 
 const howWeWork = [
   { step: 'Study', d: 'We run independent research on the operational data the freight industry already holds, and publish what we find. The research stands on its own.' },
-  { step: 'Prove', d: 'We pressure-test findings with operators and build working software to show they hold in production. Evidence over decks.' },
-  { step: 'Build', d: 'When a proof earns its keep, it becomes a product. We are not consultants; the research and the software are the deliverable.' },
+  { step: 'Embed', d: 'We forward-deploy a small team into the operation. We work your real data next to your planners and drivers, and improve the process in place. Evidence over decks.' },
+  { step: 'Build', d: 'What survives contact with the operation becomes a product. We are not consultants; the research and the software are the deliverable, never a slide deck.' },
 ]
 
 const values = [
   { t: 'Independent', d: 'The research stands on its own and we publish it openly. Findings come before any product we might sell.' },
   { t: 'Evidence-led', d: 'We combine logistics expertise with data science to understand the problem before we build anything.' },
-  { t: 'Operator-grounded', d: 'We work hands-on with freight planners and drivers, and test every claim against real networks.' },
-  { t: 'Partnership, not consulting', d: 'You start with a study, not a statement of work. We build alongside you and the work is ours to stand behind.' },
+  { t: 'Forward-deployed', d: 'We work from inside the operation, not above it. Our team sits with freight planners and drivers, and every claim is tested against a real network.' },
+  { t: 'Partnership, not consulting', d: 'You start with a bounded, embedded study, not a statement of work. We improve the process alongside you and the work is ours to stand behind.' },
 ]
 
 export default function AboutPage() {
@@ -27,7 +27,7 @@ export default function AboutPage() {
       <PageHeader
         eyebrow="COMPANY"
         title="An applied research lab for logistics."
-        sub="Logistics experts, technologists, and data scientists studying how freight actually moves, then building software to prove what we find."
+        sub="Logistics experts, technologists, and data scientists who embed with operators to study how freight actually moves, improve the process on the ground, and build software to prove what we find."
       />
 
       {/* Thesis */}
@@ -35,8 +35,9 @@ export default function AboutPage() {
         <SectionLabel index="01">Our thesis</SectionLabel>
         <p style={{ fontSize: 'clamp(20px, 2.6vw, 26px)', lineHeight: 1.4, fontWeight: 500, letterSpacing: '-0.01em', color: 'var(--lw-fg)', maxWidth: 720, margin: '0 0 28px' }}>
           Logistics runs on fragmented data. The industry&rsquo;s hardest problems are not a shortage
-          of trucks or software, but a shortage of evidence about what actually works. We exist to
-          supply it, and to build the AI systems that act on it.
+          of trucks or software, but a shortage of evidence about what actually works. We supply that
+          evidence from inside the operation: we deploy alongside your team, improve the process where
+          it runs, and build the AI systems that act on it.
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16 }}>
           {[
@@ -83,7 +84,8 @@ export default function AboutPage() {
         <p style={{ fontSize: 15, lineHeight: 1.7, color: 'var(--lw-fg-2)', maxWidth: 620, margin: 0 }}>
           Logistics leaks value at every layer: empty miles, idle assets, avoidable turnover, freight
           mispriced against demand. The losses are well known; the evidence on what actually fixes them
-          is not. We quantify where the leakage is, domain by domain, and build the systems that close it.
+          is not. We quantify where the leakage is, domain by domain, then embed with the operators who
+          live it and build the systems that close it.
         </p>
       </section>
 

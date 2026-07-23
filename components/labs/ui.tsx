@@ -39,7 +39,7 @@ export function PageHeader({ eyebrow, title, sub }: { eyebrow: string; title: st
 /** Reusable closing call-to-action band ("Work with us"). */
 export function CtaBand({
   title = 'Work with us',
-  body = 'Bring us a network, a dataset, or a question. We partner on applied research and deploy our platforms with carriers.',
+  body = 'Bring us a network, a dataset, or a question. We embed a small team on the problem, improve the process, and deploy our platforms with carriers when the evidence earns it.',
 }: {
   title?: string
   body?: string

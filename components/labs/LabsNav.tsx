@@ -9,7 +9,7 @@ import { Button } from './ds'
 const links = [
   { href: '/research', label: 'Research' },
   { href: '/products', label: 'Proofs' },
-  { href: '/case-studies', label: 'Applied research' },
+  { href: '/case-studies', label: 'Field work' },
   { href: '/blog', label: 'Notes' },
   { href: '/about', label: 'About' },
 ]
