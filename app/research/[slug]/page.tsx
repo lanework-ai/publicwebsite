@@ -50,6 +50,10 @@ export default async function LabsResearchDetail({ params }: { params: Promise<{
   const r = await resolve(slug)
   if (!r) notFound()
   const { doc, kind } = r
+  // noIndex marks unfinished work (e.g. a scorecard still in the pipeline). It
+  // already drops out of the listings and sitemap; 404 the detail page too so a
+  // stale or shared link cannot surface a draft.
+  if (doc.noIndex) notFound()
   const authorName = typeof doc.author === 'string' ? doc.author : doc.author?.name
   const metrics = doc.stats ?? doc.headlineMetrics
   const category = Array.isArray(doc.categories) ? doc.categories[0] : undefined

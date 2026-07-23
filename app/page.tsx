@@ -10,7 +10,7 @@ import { products, statusLabel } from '@/lib/labs/products'
 export const revalidate = 86400
 
 const stats = [
-  { value: '8', label: 'white papers shipping in 2026' },
+  { value: '9', label: 'white papers in 2026' },
   { value: '6', label: 'research domains' },
   { value: '$18.7B', label: 'driver turnover modeled' },
   { value: '3', label: 'software proofs · 2 live, 1 in pilot' },
@@ -134,7 +134,7 @@ export default async function LabsHome() {
             </Link>
           ))}
           <p style={{ fontSize: 12, color: 'var(--lw-faint)', lineHeight: 1.6, margin: '0 0 10px' }}>
-            Plus 8 more white papers shipping through 2026.
+            Plus 7 more white papers and a carrier scorecard shipping through 2026.
           </p>
           <Button as={Link} href={lw('/research')} variant="ghost" size="sm" arrow style={{ paddingLeft: 0 }}>All research</Button>
         </Card>

@@ -12,25 +12,31 @@ export const revalidate = 86400
 // coming. `progress` drives the work-in-progress accent lane on the batch mark.
 const pipeline: { window: string; progress: number; titles: string[] }[] = [
   {
-    window: 'Shipping before July 2026',
-    progress: 0.7,
+    window: 'August 2026',
+    progress: 0.75,
     titles: [
+      'Carrier Retention Risk Scorecards, Q2 2026',
       'The Driver Shortage Will Not Be Solved by Hiring More Drivers',
-      'Empty Miles Are a Solvable Problem',
+    ],
+  },
+  {
+    window: 'September 2026',
+    progress: 0.5,
+    titles: [
       'Why Most Relay Attempts Fail at the Coordination Layer',
+      'The Real Cost of Driver Turnover',
     ],
   },
   {
     window: 'October 2026',
-    progress: 0.4,
+    progress: 0.3,
     titles: [
       'The Rate Recovery Will Punish Carriers Without Relay Infrastructure',
-      'The Real Cost of Driver Turnover',
       'Why Most WMS Software Fails Frontline Ops',
     ],
   },
   {
-    window: 'December 2026',
+    window: 'November 2026',
     progress: 0.15,
     titles: ['The Last Mile Math', 'The PE Guide to Logistics Due Diligence'],
   },
@@ -130,7 +136,10 @@ export default async function LabsResearch() {
         <LabsNewsletter />
       </section>
 
-      <CtaBand title="Collaborate on research" body="Co-author a benchmark or test a hypothesis against real network data with our team." />
+      <CtaBand
+        title="Your network, not the industry average."
+        body="Published research tells you where the industry sits. Bring us your operating data and we will tell you where you sit, then put a small team on what it turns up."
+      />
     </>
   )
 }
