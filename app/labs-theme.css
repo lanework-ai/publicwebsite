@@ -324,8 +324,10 @@
 .ll-nav-link:hover {
   color: var(--lw-fg);
 }
+/* Hover draws the full underline in grey; the active page keeps the indigo bar,
+   so colour (not length) distinguishes "pointing at" from "you are here". */
 .ll-nav-link:hover::after {
-  transform: scaleX(0.4);
+  transform: scaleX(1);
   background: var(--lw-line-3);
 }
 .ll-nav-link.is-active {
