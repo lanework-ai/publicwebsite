@@ -1,13 +1,20 @@
 /**
  * Abstract, text-free editorial cover art for white papers + benchmarks.
  *
- * Inspired by HBR / MIT Sloan Management Review cover treatments: conceptual,
- * abstract, no headline text baked in (the card/detail page carries the title).
+ * Built from the Lanework brand's own visual language: the logo is three
+ * graduated horizontal "lane" bars (long white, medium graphite, short indigo),
+ * and these covers scale that motif into a full composition.
  *
- *   theme 'network'   — a node/edge graph where nodes toward the right "drop out"
- *                       (a retention/churn metaphor). Used for white papers.
- *   theme 'scorecard' — a descending ranking of bars on a green→amber→red risk
- *                       scale. Used for benchmarks.
+ * Follows the design system's rules rather than typical SaaS cover art:
+ * flat and SHADOWLESS, no gradients, no glows, hairline structure, greyscale
+ * carrying the field with a single indigo accent doing the signalling.
+ *
+ *   theme 'lanes'   — a graduated lane field. Lengths taper top to bottom like
+ *                     the mark; a few lanes break mid-run (the empty mile, the
+ *                     driver who leaves); three indigo lanes carry the signal.
+ *                     Used for white papers. ('network' is kept as an alias.)
+ *   theme 'ranking' — lanes ordered longest to shortest, indigo on the leader.
+ *                     Used for benchmarks/scorecards. ('scorecard' aliases it.)
  *
  * Deterministic: same (theme, seed) always produces the same image, so re-runs
  * are stable. Seed off the slug for per-item variation.
@@ -17,12 +24,14 @@
  */
 import sharp from 'sharp'
 
+// Lanework tokens (app/labs-theme.css)
 const PALETTE = {
-  base: '#0a0a0f',
-  primary: '#235784',
-  cyan: '#40a8c4',
-  purple: '#a855f7',
-  steel: '#5b7a99',
+  base: '#08090a',
+  fg: '#f4f5f6',
+  fg2: '#cfd2d6',
+  graphite: '#868d97',
+  accent: '#4f6bff',
+  accentSoft: '#7e95ff',
 }
 
 // --- deterministic RNG ---
@@ -45,171 +54,115 @@ function hashStr(s) {
   return h >>> 0
 }
 
-// --- color helpers ---
-function hex(h) {
-  const n = h.replace('#', '')
-  return [parseInt(n.slice(0, 2), 16), parseInt(n.slice(2, 4), 16), parseInt(n.slice(4, 6), 16)]
-}
-function lerpColor(a, b, t) {
-  const pa = hex(a)
-  const pb = hex(b)
-  const r = Math.round(pa[0] + (pb[0] - pa[0]) * t)
-  const g = Math.round(pa[1] + (pb[1] - pa[1]) * t)
-  const bl = Math.round(pa[2] + (pb[2] - pa[2]) * t)
-  return `rgb(${r},${g},${bl})`
+/** Pill-capped lane bar, matching the logo's rx = height/2 proportion. */
+function lane(x, y, w, h, fill, opacity) {
+  if (w <= 0.5) return ''
+  return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h}" rx="${(h / 2).toFixed(2)}" fill="${fill}" fill-opacity="${opacity.toFixed(3)}"/>`
 }
 
-// --- shared layers ---
-function backgroundLayer(W, H) {
-  const defs = `
-    <radialGradient id="g0" cx="16%" cy="20%" r="75%">
-      <stop offset="0%" stop-color="${PALETTE.primary}" stop-opacity="0.55"/>
-      <stop offset="100%" stop-color="${PALETTE.primary}" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="g1" cx="88%" cy="82%" r="72%">
-      <stop offset="0%" stop-color="${PALETTE.purple}" stop-opacity="0.30"/>
-      <stop offset="100%" stop-color="${PALETTE.purple}" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="g2" cx="72%" cy="6%" r="55%">
-      <stop offset="0%" stop-color="${PALETTE.cyan}" stop-opacity="0.22"/>
-      <stop offset="100%" stop-color="${PALETTE.cyan}" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="vig" cx="50%" cy="50%" r="75%">
-      <stop offset="58%" stop-color="#000000" stop-opacity="0"/>
-      <stop offset="100%" stop-color="#000000" stop-opacity="0.45"/>
-    </radialGradient>
-    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="7" result="b"/>
-      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-    <linearGradient id="barGloss" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.22"/>
-      <stop offset="14%" stop-color="#ffffff" stop-opacity="0"/>
-    </linearGradient>`
-  const body = `
-    <rect width="${W}" height="${H}" fill="${PALETTE.base}"/>
-    <rect width="${W}" height="${H}" fill="url(#g0)"/>
-    <rect width="${W}" height="${H}" fill="url(#g1)"/>
-    <rect width="${W}" height="${H}" fill="url(#g2)"/>`
-  return { defs, body }
+/** Hairline structure: a left rule and one off-centre rule. No grid noise. */
+function structure(W, H, marginX) {
+  const yTop = 64
+  const yBot = H - 64
+  const xA = marginX - 28
+  const xB = Math.round(W * 0.618)
+  return (
+    `<line x1="${xA}" y1="${yTop}" x2="${xA}" y2="${yBot}" stroke="${PALETTE.fg}" stroke-opacity="0.10" stroke-width="1"/>` +
+    `<line x1="${xB}" y1="${yTop}" x2="${xB}" y2="${yBot}" stroke="${PALETTE.fg}" stroke-opacity="0.05" stroke-width="1"/>`
+  )
 }
 
-function fineGrid(W, H, op = 0.045) {
-  const step = 48
-  let lines = ''
-  for (let x = step; x < W; x += step)
-    lines += `<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="#ffffff" stroke-opacity="${op}" stroke-width="1"/>`
-  for (let y = step; y < H; y += step)
-    lines += `<line x1="0" y1="${y}" x2="${W}" y2="${y}" stroke="#ffffff" stroke-opacity="${op}" stroke-width="1"/>`
-  return `<g>${lines}</g>`
-}
+// --- theme: lanes (white papers) ---
+// Each row is one route, staggered in start and split into relay legs with a
+// handoff gap between them. Reads as a relay schedule rather than a bar chart,
+// and avoids the left-aligned uniform look of skeleton placeholders.
+function lanesTheme(W, H, rand) {
+  const rows = 22
+  const marginX = 96
+  const top = 88
+  const bottom = H - 88
+  const pitch = (bottom - top) / (rows - 1)
+  const barH = 7
+  const usable = W - marginX * 2
 
-// --- theme: network (retention/churn) ---
-function networkTheme(W, H, rand) {
-  const N = 46
-  const nodes = []
-  for (let i = 0; i < N; i++) {
-    const x = rand() * W
-    const y = 60 + rand() * (H - 120)
-    // churn probability rises toward the right edge → a visual drop-off
-    const churn = rand() < 0.08 + 0.62 * Math.pow(x / W, 1.8)
-    nodes.push({ x, y, churn, r: churn ? 1.6 + rand() * 2 : 2.6 + rand() * 4.6 })
-  }
-  let edges = ''
-  const maxD = 185
-  for (let i = 0; i < N; i++) {
-    for (let j = i + 1; j < N; j++) {
-      const a = nodes[i]
-      const b = nodes[j]
-      const d = Math.hypot(a.x - b.x, a.y - b.y)
-      if (d < maxD) {
-        const retained = !a.churn && !b.churn
-        const op = retained ? 0.5 * (1 - d / maxD) + 0.05 : 0.12 * (1 - d / maxD)
-        const col = retained ? PALETTE.cyan : PALETTE.steel
-        edges += `<line x1="${a.x.toFixed(1)}" y1="${a.y.toFixed(1)}" x2="${b.x.toFixed(1)}" y2="${b.y.toFixed(1)}" stroke="${col}" stroke-opacity="${op.toFixed(3)}" stroke-width="1.1"/>`
+  let out = ''
+  let ticks = ''
+  for (let i = 0; i < rows; i++) {
+    const t = i / (rows - 1)
+    const y = top + i * pitch - barH / 2
+
+    // Staggered origin, graduated run length (longest toward the top).
+    const start = marginX + usable * (rand() * 0.24)
+    const runFactor = 0.3 + 0.6 * Math.pow(1 - t, 1.1) + (rand() - 0.5) * 0.12
+    const end = Math.min(marginX + usable, start + usable * Math.max(0.16, runFactor))
+    const span = end - start
+    if (span < 40) continue
+
+    // Split the route into 2 to 4 legs with handoff gaps.
+    const legs = 2 + Math.floor(rand() * 3)
+    const gap = 13 + rand() * 8
+    const legSpan = (span - gap * (legs - 1)) / legs
+    if (legSpan < 18) continue
+
+    // About a fifth of routes carry one indigo leg: the proven segment. Kept
+    // sparse so the accent stays a signal rather than a pattern.
+    const accentLeg = rand() < 0.2 ? Math.floor(rand() * legs) : -1
+    // Occasionally a route simply stops early: the empty mile.
+    const dropAfter = rand() < 0.16 ? 1 + Math.floor(rand() * (legs - 1)) : legs
+
+    for (let s = 0; s < legs; s++) {
+      if (s >= dropAfter) break
+      const x = start + s * (legSpan + gap)
+      const isAccent = s === accentLeg
+      const fill = isAccent ? PALETTE.accent : rand() < 0.16 ? PALETTE.fg2 : PALETTE.graphite
+      const opacity = isAccent ? 0.95 : 0.22 + 0.32 * (1 - t)
+      out += lane(x, y, legSpan, barH, fill, opacity)
+      // Handoff marker between consecutive legs.
+      if (s < legs - 1 && s + 1 < dropAfter) {
+        const tx = x + legSpan + gap / 2
+        ticks += `<line x1="${tx.toFixed(1)}" y1="${(y - 4).toFixed(1)}" x2="${tx.toFixed(1)}" y2="${(y + barH + 4).toFixed(1)}" stroke="${PALETTE.fg}" stroke-opacity="0.16" stroke-width="1"/>`
       }
     }
   }
-  let dots = ''
-  for (const n of nodes) {
-    if (n.churn) {
-      dots += `<circle cx="${n.x.toFixed(1)}" cy="${n.y.toFixed(1)}" r="${n.r.toFixed(1)}" fill="none" stroke="${PALETTE.steel}" stroke-opacity="0.55" stroke-width="1.2"/>`
-    } else {
-      dots += `<circle cx="${n.x.toFixed(1)}" cy="${n.y.toFixed(1)}" r="${n.r.toFixed(1)}" fill="${PALETTE.cyan}" filter="url(#glow)"/>`
-    }
-  }
-  return `<g>${edges}</g><g>${dots}</g>`
+  return `<g>${structure(W, H, marginX)}</g><g>${ticks}</g><g>${out}</g>`
 }
 
-// --- theme: scorecard (risk ranking) ---
-function scorecardTheme(W, H, rand) {
-  const n = 12
-  const margin = 120
-  const gap = 22
-  const bw = (W - 2 * margin - (n - 1) * gap) / n
-  const baseY = H - 132
+// --- theme: ranking (benchmarks / scorecards) ---
+function rankingTheme(W, H, rand) {
+  const rows = 14
+  const marginX = 104
   const top = 96
-  const maxH = baseY - top
-  const heights = []
-  for (let i = 0; i < n; i++) {
-    const t = i / (n - 1)
-    // descending ranking, tall (strong/low-risk) → short (high-risk), light jitter
-    const h = maxH * (1.0 - 0.84 * t) + (rand() - 0.5) * maxH * 0.09
-    heights.push(Math.max(0.13 * maxH, Math.min(maxH, h)))
-  }
-  const colorFor = (h) => {
-    const t = h / maxH
-    if (t > 0.5) return lerpColor('#fbbf24', '#34d399', (t - 0.5) / 0.5) // amber→green
-    return lerpColor('#f87171', '#fbbf24', t / 0.5) // red→amber
-  }
+  const bottom = H - 96
+  const pitch = (bottom - top) / (rows - 1)
+  const barH = 9
+  const maxW = W - marginX * 2
 
-  // faint horizontal reference lines + baseline
-  let grid = ''
-  for (let g = 1; g <= 4; g++) {
-    const gy = baseY - (maxH * g) / 4
-    grid += `<line x1="${(margin - 24).toFixed(1)}" y1="${gy.toFixed(1)}" x2="${(W - margin + 24).toFixed(1)}" y2="${gy.toFixed(1)}" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1"/>`
+  let out = ''
+  for (let i = 0; i < rows; i++) {
+    const t = i / (rows - 1)
+    // Strictly descending ranking with light deterministic jitter.
+    const w = maxW * Math.max(0.14, 1 - 0.82 * t + (rand() - 0.5) * 0.05)
+    const y = top + i * pitch - barH / 2
+    const leader = i === 0
+    const fill = leader ? PALETTE.accent : i < 3 ? PALETTE.fg2 : PALETTE.graphite
+    const opacity = leader ? 0.95 : 0.2 + 0.4 * (w / maxW)
+    out += lane(marginX, y, w, barH, fill, opacity)
+    // Tick at each lane end: a measured, scorecard read.
+    out += `<line x1="${(marginX + w + 12).toFixed(1)}" y1="${(y - 3).toFixed(1)}" x2="${(marginX + w + 12).toFixed(1)}" y2="${(y + barH + 3).toFixed(1)}" stroke="${PALETTE.fg}" stroke-opacity="${leader ? 0.35 : 0.12}" stroke-width="1"/>`
   }
-  grid += `<line x1="${(margin - 24).toFixed(1)}" y1="${baseY}" x2="${(W - margin + 24).toFixed(1)}" y2="${baseY}" stroke="#ffffff" stroke-opacity="0.22" stroke-width="1.5"/>`
-
-  // bars: solid color + gloss overlay + glow on leaders + soft reflection
-  let bars = ''
-  const tops = []
-  for (let i = 0; i < n; i++) {
-    const x = margin + i * (bw + gap)
-    const h = heights[i]
-    const y = baseY - h
-    const col = colorFor(h)
-    tops.push({ x: x + bw / 2, y })
-    const glow = h > maxH * 0.82 ? ' filter="url(#glow)"' : ''
-    bars += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="3.5" fill="${col}" fill-opacity="0.92"${glow}/>`
-    bars += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="3.5" fill="url(#barGloss)"/>`
-    const refl = Math.min(46, h * 0.32)
-    bars += `<rect x="${x.toFixed(1)}" y="${(baseY + 2).toFixed(1)}" width="${bw.toFixed(1)}" height="${refl.toFixed(1)}" rx="3.5" fill="${col}" fill-opacity="0.10"/>`
-  }
-
-  // ranking trend line connecting the bar tops, with glowing nodes
-  const pts = tops.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')
-  const trend = `<polyline points="${pts}" fill="none" stroke="#ffffff" stroke-opacity="0.4" stroke-width="2" filter="url(#glow)"/>`
-  const nodes = tops
-    .map((p) => `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3.4" fill="#ffffff" fill-opacity="0.92"/>`)
-    .join('')
-
-  return `<g>${grid}</g><g>${bars}</g><g>${trend}${nodes}</g>`
+  return `<g>${structure(W, H, marginX)}</g><g>${out}</g>`
 }
 
 /**
  * @returns {Promise<Buffer>} PNG buffer
  */
-export async function generateCover({ theme = 'network', seed = 'seed', width = 1200, height = 630 } = {}) {
-  const rand = mulberry32(hashStr(String(seed)) ^ (theme === 'scorecard' ? 0x9e3779b9 : 0x1b873593))
-  const back = backgroundLayer(width, height)
-  const motif = theme === 'scorecard' ? scorecardTheme(width, height, rand) : networkTheme(width, height, rand)
+export async function generateCover({ theme = 'lanes', seed = 'seed', width = 1200, height = 630 } = {}) {
+  const isRanking = theme === 'ranking' || theme === 'scorecard'
+  const rand = mulberry32(hashStr(String(seed)) ^ (isRanking ? 0x9e3779b9 : 0x1b873593))
+  const motif = isRanking ? rankingTheme(width, height, rand) : lanesTheme(width, height, rand)
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
-    <defs>${back.defs}</defs>
-    ${back.body}
-    ${fineGrid(width, height)}
+    <rect width="${width}" height="${height}" fill="${PALETTE.base}"/>
     ${motif}
-    <rect width="${width}" height="${height}" fill="url(#vig)"/>
   </svg>`
   return sharp(Buffer.from(svg)).png().toBuffer()
 }
