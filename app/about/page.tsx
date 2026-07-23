@@ -11,7 +11,7 @@ const pillars = [
 const howWeWork = [
   { step: 'Study', d: 'We run independent research on the operational data the freight industry already holds, and publish what we find. The research stands on its own.' },
   { step: 'Embed', d: 'We forward-deploy a small team into the operation. We work your real data next to your planners and drivers, and improve the process in place. Evidence over decks.' },
-  { step: 'Build', d: 'What survives contact with the operation becomes a product. We are not consultants; the research and the software are the deliverable, never a slide deck.' },
+  { step: 'Build', d: 'Not every improvement needs software. When one does, it becomes a product we stand behind. We are not consultants; the research and the working system are the deliverable, never a slide deck.' },
 ]
 
 const values = [

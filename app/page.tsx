@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Eyebrow, SectionHeader, Button, Card, Stat, DomainRow, Badge } from '@/components/labs/ds'
+import { SectionHeader, Button, Card, Stat, DomainRow, Badge } from '@/components/labs/ds'
 import { lw } from '@/lib/labs/config'
 import { client } from '@/sanity/client'
 import { whitePapersQuery, benchmarksQuery } from '@/lib/sanity-queries'
@@ -19,7 +19,7 @@ const stats = [
 const howWeWork = [
   { step: 'Study', desc: 'We run independent research on the operational data the freight industry already holds, and publish what we find.' },
   { step: 'Embed', desc: 'We forward-deploy a small team into your operation. We work your real data alongside your planners and dispatchers, and improve the process on the ground.' },
-  { step: 'Build', desc: 'What survives contact with the operation becomes a product. Research is the moat; the software is what remains.' },
+  { step: 'Build', desc: 'Not every fix needs software. When one does, we build it and stand behind it. Research is the moat; the product is what remains.' },
 ]
 
 const workWithUs = [
@@ -49,14 +49,13 @@ export default async function LabsHome() {
     <>
       {/* Hero */}
       <section className="ll-section" style={{ paddingTop: 64, paddingBottom: 56 }}>
-        <Eyebrow emphasis="hero" style={{ marginBottom: 22 }}>Applied AI · Data research</Eyebrow>
-        <h1 style={{ fontSize: 'var(--text-hero)', lineHeight: 'var(--leading-display)', fontWeight: 500, letterSpacing: 'var(--tracking-tight)', margin: '0 0 22px', maxWidth: 680 }}>
-          Research on how freight actually moves.
+        <h1 style={{ fontSize: 'var(--text-hero)', lineHeight: 'var(--leading-display)', fontWeight: 500, letterSpacing: 'var(--tracking-tight)', margin: '0 0 22px', maxWidth: 760 }}>
+          Applied AI research on how freight actually moves.
         </h1>
         <p style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 540, margin: '0 0 32px' }}>
           Lanework is an applied research lab for logistics. We embed alongside your operators, turn
           the data you already hold into evidence of what actually works, and improve how the business
-          runs. What proves out becomes software.
+          runs. Sometimes that means a better process, sometimes it means software we build.
         </p>
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
           <Button as={Link} href={lw('/research')} arrow>Read the research</Button>
