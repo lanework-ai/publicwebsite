@@ -50,12 +50,12 @@ export default async function LabsHome() {
       {/* Hero */}
       <section className="ll-section" style={{ paddingTop: 64, paddingBottom: 56 }}>
         <h1 style={{ fontSize: 'var(--text-hero)', lineHeight: 'var(--leading-display)', fontWeight: 500, letterSpacing: 'var(--tracking-tight)', margin: '0 0 22px', maxWidth: 760 }}>
-          Applied AI research on how freight actually moves.
+          We deploy into your operation and make it run better.
         </h1>
-        <p style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 540, margin: '0 0 32px' }}>
-          Lanework is an applied research lab for logistics. We embed alongside your operators, turn
-          the data you already hold into evidence of what actually works, and improve how the business
-          runs. Sometimes that means a better process, sometimes it means software we build.
+        <p style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 560, margin: '0 0 32px' }}>
+          Lanework is an applied research lab for logistics. A small team embeds inside your business,
+          finds what the data shows works, and puts it into practice. We publish what we learn; the
+          software comes only when it earns its place.
         </p>
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
           <Button as={Link} href={lw('/research')} arrow>Read the research</Button>
