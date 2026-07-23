@@ -324,11 +324,12 @@
 .ll-nav-link:hover {
   color: var(--lw-fg);
 }
-/* Hover draws the full underline in grey; the active page keeps the indigo bar,
-   so colour (not length) distinguishes "pointing at" from "you are here". */
+/* Same full-width sweep as the footer links, but off-white instead of the
+   footer's indigo, so the header reads as its own surface. The active page keeps
+   the indigo bar, so colour (not length) separates "pointing at" from "you are here". */
 .ll-nav-link:hover::after {
   transform: scaleX(1);
-  background: var(--lw-line-3);
+  background: var(--lw-fg-2);
 }
 .ll-nav-link.is-active {
   color: var(--lw-fg);

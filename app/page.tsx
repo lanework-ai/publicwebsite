@@ -55,8 +55,8 @@ export default async function LabsHome() {
         </h1>
         <p style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 540, margin: '0 0 32px' }}>
           Lanework is an applied research lab for logistics. We embed alongside your operators, turn
-          the data you already hold into evidence, and improve how the network runs. What proves out
-          becomes software.
+          the data you already hold into evidence of what actually works, and improve how the business
+          runs. What proves out becomes software.
         </p>
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
           <Button as={Link} href={lw('/research')} arrow>Read the research</Button>
