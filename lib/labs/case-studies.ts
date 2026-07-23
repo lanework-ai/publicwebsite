@@ -10,9 +10,11 @@ export interface CaseStudy {
   product: 'Rapid Relay' | 'Rapid Load' | 'Rapid Load + TaaS'
   title: string
   segment: string
+  /** Deployment status, shown as a chip on every index card so they read consistently. */
+  status: 'Live' | 'In pilot'
   summary: string
   body: string[]
-  /** Small mono meta chips. */
+  /** Small mono meta chips (detail page only; the index card would duplicate them). */
   meta: string[]
   /** Optional supporting outcome stats (shown as a grid on the detail page). */
   results?: { value: string; label: string }[]
@@ -24,8 +26,9 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: 'rapid-relay-orchestration',
     product: 'Rapid Relay',
-    title: 'Relay orchestration, running in production',
+    title: 'Driver turnover cut from 92% to 51%',
     segment: 'Relay orchestration',
+    status: 'Live',
     meta: ['Rapid Relay', 'Live'],
     demoUrl: 'https://demo.rapidrelay.ai/dashboard',
     summary:
@@ -47,6 +50,7 @@ export const caseStudies: CaseStudy[] = [
     product: 'Rapid Load',
     title: 'One board for a fragmented spot market',
     segment: 'Load aggregation',
+    status: 'Live',
     meta: ['Rapid Load', 'Load board'],
     summary:
       'Rapid Load aggregates a fragmented spot market into a single, deduplicated load board, so dispatchers stop searching five systems and start working one.',
@@ -59,8 +63,9 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: 'repowr-spot-market-integration',
     product: 'Rapid Load + TaaS',
-    title: 'Trailer-as-a-Service: synchronizing REPOWR across spot markets',
+    title: 'Synchronizing REPOWR capacity across spot markets',
     segment: 'Trailer-as-a-Service',
+    status: 'In pilot',
     meta: ['Rapid Load + TaaS', 'REPOWR', 'Spot market'],
     summary:
       'We brought REPOWR’s trailer-pool capacity into Rapid Load and built the multi-market synchronization layer that keeps spot inventory and Trailer-as-a-Service capacity consistent across markets.',
