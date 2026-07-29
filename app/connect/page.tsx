@@ -22,6 +22,9 @@ export default function LabsConnect() {
   const [form, setForm] = useState({ name: '', email: '', company: '', intent: 'snapshot', fleetSize: '20-100', message: '' })
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [honeypot, setHoneypot] = useState('')
+  // Mount timestamp for the API's submit-timing gate. Without it the route reads
+  // NaN elapsed and silently drops the submission, so this is required, not extra.
+  const [formLoadedAt] = useState(() => Date.now())
 
   const set = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }))
 
@@ -46,6 +49,7 @@ export default function LabsConnect() {
           fleetSize: form.fleetSize,
           message: `Intent: ${intentLabel}${fleetLine}\n\n${form.message || '(no message)'}`,
           _honeypot: honeypot,
+          formLoadedAt,
         }),
       })
       setStatus(res.ok ? 'sent' : 'error')
