@@ -226,7 +226,7 @@ export async function sendLaneworkNewsletter(email: string) {
 /** Named sender for the final personal note (shared with the RR sequence's sender). */
 const PERSONAL = {
   name: 'Ahmed',
-  email: process.env.PERSONAL_SENDER_EMAIL || 'ahmed@lanework.ai',
+  email: process.env.PERSONAL_SENDER_EMAIL || 'ahmed.hegazy@lanework.ai',
 }
 
 interface LaneworkDripContext {
