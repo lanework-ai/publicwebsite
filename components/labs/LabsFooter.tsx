@@ -6,15 +6,15 @@ const cols: { title: string; links: { href: string; label: string }[] }[] = [
     title: 'Research',
     links: [
       { href: '/research', label: 'White papers' },
-      { href: '/case-studies', label: 'Field work' },
       { href: '/blog', label: 'Notes' },
     ],
   },
   {
-    title: 'Proofs',
+    title: 'Field work',
     links: [
-      { href: '/products', label: 'All proofs' },
-      { href: '/products/rapid-relay', label: 'Rapid Relay' },
+      { href: '/field-work', label: 'All deployments' },
+      { href: '/field-work/rapid-relay-orchestration', label: 'Rapid Relay' },
+      { href: '/field-work/rapid-load-aggregation', label: 'Rapid Load' },
     ],
   },
   {

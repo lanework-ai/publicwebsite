@@ -5,7 +5,7 @@ import { lw } from '@/lib/labs/config'
 import { client } from '@/sanity/client'
 import { whitePapersQuery, benchmarksQuery } from '@/lib/sanity-queries'
 import { domains } from '@/lib/labs/domains'
-import { products, statusLabel } from '@/lib/labs/products'
+import { fieldWork, statusLabel } from '@/lib/labs/field-work'
 
 export const revalidate = 86400
 
@@ -13,7 +13,7 @@ const stats = [
   { value: '9', label: 'white papers in 2026' },
   { value: '6', label: 'research domains' },
   { value: '$18.7B', label: 'driver turnover modeled' },
-  { value: '3', label: 'software proofs · 2 live, 1 in pilot' },
+  { value: '3', label: 'deployments · 2 live, 1 in pilot' },
 ]
 
 const howWeWork = [
@@ -106,25 +106,25 @@ export default async function LabsHome() {
       {/* Proofs + research teasers */}
       <section className="ll-section" style={{ paddingTop: 52, paddingBottom: 56, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
         <Card>
-          <SectionHeader index="03" label="Proofs" style={{ marginBottom: 20 }} />
+          <SectionHeader index="03" label="Field work" style={{ marginBottom: 20 }} />
           <p style={{ fontSize: 13, color: 'var(--lw-faint)', lineHeight: 1.6, margin: '0 0 6px' }}>
-            Research that shipped. The software that remained after we embedded with operators and the findings held.
+            What changed inside real operations, and the software that remained to prove the findings hold.
           </p>
-          {products.map((p) => (
-            <Link key={p.name} href={p.href} style={{ display: 'block', borderTop: '1px solid var(--lw-line)', paddingTop: 10, marginTop: 10 }}>
+          {fieldWork.map((f) => (
+            <Link key={f.slug} href={lw(`/field-work/${f.slug}`)} style={{ display: 'block', borderTop: '1px solid var(--lw-line)', paddingTop: 10, marginTop: 10 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                <span style={{ fontWeight: 500, fontSize: 14, color: 'var(--lw-fg)' }}>{p.name}</span>
-                <Badge tone={p.status === 'live' ? 'live' : 'pilot'}>{statusLabel[p.status]}</Badge>
-                {p.logo && (
+                <span style={{ fontWeight: 500, fontSize: 14, color: 'var(--lw-fg)' }}>{f.product}</span>
+                <Badge tone={f.status === 'live' ? 'live' : 'pilot'}>{statusLabel[f.status]}</Badge>
+                {f.logo && (
                   <span className="ll-partner" style={{ marginLeft: 'auto' }}>
-                    <Image src={p.logo} alt={`${p.name} logo`} width={80} height={18} style={{ height: 15, width: 'auto' }} />
+                    <Image src={f.logo} alt={`${f.product} logo`} width={80} height={18} style={{ height: 15, width: 'auto' }} />
                   </span>
                 )}
               </div>
-              <div style={{ fontSize: 12, color: 'var(--lw-faint)', marginTop: 3 }}>{p.teaser}</div>
+              <div style={{ fontSize: 12, color: 'var(--lw-faint)', marginTop: 3 }}>{f.title}</div>
             </Link>
           ))}
-          <Button as={Link} href={lw('/products')} variant="ghost" size="sm" arrow style={{ marginTop: 16, paddingLeft: 0 }}>All proofs</Button>
+          <Button as={Link} href={lw('/field-work')} variant="ghost" size="sm" arrow style={{ marginTop: 16, paddingLeft: 0 }}>All field work</Button>
         </Card>
         <Card>
           <SectionHeader index="04" label="Research" style={{ marginBottom: 20 }} />

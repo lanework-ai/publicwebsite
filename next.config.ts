@@ -23,6 +23,17 @@ const nextConfig: NextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
 
+  // "Proofs" (/products) and "Field work" (/case-studies) covered the same three
+  // deployments, so they merged into /field-work. Keep the old paths resolving.
+  async redirects() {
+    return [
+      { source: '/products', destination: '/field-work', permanent: true },
+      { source: '/products/rapid-relay', destination: '/field-work/rapid-relay-orchestration', permanent: true },
+      { source: '/case-studies', destination: '/field-work', permanent: true },
+      { source: '/case-studies/:slug', destination: '/field-work/:slug', permanent: true },
+    ]
+  },
+
   // Headers for security and SEO
   async headers() {
     return [

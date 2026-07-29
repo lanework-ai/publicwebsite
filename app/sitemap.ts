@@ -5,7 +5,7 @@ import {
   whitePapersSitemapQuery,
   benchmarksSitemapQuery,
 } from '@/lib/sanity-queries'
-import { caseStudies } from '@/lib/labs/case-studies'
+import { fieldWork } from '@/lib/labs/field-work'
 
 // On Lanework, white papers and benchmarks both render under /research/[slug];
 // blog posts under /blog/[slug]. Paid /lp pages are intentionally excluded.
@@ -32,18 +32,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }))
 
-  const caseStudyPages: MetadataRoute.Sitemap = caseStudies.map((c) => ({
-    url: `${baseUrl}/case-studies/${c.slug}`,
+  const fieldWorkPages: MetadataRoute.Sitemap = fieldWork.map((f) => ({
+    url: `${baseUrl}/field-work/${f.slug}`,
     changeFrequency: 'monthly',
-    priority: 0.7,
+    priority: 0.8,
   }))
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: baseUrl, changeFrequency: 'weekly', priority: 1 },
     { url: `${baseUrl}/research`, changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${baseUrl}/products`, changeFrequency: 'monthly', priority: 0.9 },
-    { url: `${baseUrl}/products/rapid-relay`, changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${baseUrl}/case-studies`, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${baseUrl}/field-work`, changeFrequency: 'monthly', priority: 0.9 },
     { url: `${baseUrl}/who-we-serve`, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${baseUrl}/about`, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${baseUrl}/blog`, changeFrequency: 'weekly', priority: 0.7 },
@@ -53,5 +51,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/terms-and-conditions`, changeFrequency: 'yearly', priority: 0.4 },
   ]
 
-  return [...staticPages, ...research, ...blogPosts, ...caseStudyPages]
+  return [...staticPages, ...research, ...blogPosts, ...fieldWorkPages]
 }
