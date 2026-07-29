@@ -12,13 +12,13 @@ const intents = [
   { value: 'other', label: 'Something else' },
 ]
 
-const fleetSizes = ['100-250', '250-500', '500-1000', '1000+']
+const fleetSizes = ['20-100', '100-250', '250-500', '500-1000', '1000+']
 
 /** Intents where the fleet-size question is worth asking. */
 const CARRIER_INTENTS = new Set(['snapshot', 'assessment', 'advisory', 'platform'])
 
 export default function LabsConnect() {
-  const [form, setForm] = useState({ name: '', email: '', company: '', intent: 'snapshot', fleetSize: '100-250', message: '' })
+  const [form, setForm] = useState({ name: '', email: '', company: '', intent: 'snapshot', fleetSize: '20-100', message: '' })
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [honeypot, setHoneypot] = useState('')
 

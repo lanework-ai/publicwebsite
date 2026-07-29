@@ -59,7 +59,9 @@ const contactSchema = z.object({
     .string()
     .min(1, 'Fleet size is required')
     .refine(
-      (value) => ['100-250', '250-500', '500-1000', '1000+'].includes(value),
+      // Keep in sync with fleetSizes in app/connect/page.tsx. Lanework engages
+      // fleets from 20 trucks up, so the smallest band starts there.
+      (value) => ['20-100', '100-250', '250-500', '500-1000', '1000+'].includes(value),
       { message: 'Invalid fleet size selection' }
     ),
   message: z.string().max(500, 'Message must not exceed 500 characters').optional().nullable(),
