@@ -1,11 +1,18 @@
 /**
- * Lanework-branded transactional emails. Self-contained so the shared Rapid Relay
- * templates in lib/email.ts stay byte-identical (no cross-brand bleed). The Lanework
- * flows (gated download, newsletter) route here via a `brand: 'lanework'` flag.
+ * Every transactional email Lanework sends: gated downloads, newsletter welcome
+ * and broadcast, the drip sequence, and internal notifications. This is the only
+ * email module in the app.
  *
  * Design: light-locked (dark-mode-safe) with a near-black header band carrying the
- * LANEWORK wordmark (no image, so it renders everywhere), one indigo accent, white
- * body, indigo buttons — the Lanework brand, email-client-safe.
+ * LANEWORK wordmark as text rather than an image, so it renders in every client
+ * and there is no logo attachment to go stale. One indigo accent (--lw-accent),
+ * white body, indigo buttons.
+ *
+ * Addresses all come from env so nothing is hardcoded to a domain:
+ *   EMAIL_FROM            the visible sender, e.g. research@lanework.ai
+ *   SALES_REPLY_TO        where replies land, e.g. hello@lanework.ai
+ *   ADMIN_EMAIL           internal notifications destination
+ *   PERSONAL_SENDER_EMAIL the human sender on the final drip note
  */
 import { Resend } from 'resend'
 import { prisma } from '@/lib/prisma'
@@ -14,9 +21,8 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 const FROM_EMAIL = process.env.EMAIL_FROM || 'onboarding@resend.dev'
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || ''
 const REPLY_TO = process.env.SALES_REPLY_TO || 'hello@lanework.ai'
-// Lanework emails always link to the Lanework site. Default straight to
-// lanework.ai (override via LANEWORK_SITE_URL) — identical to the copy in the
-// Rapid Relay app, whose cron also sends Lanework drips against the shared DB.
+// Links always point at the Lanework site, whatever host the job runs on.
+// Defaults to lanework.ai; override with LANEWORK_SITE_URL.
 const SITE_ROOT = process.env.LANEWORK_SITE_URL || 'https://lanework.ai'
 
 const FONT = "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif"
@@ -188,6 +194,7 @@ export async function sendLaneworkNewsletter(email: string) {
     const welcome = await resend.emails.send({
       from: `Lanework <${FROM_EMAIL}>`,
       to: email,
+      replyTo: REPLY_TO,
       subject: 'Welcome to Lanework research',
       headers: unsubscribeHeaders(email),
       html: welcomeHtml(email),
@@ -380,8 +387,7 @@ export async function sendLaneworkBlogNewsletter(postData: {
 /**
  * Notifies the team when someone submits the contact form. Internal only, so it
  * uses the plain internal footer rather than the marketing one, and carries no
- * unsubscribe link. Moved here from the old Rapid Relay email module so the app
- * has a single, correctly branded set of templates.
+ * unsubscribe link. Replies go to the person who filled in the form.
  */
 export async function sendContactNotification(contact: {
   name: string
