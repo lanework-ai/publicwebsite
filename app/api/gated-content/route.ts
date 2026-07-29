@@ -3,7 +3,6 @@ import { randomUUID } from 'crypto'
 import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
 import { rateLimit, validateHoneypot } from '@/lib/rateLimit'
-import { sendGatedContentDownloadEmail } from '@/lib/email'
 import { sendLaneworkGatedDownloadEmail } from '@/lib/labs-email'
 import { client } from '@/sanity/client'
 import { whitePaperPdfBySlugQuery, benchmarkPdfBySlugQuery } from '@/lib/sanity-queries'
@@ -122,8 +121,8 @@ export async function POST(request: NextRequest) {
     const tokenExpiresAt = new Date(now.getTime() + TOKEN_TTL_HOURS * 60 * 60 * 1000)
     const dripNextSendAt = new Date(now.getTime() + DRIP_FIRST_DELAY_MS)
 
-    // Which brand captured this lead. Stored so the drip cron sends the right
-    // sequence (Lanework research nurture vs Rapid Relay product nurture).
+    // Retained on the row for reporting. This app only serves Lanework, so every
+    // lead takes the Lanework templates regardless.
     const brand =
       typeof body === 'object' && body !== null && (body as { brand?: string }).brand === 'lanework'
         ? 'lanework'
@@ -164,42 +163,17 @@ export async function POST(request: NextRequest) {
       /* already logged inside */
     })
 
-    // Fire the download email (non-blocking). Lanework leads get the Lanework-branded
-    // email; everything else keeps the Rapid Relay template.
-    if (brand === 'lanework') {
-      sendLaneworkGatedDownloadEmail({
-        to: data.email,
-        name: data.name,
-        contentType: data.contentType,
-        contentSlug: data.contentSlug,
-        contentTitle: sanityDoc.title,
-        downloadUrl,
-      }).catch((error) => {
-        console.error('Failed to send Lanework gated download email:', error)
-      })
-    } else {
-      sendGatedContentDownloadEmail({
-        to: data.email,
-        name: data.name,
-        company: data.company,
-        contentType: data.contentType,
-        contentSlug: data.contentSlug,
-        contentTitle: sanityDoc.title,
-        downloadUrl,
-        dripNextSendAt,
-        utm: {
-          utmSource: data.utmSource,
-          utmMedium: data.utmMedium,
-          utmCampaign: data.utmCampaign,
-          utmContent: data.utmContent,
-          utmTerm: data.utmTerm,
-          referrer: data.referrer,
-          landingPage: data.landingPage,
-        },
-      }).catch((error) => {
-        console.error('Failed to send gated content download email:', error)
-      })
-    }
+    // Fire the download email (non-blocking).
+    sendLaneworkGatedDownloadEmail({
+      to: data.email,
+      name: data.name,
+      contentType: data.contentType,
+      contentSlug: data.contentSlug,
+      contentTitle: sanityDoc.title,
+      downloadUrl,
+    }).catch((error) => {
+      console.error('Failed to send gated download email:', error)
+    })
 
     // Sync to Sanity (awaited so it completes before the serverless function exits)
     try {

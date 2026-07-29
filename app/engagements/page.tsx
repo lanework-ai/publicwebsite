@@ -16,7 +16,7 @@ export default function EngagementsPage() {
       <PageHeader
         eyebrow="ENGAGEMENTS"
         title="Start with one bounded problem."
-        sub="We work with two kinds of buyer: the operators who run freight networks, and the investors who buy them. Both hire us for the same thing, a defensible number on what is leaking and what it is worth to fix."
+        sub="We work with two kinds of buyer: the operators who run supply chains, from lane networks to fulfillment floors, and the investors who buy them. Both hire us for the same thing, a defensible number on what is leaking and what it is worth to fix."
       />
 
       {tracks.map((t, ti) => (

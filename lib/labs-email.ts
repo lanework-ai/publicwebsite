@@ -13,7 +13,7 @@ import { prisma } from '@/lib/prisma'
 const resend = new Resend(process.env.RESEND_API_KEY)
 const FROM_EMAIL = process.env.EMAIL_FROM || 'onboarding@resend.dev'
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || ''
-const REPLY_TO = process.env.SALES_REPLY_TO || 'support@rapidrelay.ai'
+const REPLY_TO = process.env.SALES_REPLY_TO || 'hello@lanework.ai'
 // Lanework emails always link to the Lanework site. Default straight to
 // lanework.ai (override via LANEWORK_SITE_URL) — identical to the copy in the
 // Rapid Relay app, whose cron also sends Lanework drips against the shared DB.
@@ -219,7 +219,7 @@ export async function sendLaneworkNewsletter(email: string) {
 /** Named sender for the final personal note (shared with the RR sequence's sender). */
 const PERSONAL = {
   name: 'Ahmed',
-  email: process.env.PERSONAL_SENDER_EMAIL || 'aali@rapidrelay.ai',
+  email: process.env.PERSONAL_SENDER_EMAIL || 'ahmed@lanework.ai',
 }
 
 interface LaneworkDripContext {
@@ -374,4 +374,69 @@ export async function sendLaneworkBlogNewsletter(postData: {
     }
   }
   return { total: subscribers.length, sent, failed, errors }
+}
+
+/* ---- Contact form: internal admin notification ---------------------------- */
+/**
+ * Notifies the team when someone submits the contact form. Internal only, so it
+ * uses the plain internal footer rather than the marketing one, and carries no
+ * unsubscribe link. Moved here from the old Rapid Relay email module so the app
+ * has a single, correctly branded set of templates.
+ */
+export async function sendContactNotification(contact: {
+  name: string
+  email: string
+  company: string
+  fleetSize: string
+  message?: string | null
+  intent?: string | null
+}) {
+  if (!ADMIN_EMAIL) {
+    console.warn('[labs-email] ADMIN_EMAIL not set; skipping contact notification')
+    return { skipped: true }
+  }
+
+  const row = (label: string, value: string) => `
+    <tr>
+      <td style="padding:7px 0;font-family:${FONT};font-size:13px;color:#6b7280;width:120px;vertical-align:top;">${esc(label)}</td>
+      <td style="padding:7px 0;font-family:${FONT};font-size:14px;color:#111827;">${esc(value)}</td>
+    </tr>`
+
+  const body = `
+    <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
+      ${row('Name', contact.name)}
+      ${row('Email', contact.email)}
+      ${row('Company', contact.company)}
+      ${contact.intent ? row('Interested in', contact.intent) : ''}
+      ${row('Fleet size', contact.fleetSize)}
+    </table>
+    ${
+      contact.message
+        ? `<p style="font-family:${FONT};font-size:14px;line-height:1.65;color:#374151;margin:20px 0 0;white-space:pre-wrap;">${esc(contact.message)}</p>`
+        : `<p style="font-family:${FONT};font-size:13px;color:#9ca3af;margin:20px 0 0;">No message provided.</p>`
+    }`
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: `Lanework <${FROM_EMAIL}>`,
+      to: ADMIN_EMAIL,
+      replyTo: contact.email,
+      subject: `New enquiry from ${contact.company}`,
+      html: shell({
+        title: 'New enquiry',
+        preheader: `${contact.name} at ${contact.company}`,
+        heading: 'New enquiry',
+        body,
+        footerVariant: 'internal',
+      }),
+    })
+    if (error) {
+      console.error('[labs-email] contact notification failed', error)
+      return { error }
+    }
+    return { data }
+  } catch (err) {
+    console.error('[labs-email] contact notification threw', err)
+    return { error: err }
+  }
 }

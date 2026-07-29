@@ -16,7 +16,6 @@
  */
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { sendDripEmail } from '@/lib/email'
 import { sendLaneworkDripEmail } from '@/lib/labs-email'
 
 // Days between drip steps. Index = step we're about to send.
@@ -85,24 +84,12 @@ export async function GET(request: NextRequest) {
     // every GatedContentLead matching the email.
     const upcomingStep = (lead.dripStep + 1) as 1 | 2 | 3
 
-    // Each brand has its own sequence: Lanework leads get the research-voiced
-    // nurture; everything else keeps the Rapid Relay product nurture.
-    const send =
-      lead.brand === 'lanework'
-        ? await sendLaneworkDripEmail(upcomingStep, {
-            to: lead.email,
-            name: lead.name,
-            contentTitle: lead.contentTitle,
-            contentSlug: lead.contentSlug,
-          })
-        : await sendDripEmail(upcomingStep, {
-            to: lead.email,
-            name: lead.name,
-            company: lead.company,
-            contentType: lead.contentType as 'whitepaper' | 'benchmark',
-            contentTitle: lead.contentTitle,
-            contentSlug: lead.contentSlug,
-          })
+    const send = await sendLaneworkDripEmail(upcomingStep, {
+      to: lead.email,
+      name: lead.name,
+      contentTitle: lead.contentTitle,
+      contentSlug: lead.contentSlug,
+    })
 
     if (!send.success) {
       // Don't advance step on failure; the next tick will retry.

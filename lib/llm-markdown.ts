@@ -6,7 +6,7 @@
  */
 import { portableTextToMarkdown } from './portable-text-to-markdown'
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rapidrelay.ai'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://lanework.ai'
 
 interface Voice {
   quote: string

@@ -12,7 +12,7 @@ const why = [
   },
   {
     t: 'Real stakes',
-    d: 'Freight leaks value at every layer: empty miles, avoidable turnover, mispriced capacity. Fixing it helps drivers, carriers, and the people freight serves.',
+    d: 'Supply chains leak value at every layer: idle capacity, avoidable turnover, demand mispriced against what the operation can do. Fixing it helps the people doing the work and everyone the goods reach.',
   },
   {
     t: 'Healthy pace',
@@ -31,8 +31,8 @@ export default function LabsCareers() {
     <>
       <PageHeader
         eyebrow="CAREERS"
-        title="Reimagine freight from the evidence up."
-        sub="Lanework is a lean, forward-deployed team of logistics operators, engineers, and researchers. You will sit inside real freight operations, not behind a backlog. Early roles are opening in engineering, operations, and research."
+        title="Rebuild the supply chain from the evidence up."
+        sub="Lanework is a lean, forward-deployed team of operators, engineers, and researchers. You will sit inside real operations, from lane networks to fulfillment floors, not behind a backlog. Early roles are opening in engineering, operations, and research."
       />
 
       <section className="ll-section" style={{ paddingBottom: 8 }}>

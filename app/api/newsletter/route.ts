@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
 import { rateLimit, validateHoneypot } from '@/lib/rateLimit'
-import { sendNewsletterNotifications } from '@/lib/email'
 import { sendLaneworkNewsletter } from '@/lib/labs-email'
 import { syncNewsletterToSanity } from '@/lib/sanity-write-client'
 
@@ -83,7 +82,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
     // Validate request body
     const validatedData = newsletterSchema.parse(body) as NewsletterFormData
 
-    // Which brand the subscriber signed up under (drives welcome + broadcast templates).
+    // Retained on the row for reporting. This app only serves Lanework.
     const brand =
       typeof body === 'object' && body !== null && (body as { brand?: string }).brand === 'lanework'
         ? 'lanework'
@@ -97,17 +96,10 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
       },
     })
 
-    // Send email notifications (non-blocking). Lanework signups get the Lanework
-    // welcome; everything else keeps the Rapid Relay flow.
-    if (brand === 'lanework') {
-      sendLaneworkNewsletter(validatedData.email).catch((error) => {
-        console.error('Failed to send Lanework newsletter emails:', error)
-      })
-    } else {
-      sendNewsletterNotifications(validatedData.email).catch((error) => {
-        console.error('Failed to send newsletter notification emails:', error)
-      })
-    }
+    // Send the welcome + admin notification (non-blocking).
+    sendLaneworkNewsletter(validatedData.email).catch((error) => {
+      console.error('Failed to send newsletter emails:', error)
+    })
 
     // Sync to Sanity (awaited to ensure it completes before serverless function exits)
     try {

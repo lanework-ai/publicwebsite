@@ -27,8 +27,9 @@ export async function GET() {
   const lines: string[] = []
   lines.push('# Lanework')
   lines.push('')
-  lines.push('> Lanework is an applied AI research lab for logistics. We turn the operational')
-  lines.push('> data the freight industry already holds into independent research, and into')
+  lines.push('> Lanework is an applied AI research lab for logistics and supply chain, covering')
+  lines.push('> freight, fulfillment, and warehousing. We turn the operational data operators')
+  lines.push('> already hold into independent research, and into')
   lines.push('> software when it proves out.')
   lines.push('')
   lines.push(`Canonical site: ${base}`)

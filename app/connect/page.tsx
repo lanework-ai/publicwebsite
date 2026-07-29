@@ -3,8 +3,9 @@
 import { useState } from 'react'
 
 const intents = [
-  { value: 'snapshot', label: 'Network readiness snapshot (free)' },
+  { value: 'snapshot', label: 'Readiness snapshot (free)' },
   { value: 'assessment', label: 'Network assessment' },
+  { value: 'fulfillment', label: 'Fulfillment performance diagnostic' },
   { value: 'diligence', label: 'Operational due diligence (investors)' },
   { value: 'advisory', label: 'Fractional analytics advisory' },
   { value: 'platform', label: 'Deploy a proof (Rapid Relay / Rapid Load)' },
@@ -116,7 +117,7 @@ export default function LabsConnect() {
           </div>
           {CARRIER_INTENTS.has(form.intent) && (
             <div>
-              <label style={labelStyle} htmlFor="ll-fleet">Fleet size</label>
+              <label style={labelStyle} htmlFor="ll-fleet">Fleet size, if you run trucks</label>
               <select id="ll-fleet" style={inputStyle} value={form.fleetSize} onChange={(e) => set('fleetSize', e.target.value)}>
                 {fleetSizes.map((s) => <option key={s} value={s}>{s} trucks</option>)}
               </select>

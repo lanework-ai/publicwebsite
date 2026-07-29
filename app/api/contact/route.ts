@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
 import { validateHoneypot } from '@/lib/rateLimit'
 import { hashIp, checkContactAbuse, looksLikeSpam } from '@/lib/spam'
-import { sendContactNotification } from '@/lib/email'
+import { sendContactNotification } from '@/lib/labs-email'
 import { syncContactToSanity } from '@/lib/sanity-write-client'
 
 // Types for request and response

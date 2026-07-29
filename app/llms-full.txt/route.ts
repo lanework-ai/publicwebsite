@@ -31,7 +31,8 @@ export async function GET() {
   const sections: string[] = []
   sections.push('# Lanework — Full Research Corpus')
   sections.push(
-    'Lanework is an applied AI research lab for logistics. This document contains the full public ' +
+    'Lanework is an applied AI research lab for logistics and supply chain, covering freight, ' +
+    'fulfillment, and warehousing. This document contains the full public ' +
       'text of our research on driver retention, asset utilization, and the operational data behind ' +
       'freight P&L performance.'
   )

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { sendBlogNewsletter } from '@/lib/email'
 import { sendLaneworkBlogNewsletter } from '@/lib/labs-email'
 import { rateLimit } from '@/lib/rateLimit'
 import { client as sanityClient } from '@/sanity/lib/client'
@@ -103,8 +102,7 @@ export async function POST(request: NextRequest) {
       console.error('Failed to resolve post categories from Sanity (non-fatal):', err)
     }
 
-    // Send newsletter emails, per brand: Rapid Relay subscribers get the RR
-    // broadcast, Lanework subscribers the Lanework one. Results are combined.
+    // Send the broadcast to Lanework subscribers.
     console.log(`Sending newsletter for post: ${body.title}`)
     const postPayload = {
       title: body.title,
@@ -114,19 +112,7 @@ export async function POST(request: NextRequest) {
       categories,
       mainImageUrl: body.mainImageUrl,
     }
-    const [rr, lanework] = await Promise.all([
-      sendBlogNewsletter(postPayload),
-      sendLaneworkBlogNewsletter(postPayload).catch((error) => {
-        console.error('Lanework broadcast failed (non-fatal):', error)
-        return { total: 0, sent: 0, failed: 0, errors: [String(error)] }
-      }),
-    ])
-    const results = {
-      total: rr.total + lanework.total,
-      sent: rr.sent + lanework.sent,
-      failed: rr.failed + lanework.failed,
-      errors: [...rr.errors, ...lanework.errors],
-    }
+    const results = await sendLaneworkBlogNewsletter(postPayload)
 
     // Update send record with results
     await prisma.newsletterSend.update({

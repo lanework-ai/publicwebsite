@@ -38,28 +38,38 @@ export const tracks: Track[] = [
   {
     id: 'operators',
     label: 'Operators',
-    audience: 'Carriers, fleets, 3PLs, brokers, and the shippers who rely on them.',
+    audience:
+      'Carriers, fleets, 3PLs, brokers, shippers, and the fulfillment and warehouse teams that move the same goods.',
     premise:
-      'You own the margin line. Empty miles and driver turnover are the two biggest leaks, and both are decided by how the network is designed rather than by how hard the team works.',
+      'You own the margin line. Idle capacity and frontline turnover are the two biggest leaks, whether the asset is a trailer or a dock door, and both are decided by how the operation is designed rather than by how hard the team works.',
     engagements: [
       {
-        id: 'network-readiness-snapshot',
-        name: 'Network readiness snapshot',
+        id: 'readiness-snapshot',
+        name: 'Readiness snapshot',
         persona: 'VP Operations, Director of Logistics, or owner.',
         job: 'Show me whether there is anything here worth chasing, before I commit budget.',
         deliverable:
-          'A short read on where your network is likely leaking, which lanes look restructurable, and what a full assessment would go after. Enough to decide whether to go further.',
+          'A short read on where your operation is likely leaking, what looks restructurable, and what a full assessment would go after. Enough to decide whether to go further.',
         duration: 'Free, about a week',
         free: true,
       },
       {
         id: 'network-assessment',
         name: 'Network assessment',
-        persona: 'VP Operations or VP Network Strategy at a for-hire carrier or 3PL.',
+        persona: 'VP Operations or VP Network Strategy at a carrier, 3PL, or shipper.',
         job: 'Find the margin I am losing to empty miles and turnover, and tell me exactly which lanes to restructure.',
         deliverable:
-          'Every lane ranked by empty-mile rate and fully loaded cost, the lanes with the bilateral density to support closed-loop corridors, relay points positioned against return-origin density, driver domiciles aligned, and a lane-level view of which routes are manufacturing driver exits. Delivered as a prioritised roadmap with the recovery modelled in dollars.',
+          'Every lane ranked by empty-mile rate and fully loaded cost, the lanes with the bilateral density to support closed-loop corridors, relay points positioned against return-origin density, domiciles aligned, and a lane-level view of which routes are manufacturing driver exits. Delivered as a prioritised roadmap with the recovery modelled in dollars.',
         duration: 'Scoped to fleet size, typically 3 to 6 weeks',
+      },
+      {
+        id: 'fulfillment-diagnostic',
+        name: 'Fulfillment performance diagnostic',
+        persona: 'VP Fulfillment or Director of Operations at an e-commerce brand or 3PL.',
+        job: 'Tell me why throughput caps out where it does, and what it costs me.',
+        deliverable:
+          'Where the constraint actually sits across receiving, pick, pack, and ship, what each hour of it costs, how much of the gap is labour churn rather than process, and the sequence of changes that moves the number. Built from the data your WMS already records.',
+        duration: 'Typically 2 to 4 weeks',
       },
       {
         id: 'fractional-advisory',
@@ -67,7 +77,7 @@ export const tracks: Track[] = [
         persona: 'Operators who want the analysis to keep running after the assessment.',
         job: 'Keep watching the numbers with me and tell me when something moves.',
         deliverable:
-          'Ongoing corridor and retention monitoring, benchmarking against the operators we measure, and a standing line to the team that ran your assessment.',
+          'Ongoing performance and retention monitoring, benchmarking against the operators we measure, and a standing line to the team that ran your assessment.',
         duration: 'Monthly, rolling',
       },
     ],
@@ -103,13 +113,13 @@ export const tracks: Track[] = [
 
 /** Lower-priority engagements, listed but not led with. */
 export const alsoAvailable = [
-  { name: 'Fulfillment performance diagnostic', note: 'For e-commerce and 3PL fulfillment operations.' },
   { name: 'Benchmarking and market reports', note: 'Segment benchmarks on retention and utilization.' },
+  { name: 'Data readiness review', note: 'What your systems already capture, and what is missing to answer the question.' },
 ]
 
 /** The three we lead with, surfaced on the homepage. */
 export const leadEngagements = [
-  { id: 'network-readiness-snapshot', track: 'operators' as const },
+  { id: 'readiness-snapshot', track: 'operators' as const },
   { id: 'network-assessment', track: 'operators' as const },
   { id: 'operational-diligence', track: 'investors' as const },
 ]

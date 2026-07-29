@@ -73,8 +73,8 @@ export default async function LabsResearch() {
     <>
       <PageHeader
         eyebrow="RESEARCH"
-        title="The data behind how freight performs."
-        sub="White papers and recurring benchmarks on driver retention, carrier performance, asset utilization, and the operational decisions that define fleet results."
+        title="The data behind how supply chains perform."
+        sub="White papers and recurring benchmarks on frontline retention, network and facility performance, asset utilization, and the operational decisions that define the result. Freight first, because that is where we started."
       />
 
       <section className="ll-section" style={{ paddingBottom: 52 }}>

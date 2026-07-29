@@ -17,14 +17,14 @@ const stats = [
 ]
 
 const howWeWork = [
-  { step: 'Study', desc: 'We run independent research on the operational data the freight industry already holds, and publish what we find.' },
+  { step: 'Study', desc: 'We run independent research on the operational data operators already hold, and publish what we find.' },
   { step: 'Embed', desc: 'We forward-deploy a small team into your operation. We work your real data alongside your planners and dispatchers, and improve the process on the ground.' },
   { step: 'Build', desc: 'Not every fix needs software. When one does, we build it and stand behind it. Research is the moat; the product is what remains.' },
 ]
 
 const workWithUs = [
-  { t: 'Network readiness snapshot', d: 'Free. A short read on where your network is likely leaking and whether the rest is worth doing.' },
-  { t: 'Network assessment', d: 'Every lane ranked by empty miles and turnover risk, with the recovery modelled in dollars.' },
+  { t: 'Readiness snapshot', d: 'Free. A short read on where your operation is likely leaking and whether the rest is worth doing.' },
+  { t: 'Network or fulfillment assessment', d: 'Lanes ranked by empty miles, or throughput by constraint, with the recovery modelled in dollars.' },
   { t: 'Operational due diligence', d: 'For investors: a retention- and deadhead-adjusted view of EBITDA, in time for your deal.' },
 ]
 
@@ -53,7 +53,7 @@ export default async function LabsHome() {
           We deploy into your operation and make it run better.
         </h1>
         <p style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 560, margin: '0 0 32px' }}>
-          Lanework is a research lab for logistics. We send in a small team, dig into the data you
+          Lanework is a research lab for logistics and supply chain. We send in a small team, dig into the data you
           already have, and fix what it turns up. Sometimes the answer is a better process, sometimes
           it&rsquo;s software we build.
         </p>
@@ -76,8 +76,9 @@ export default async function LabsHome() {
       <section className="ll-section" style={{ paddingTop: 52, paddingBottom: 52 }}>
         <SectionHeader index="01" label="What we study" style={{ marginBottom: 26 }} />
         <p style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--lw-fg-2)', maxWidth: 580, margin: '0 0 28px' }}>
-          Logistics is fragmented across systems, markets, and silos. We study it as one stack, six
-          domains deep, and follow the evidence wherever the leverage is.
+          Supply chains are fragmented across systems, markets, and silos. The same failures recur
+          whether the asset is a truck or a dock door. We study it as one stack, six problems deep,
+          and follow the evidence wherever the leverage is.
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 1, background: 'var(--lw-line)', border: '1px solid var(--lw-line)', borderRadius: 8, overflow: 'hidden' }}>
           {domains.map((d) => (
