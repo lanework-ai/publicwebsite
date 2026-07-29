@@ -31,6 +31,9 @@ const nextConfig: NextConfig = {
       { source: '/products/rapid-relay', destination: '/field-work/rapid-relay-orchestration', permanent: true },
       { source: '/case-studies', destination: '/field-work', permanent: true },
       { source: '/case-studies/:slug', destination: '/field-work/:slug', permanent: true },
+      // Who we serve was absorbed into the engagements page, which now carries
+      // both the buyer tracks and what each can hire us for.
+      { source: '/who-we-serve', destination: '/engagements', permanent: true },
     ]
   },
 

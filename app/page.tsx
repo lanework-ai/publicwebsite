@@ -23,9 +23,9 @@ const howWeWork = [
 ]
 
 const workWithUs = [
-  { t: 'Run an embedded study', d: 'We forward-deploy on one bounded problem, work your real data alongside your operators, and show the result.' },
-  { t: 'Deploy a proof', d: 'Put Rapid Relay or Rapid Load to work on your lanes, with our team embedded alongside yours.' },
-  { t: 'Careers', d: 'Forward-deployed work: engineers and researchers who sit with operators, not behind a backlog.' },
+  { t: 'Network readiness snapshot', d: 'Free. A short read on where your network is likely leaking and whether the rest is worth doing.' },
+  { t: 'Network assessment', d: 'Every lane ranked by empty miles and turnover risk, with the recovery modelled in dollars.' },
+  { t: 'Operational due diligence', d: 'For investors: a retention- and deadhead-adjusted view of EBITDA, in time for your deal.' },
 ]
 
 interface TeaserItem {
@@ -143,13 +143,13 @@ export default async function LabsHome() {
       {/* Work with us band — study-first */}
       <section style={{ borderTop: '1px solid var(--lw-line)' }}>
         <div className="ll-section" style={{ paddingTop: 56, paddingBottom: 56 }}>
-          <SectionHeader index="05" label="Work with us" style={{ marginBottom: 26 }} />
-          <h2 style={{ fontSize: 'var(--text-h2)', lineHeight: 1.15, fontWeight: 500, letterSpacing: 'var(--tracking-snug)', margin: '0 0 16px', maxWidth: 560 }}>
-            Start with a study, not a contract.
+          <SectionHeader index="05" label="What you can hire us for" style={{ marginBottom: 26 }} />
+          <h2 style={{ fontSize: 'var(--text-h2)', lineHeight: 1.15, fontWeight: 500, letterSpacing: 'var(--tracking-snug)', margin: '0 0 16px', maxWidth: 620 }}>
+            Everyone else optimizes inside the architecture that creates the problem.
           </h2>
-          <p style={{ fontSize: 15, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 520, margin: '0 0 28px' }}>
-            Bring us a question or your data. We embed a small team on one bounded problem, improve
-            the process, and share what we find. We build software only when the evidence earns it.
+          <p style={{ fontSize: 15, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 560, margin: '0 0 28px' }}>
+            We redesign the architecture, and price what that is worth. Start with one bounded problem:
+            the snapshot is free and tells you whether the rest is worth doing.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16, marginBottom: 30 }}>
             {workWithUs.map((c) => (
@@ -159,7 +159,10 @@ export default async function LabsHome() {
               </Card>
             ))}
           </div>
-          <Button as={Link} href={lw('/connect')} arrow>Get in touch</Button>
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            <Button as={Link} href={lw('/engagements')} arrow>See all engagements</Button>
+            <Button as={Link} href={lw('/connect')} variant="outline">Request a snapshot</Button>
+          </div>
         </div>
       </section>
     </>

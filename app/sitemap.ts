@@ -42,7 +42,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: baseUrl, changeFrequency: 'weekly', priority: 1 },
     { url: `${baseUrl}/research`, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${baseUrl}/field-work`, changeFrequency: 'monthly', priority: 0.9 },
-    { url: `${baseUrl}/who-we-serve`, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${baseUrl}/engagements`, changeFrequency: 'monthly', priority: 0.9 },
     { url: `${baseUrl}/about`, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${baseUrl}/blog`, changeFrequency: 'weekly', priority: 0.7 },
     { url: `${baseUrl}/careers`, changeFrequency: 'yearly', priority: 0.6 },

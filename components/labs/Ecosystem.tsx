@@ -125,9 +125,11 @@ export default function Ecosystem({
 
   return (
     <section className="ll-section" style={{ paddingTop: 44, paddingBottom: 8 }}>
-      <SectionHeader index={index} label="Runs with the stack you already have" style={{ marginBottom: 14 }} />
-      <p style={{ fontSize: 15, color: 'var(--lw-muted)', lineHeight: 1.6, maxWidth: 580, margin: '0 0 24px' }}>
-        Rapid Relay plugs into the systems carriers already run. No rip and replace.
+      <SectionHeader index={index} label="We sit above the stack you already run" style={{ marginBottom: 14 }} />
+      <p style={{ fontSize: 15, color: 'var(--lw-muted)', lineHeight: 1.6, maxWidth: 620, margin: '0 0 24px' }}>
+        Your TMS and your telematics tell you what happened. We tell you what to do about it, and what
+        it is worth. That means we plug into the systems you already run rather than replacing them,
+        and we work from data you already own.
       </p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 1, background: 'var(--lw-line)', border: '1px solid var(--lw-line)', borderRadius: 8, overflow: 'hidden' }}>
         {CATEGORIES.map((c) => (

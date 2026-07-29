@@ -15,30 +15,30 @@ const pipeline: { window: string; progress: number; titles: string[] }[] = [
     window: 'August 2026',
     progress: 0.75,
     titles: [
+      'The Hidden Liability in Every Freight Acquisition',
       'Carrier Retention Risk Scorecards, Q2 2026',
-      'The Driver Shortage Will Not Be Solved by Hiring More Drivers',
     ],
   },
   {
     window: 'September 2026',
-    progress: 0.5,
+    progress: 0.55,
     titles: [
+      'The Driver Shortage Will Not Be Solved by Hiring More Drivers',
       'Why Most Relay Attempts Fail at the Coordination Layer',
-      'The Real Cost of Driver Turnover',
     ],
   },
   {
     window: 'October 2026',
     progress: 0.3,
     titles: [
+      'The Real Cost of Driver Turnover',
       'The Rate Recovery Will Punish Carriers Without Relay Infrastructure',
-      'Why Most WMS Software Fails Frontline Ops',
     ],
   },
   {
     window: 'November 2026',
     progress: 0.15,
-    titles: ['The Last Mile Math', 'The PE Guide to Logistics Due Diligence'],
+    titles: ['Why Most WMS Software Fails Frontline Ops', 'The Last Mile Math'],
   },
 ]
 

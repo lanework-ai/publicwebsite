@@ -21,7 +21,7 @@ const cols: { title: string; links: { href: string; label: string }[] }[] = [
     title: 'Company',
     links: [
       { href: '/about', label: 'About' },
-      { href: '/who-we-serve', label: 'Who we serve' },
+      { href: '/engagements', label: 'Engagements' },
       { href: '/careers', label: 'Careers' },
       { href: '/connect', label: 'Work with us' },
       { href: '/privacy-policy', label: 'Privacy' },

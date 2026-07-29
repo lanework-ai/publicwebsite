@@ -3,7 +3,10 @@
 import { useState } from 'react'
 
 const intents = [
-  { value: 'study', label: 'Embed a team on one problem (applied study)' },
+  { value: 'snapshot', label: 'Network readiness snapshot (free)' },
+  { value: 'assessment', label: 'Network assessment' },
+  { value: 'diligence', label: 'Operational due diligence (investors)' },
+  { value: 'advisory', label: 'Fractional analytics advisory' },
   { value: 'platform', label: 'Deploy a proof (Rapid Relay / Rapid Load)' },
   { value: 'careers', label: 'Join the team' },
   { value: 'other', label: 'Something else' },
@@ -11,8 +14,11 @@ const intents = [
 
 const fleetSizes = ['100-250', '250-500', '500-1000', '1000+']
 
+/** Intents where the fleet-size question is worth asking. */
+const CARRIER_INTENTS = new Set(['snapshot', 'assessment', 'advisory', 'platform'])
+
 export default function LabsConnect() {
-  const [form, setForm] = useState({ name: '', email: '', company: '', intent: 'study', fleetSize: '100-250', message: '' })
+  const [form, setForm] = useState({ name: '', email: '', company: '', intent: 'snapshot', fleetSize: '100-250', message: '' })
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [honeypot, setHoneypot] = useState('')
 
@@ -22,8 +28,10 @@ export default function LabsConnect() {
     e.preventDefault()
     setStatus('sending')
     const intentLabel = intents.find((i) => i.value === form.intent)?.label ?? form.intent
-    const isPlatform = form.intent === 'platform'
-    const fleetLine = isPlatform ? `\nFleet size: ${form.fleetSize}` : ''
+    // Fleet size matters for every carrier-side engagement, not just a platform
+    // deployment. It is meaningless for investor diligence and careers.
+    const needsFleet = CARRIER_INTENTS.has(form.intent)
+    const fleetLine = needsFleet ? `\nFleet size: ${form.fleetSize}` : ''
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
@@ -106,7 +114,7 @@ export default function LabsConnect() {
               {intents.map((i) => <option key={i.value} value={i.value}>{i.label}</option>)}
             </select>
           </div>
-          {form.intent === 'platform' && (
+          {CARRIER_INTENTS.has(form.intent) && (
             <div>
               <label style={labelStyle} htmlFor="ll-fleet">Fleet size</label>
               <select id="ll-fleet" style={inputStyle} value={form.fleetSize} onChange={(e) => set('fleetSize', e.target.value)}>

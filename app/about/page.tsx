@@ -11,14 +11,14 @@ const pillars = [
 const howWeWork = [
   { step: 'Study', d: 'We run independent research on the operational data the freight industry already holds, and publish what we find. The research stands on its own.' },
   { step: 'Embed', d: 'We forward-deploy a small team into the operation. We work your real data next to your planners and drivers, and improve the process in place. Evidence over decks.' },
-  { step: 'Build', d: 'Not every improvement needs software. When one does, it becomes a product we stand behind. We are not consultants; the research and the working system are the deliverable, never a slide deck.' },
+  { step: 'Build', d: 'Not every improvement needs software. When one does, it becomes a product we stand behind. The research and the working system are the deliverable, never a slide deck.' },
 ]
 
 const values = [
   { t: 'Independent', d: 'The research stands on its own and we publish it openly. Findings come before any product we might sell.' },
   { t: 'Evidence-led', d: 'We combine logistics expertise with data science to understand the problem before we build anything.' },
   { t: 'Forward-deployed', d: 'We work from inside the operation, not above it. Our team sits with freight planners and drivers, and every claim is tested against a real network.' },
-  { t: 'Partnership, not consulting', d: 'You start with a bounded, embedded study, not a statement of work. We improve the process alongside you and the work is ours to stand behind.' },
+  { t: 'Operators, not theorists', d: 'We have run these networks ourselves. You start with a bounded, embedded study, not a statement of work, and what you get back is a decision you can act on rather than a deck.' },
 ]
 
 export default function AboutPage() {
@@ -89,9 +89,31 @@ export default function AboutPage() {
         </p>
       </section>
 
+      {/* Why us */}
+      <section className="ll-section" style={{ paddingTop: 48, paddingBottom: 8 }}>
+        <SectionLabel index="04">Why operators call us</SectionLabel>
+        <p style={{ fontSize: 'clamp(18px, 2.2vw, 22px)', lineHeight: 1.45, fontWeight: 500, letterSpacing: '-0.01em', color: 'var(--lw-fg)', maxWidth: 680, margin: '0 0 26px' }}>
+          We have run these networks. Anyone can analyze one from the outside; we have carried the
+          pager for fulfillment and freight operations at national scale, and it shows in what we
+          choose to measure.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
+          {[
+            { t: 'Every claim resolves to a dollar', d: 'We do not sell vague efficiency. We quantify the liability and the recovery in numbers a CFO or an investment committee can act on, built from benchmarks anyone can audit.' },
+            { t: 'We use data you already own', d: 'The answers are sitting in your TMS, ELD, and HR systems. Nothing to install, nothing to rip out, and no year-long integration before the first finding.' },
+            { t: 'We speak your language', d: 'Deadhead, HOS, length of haul, lane density. We arrive as peers who have run the operation, not outsiders learning it on your time.' },
+          ].map((v) => (
+            <LabsCard key={v.t}>
+              <div style={{ fontWeight: 500, fontSize: 15, marginBottom: 8 }}>{v.t}</div>
+              <p style={{ fontSize: 12.5, color: 'var(--lw-faint)', lineHeight: 1.6, margin: 0 }}>{v.d}</p>
+            </LabsCard>
+          ))}
+        </div>
+      </section>
+
       {/* Values */}
       <section className="ll-section" style={{ paddingTop: 48, paddingBottom: 52 }}>
-        <SectionLabel index="04">Our values</SectionLabel>
+        <SectionLabel index="05">Our values</SectionLabel>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
           {values.map((v) => (
             <LabsCard key={v.t}>
