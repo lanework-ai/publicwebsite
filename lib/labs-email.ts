@@ -393,7 +393,7 @@ export async function sendContactNotification(contact: {
   name: string
   email: string
   company: string
-  fleetSize: string
+  fleetSize?: string | null
   message?: string | null
   intent?: string | null
 }) {
@@ -414,7 +414,7 @@ export async function sendContactNotification(contact: {
       ${row('Email', contact.email)}
       ${row('Company', contact.company)}
       ${contact.intent ? row('Interested in', contact.intent) : ''}
-      ${row('Fleet size', contact.fleetSize)}
+      ${contact.fleetSize ? row('Fleet size', contact.fleetSize) : ''}
     </table>
     ${
       contact.message

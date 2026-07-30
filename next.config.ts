@@ -34,6 +34,13 @@ const nextConfig: NextConfig = {
       // Who we serve was absorbed into the engagements page, which now carries
       // both the buyer tracks and what each can hire us for.
       { source: '/who-we-serve', destination: '/engagements', permanent: true },
+      // Last rapid-relay-* content slug, renamed in Sanity during the rebrand.
+      // The same doc is served by rapidrelay.ai, which carries a matching redirect.
+      {
+        source: '/blog/rapid-relay-take-on-logistics-investments-and-developments',
+        destination: '/blog/lanework-take-on-logistics-investments-and-developments',
+        permanent: true,
+      },
     ]
   },
 

@@ -11,7 +11,7 @@ interface ContactFormData {
   name: string
   email: string
   company: string
-  fleetSize: string
+  fleetSize?: string | null
   message?: string
   _honeypot?: string
   formLoadedAt?: number
@@ -55,15 +55,19 @@ const contactSchema = z.object({
     .min(2, 'Company name must be at least 2 characters')
     .max(200, 'Company name must not exceed 200 characters')
     .trim(),
+  // Optional: only carrier-side intents ask for a truck count. An investor,
+  // fulfillment, or careers enquiry omits it, and a band is still validated
+  // against the allowlist whenever one is sent.
   fleetSize: z
     .string()
-    .min(1, 'Fleet size is required')
     .refine(
       // Keep in sync with fleetSizes in app/connect/page.tsx. Lanework engages
       // fleets from 20 trucks up, so the smallest band starts there.
       (value) => ['20-100', '100-250', '250-500', '500-1000', '1000+'].includes(value),
       { message: 'Invalid fleet size selection' }
-    ),
+    )
+    .optional()
+    .nullable(),
   message: z.string().max(500, 'Message must not exceed 500 characters').optional().nullable(),
   _honeypot: z.string().optional(),
 })

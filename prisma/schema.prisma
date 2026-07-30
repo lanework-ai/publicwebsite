@@ -17,7 +17,9 @@ model Contact {
   name      String
   email     String
   company   String
-  fleetSize String
+  // Only asked for on carrier-side intents; null for investor diligence, careers,
+  // and fulfillment enquiries, where a truck count means nothing.
+  fleetSize String?
   message   String?
   ipHash    String?
   flagged   Boolean  @default(false)

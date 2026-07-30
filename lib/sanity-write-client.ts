@@ -15,7 +15,7 @@ export interface ContactSyncData {
   name: string
   email: string
   company: string
-  fleetSize: string
+  fleetSize?: string | null
   message?: string | null
   submittedAt: string
 }

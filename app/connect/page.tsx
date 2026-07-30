@@ -37,13 +37,14 @@ export default function LabsConnect() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          // fleetSize is required by the contact API and is rendered as its own row
-          // in the admin notification, so it is deliberately NOT repeated in the
-          // message body. Only asked for on carrier-side intents (CARRIER_INTENTS).
+          // fleetSize is sent only when the field was actually shown, so an investor,
+          // fulfillment, or careers enquiry records no truck count instead of a
+          // misleading default. It renders as its own row in the admin notification,
+          // so it is deliberately not repeated in the message body either.
           name: form.name,
           email: form.email,
           company: form.company,
-          fleetSize: form.fleetSize,
+          ...(CARRIER_INTENTS.has(form.intent) ? { fleetSize: form.fleetSize } : {}),
           message: `Intent: ${intentLabel}\n\n${form.message || '(no message)'}`,
           _honeypot: honeypot,
           formLoadedAt,
