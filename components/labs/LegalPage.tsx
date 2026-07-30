@@ -1,5 +1,6 @@
 /** Shared Lanework legal document renderer (privacy, terms). */
 import Link from 'next/link'
+import { bindWidow } from '@/lib/labs/typography'
 
 export type LegalBlock = { p: string; link?: { href: string; label: string } } | { ul: string[] }
 export type LegalSection = { heading: string; blocks: LegalBlock[] }
@@ -35,12 +36,14 @@ export function LegalPage({
       <div style={{ display: 'grid', gap: 36 }}>
         {sections.map((s, i) => (
           <div key={i}>
-            <h2 style={{ fontSize: 21, fontWeight: 500, letterSpacing: '-0.01em', color: 'var(--lw-fg)', margin: '0 0 12px' }}>{s.heading}</h2>
+            <h2 style={{ fontSize: 21, fontWeight: 500, letterSpacing: '-0.01em', color: 'var(--lw-fg)', margin: '0 0 12px' }}>{bindWidow(s.heading)}</h2>
             <div style={{ display: 'grid', gap: 12 }}>
               {s.blocks.map((b, j) =>
                 'p' in b ? (
                   <p key={j} style={{ fontSize: 17, lineHeight: 1.7, color: 'var(--lw-fg-2)', margin: 0 }}>
-                    {b.p}
+                    {/* Only bind when the paragraph ends here. Where a link follows, the
+                        link text is the real ending and binding the prose would be wrong. */}
+                    {b.link ? b.p : bindWidow(b.p)}
                     {b.link && (
                       <>
                         {' '}
@@ -54,7 +57,7 @@ export function LegalPage({
                   <ul key={j} style={{ margin: 0, paddingLeft: 20, display: 'grid', gap: 8 }}>
                     {b.ul.map((it, k) => (
                       <li key={k} style={{ fontSize: 17, lineHeight: 1.6, color: 'var(--lw-fg-2)' }}>
-                        {it}
+                        {bindWidow(it)}
                       </li>
                     ))}
                   </ul>

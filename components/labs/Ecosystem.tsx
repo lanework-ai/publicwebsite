@@ -16,6 +16,7 @@
 import { readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { SectionHeader } from './ds'
+import { bindWidow } from '@/lib/labs/typography'
 
 interface Partner {
   id: string
@@ -172,7 +173,7 @@ export function IntegrationRow({
       <div className="ll-label" style={{ fontSize: 13, marginBottom: 14 }}>{label}</div>
       {note && (
         <p style={{ fontSize: 15, color: 'var(--lw-faint)', lineHeight: 1.6, margin: '0 0 16px', maxWidth: 620 }}>
-          {note}
+          {bindWidow(note)}
         </p>
       )}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
@@ -221,7 +222,7 @@ export default function Ecosystem({
           >
             <div style={{ width: 210, flexShrink: 0 }}>
               <div style={{ fontWeight: 500, fontSize: 16, color: 'var(--lw-fg)' }}>{c.title}</div>
-              <div style={{ fontSize: 14, color: 'var(--lw-faint)', lineHeight: 1.5, marginTop: 3 }}>{c.desc}</div>
+              <div style={{ fontSize: 14, color: 'var(--lw-faint)', lineHeight: 1.5, marginTop: 3 }}>{bindWidow(c.desc)}</div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', flex: 1 }}>
               {c.partners.map((p) => (

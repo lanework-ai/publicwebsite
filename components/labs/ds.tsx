@@ -5,6 +5,7 @@
  * raw inline styles across /labs pages.
  */
 import type { CSSProperties, ElementType, ReactNode } from 'react'
+import { bindWidows } from '@/lib/labs/typography'
 
 type Extra = Record<string, unknown>
 const FONT_MONO = 'var(--font-mono)'
@@ -159,7 +160,10 @@ export function Card({
       }}
       {...rest}
     >
-      {children}
+      {/* Binds the last two words of every string inside the card so a short final
+          word cannot sit alone on its own line. text-wrap: pretty is applied globally
+          but does not reliably catch endings like "on." in a narrow grid column. */}
+      {bindWidows(children)}
     </Tag>
   )
 }
@@ -250,7 +254,7 @@ export function Stat({
       <div style={{ fontFamily: FONT_MONO, fontSize: size, color: 'var(--lw-fg)', letterSpacing: '-0.01em', lineHeight: 1 }}>
         {value}
       </div>
-      <div style={{ fontSize: 15, color: 'var(--lw-faint)', marginTop: 5 }}>{label}</div>
+      <div style={{ fontSize: 15, color: 'var(--lw-faint)', marginTop: 5 }}>{bindWidows(label)}</div>
     </div>
   )
 }
@@ -273,7 +277,7 @@ export function StatCard({
   return (
     <div className={['ll-card', className].filter(Boolean).join(' ')} style={{ border: '1px solid var(--lw-line-2)', borderRadius: 10, padding: 18, ...style }} {...rest}>
       <div style={{ fontFamily: FONT_MONO, fontSize: 30, color: 'var(--lw-fg)' }}>{value}</div>
-      <div style={{ fontSize: 14, color: 'var(--lw-fg-2)', margin: '6px 0 4px', lineHeight: 1.5 }}>{label}</div>
+      <div style={{ fontSize: 14, color: 'var(--lw-fg-2)', margin: '6px 0 4px', lineHeight: 1.5 }}>{bindWidows(label)}</div>
       {source && <div style={{ fontSize: 13, color: 'var(--lw-dim)', lineHeight: 1.5 }}>Source: {source}</div>}
     </div>
   )
@@ -315,8 +319,8 @@ export function DomainRow({
       {index != null && (
         <span style={{ fontFamily: FONT_MONO, fontSize: 14, color: 'var(--lw-muted)', width: 26, flexShrink: 0 }}>{index}</span>
       )}
-      <span style={{ fontWeight: 500, fontSize: 16, width: 180, flexShrink: 0, color: 'var(--lw-fg)' }}>{title}</span>
-      <span style={{ fontSize: 15, color: 'var(--lw-faint)', flex: 1 }}>{description}</span>
+      <span style={{ fontWeight: 500, fontSize: 16, width: 180, flexShrink: 0, color: 'var(--lw-fg)' }}>{bindWidows(title)}</span>
+      <span style={{ fontSize: 15, color: 'var(--lw-faint)', flex: 1 }}>{bindWidows(description)}</span>
     </Tag>
   )
 }
@@ -354,7 +358,7 @@ export function Callout({
           {label}
         </div>
       )}
-      <div style={{ fontSize: 17, lineHeight: 1.6, color: 'var(--lw-fg)' }}>{children}</div>
+      <div style={{ fontSize: 17, lineHeight: 1.6, color: 'var(--lw-fg)' }}>{bindWidows(children)}</div>
     </div>
   )
 }
@@ -422,7 +426,7 @@ export function BulletList({
       {items.map((item, i) => (
         <li key={i} style={{ display: 'flex', gap: 12, fontSize: 17, lineHeight: 1.6, color: 'var(--lw-fg-2)' }}>
           <span aria-hidden="true" style={{ marginTop: 9, width: 5, height: 5, borderRadius: '50%', background: 'var(--lw-accent)', flexShrink: 0 }} />
-          <span>{item}</span>
+          <span>{bindWidows(item)}</span>
         </li>
       ))}
     </ul>
@@ -446,8 +450,8 @@ export function FAQItem({
 } & Extra) {
   return (
     <details open={open} className={className} style={{ border: '1px solid var(--lw-line-2)', borderRadius: 10, padding: '16px 18px', ...style }} {...rest}>
-      <summary style={{ cursor: 'pointer', fontWeight: 500, fontSize: 14.5, color: 'var(--lw-fg)' }}>{question}</summary>
-      <div style={{ fontSize: 15, color: 'var(--lw-faint)', lineHeight: 1.6, margin: '10px 0 0' }}>{children}</div>
+      <summary style={{ cursor: 'pointer', fontWeight: 500, fontSize: 14.5, color: 'var(--lw-fg)' }}>{bindWidows(question)}</summary>
+      <div style={{ fontSize: 15, color: 'var(--lw-faint)', lineHeight: 1.6, margin: '10px 0 0' }}>{bindWidows(children)}</div>
     </details>
   )
 }

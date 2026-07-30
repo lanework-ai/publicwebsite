@@ -6,6 +6,7 @@
 import Link from 'next/link'
 import type { CSSProperties, ReactNode } from 'react'
 import { Button, Card, Eyebrow, SectionHeader } from './ds'
+import { bindWidow } from '@/lib/labs/typography'
 
 export function SectionLabel({ index, children }: { index: string; children: ReactNode }) {
   return <SectionHeader index={index} label={children} style={{ marginBottom: 26 }} />
@@ -27,10 +28,10 @@ export function PageHeader({ eyebrow, title, sub }: { eyebrow: string; title: st
           maxWidth: 720,
         }}
       >
-        {title}
+        {bindWidow(title)}
       </h1>
       {sub && (
-        <p style={{ fontSize: 18, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 600, margin: '20px 0 0' }}>{sub}</p>
+        <p style={{ fontSize: 18, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 600, margin: '20px 0 0' }}>{bindWidow(sub)}</p>
       )}
     </section>
   )
@@ -57,9 +58,9 @@ export function CtaBand({
             maxWidth: 520,
           }}
         >
-          {title}
+          {bindWidow(title)}
         </h2>
-        <p style={{ fontSize: 17, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 500, margin: '0 0 26px' }}>{body}</p>
+        <p style={{ fontSize: 17, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 500, margin: '0 0 26px' }}>{bindWidow(body)}</p>
         <Button as={Link} href="/connect" arrow>
           Get in touch
         </Button>

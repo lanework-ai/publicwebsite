@@ -82,7 +82,9 @@ export default function LabsFooter() {
           gap: 10,
         }}
       >
-        <span style={{ fontSize: 14, color: 'var(--lw-dim)' }}>
+        {/* whiteSpace: nowrap keeps the symbol, year and name together. Without it the
+            line breaks after the © at tablet width, leaving the symbol alone. */}
+        <span style={{ fontSize: 14, color: 'var(--lw-dim)', whiteSpace: 'nowrap' }}>
           © {year} Lanework. All rights reserved.
         </span>
         {/* Names the three things we sell. The previous line, "Applied AI research ·
