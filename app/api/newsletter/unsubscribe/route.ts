@@ -1,6 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
+// Same address replies to Lanework mail land on, so a stuck unsubscribe reaches a
+// human who can action it. Kept in sync with REPLY_TO in lib/labs-email.ts.
+const SUPPORT_EMAIL = process.env.SALES_REPLY_TO || 'hello@lanework.ai'
+
+/**
+ * Lanework-themed standalone page styles. Mirrors the design system used across the
+ * site and the transactional email shell: near-black canvas, off-white text, one
+ * indigo accent, hairline borders, no gradients and no shadows. Values are literal
+ * rather than CSS vars because this HTML is served by an API route, outside the app
+ * shell that defines the tokens.
+ */
 const PAGE_STYLES = `
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -9,46 +20,59 @@ const PAGE_STYLES = `
     justify-content: center;
     min-height: 100vh;
     margin: 0;
-    background: #f9fafb;
+    padding: 24px;
+    background: #08090a;
+    color: #f4f5f6;
   }
   .container {
     text-align: center;
     padding: 40px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    max-width: 500px;
+    background: #0d1016;
+    border: 1px solid #22262e;
+    border-radius: 12px;
+    max-width: 520px;
   }
-  h1 { color: #1a1a2e; margin-bottom: 20px; }
-  p { color: #6b7280; margin-bottom: 16px; line-height: 1.6; }
-  a {
+  .mark {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #868d97;
+    margin-bottom: 20px;
+  }
+  h1 { color: #f4f5f6; font-size: 22px; font-weight: 500; margin: 0 0 16px; }
+  p { color: #868d97; margin: 0 0 14px; line-height: 1.65; font-size: 14px; }
+  a.btn {
     display: inline-block;
-    background: linear-gradient(135deg, #235784 0%, #40a8c4 100%);
-    color: white;
-    padding: 12px 30px;
+    background: #4f6bff;
+    color: #fff;
+    padding: 11px 26px;
     text-decoration: none;
-    border-radius: 8px;
-    margin-top: 16px;
+    border-radius: 6px;
+    margin-top: 18px;
+    font-size: 14px;
   }
+  a.inline { color: #7e95ff; text-decoration: underline; }
 `
 
 function successPage(siteUrl: string, removedFromNewsletter: boolean, dripPaused: number): NextResponse {
   const detail =
     removedFromNewsletter && dripPaused > 0
-      ? `You're unsubscribed from the Rapid Relay newsletter and the ${dripPaused === 1 ? 'gated-content follow-up sequence' : `${dripPaused} gated-content follow-up sequences`} you'd signed up for.`
+      ? `You're unsubscribed from the Lanework newsletter and the ${dripPaused === 1 ? 'research follow-up sequence' : `${dripPaused} research follow-up sequences`} you'd signed up for.`
       : removedFromNewsletter
-        ? `You're unsubscribed from the Rapid Relay newsletter. You will no longer receive newsletter emails.`
+        ? `You're unsubscribed from the Lanework newsletter. You will no longer receive newsletter emails.`
         : dripPaused > 0
-          ? `You're unsubscribed from your gated-content follow-up emails. You will no longer receive these messages.`
+          ? `You're unsubscribed from your research follow-up emails. You will no longer receive these messages.`
           : `That email wasn't on any of our mailing lists, but it's now suppressed from future communications either way.`
   return new NextResponse(
     `<!DOCTYPE html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Unsubscribed - Rapid Relay</title><style>${PAGE_STYLES}</style></head>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex"><title>Unsubscribed | Lanework</title><style>${PAGE_STYLES}</style></head>
 <body><div class="container">
+  <div class="mark">Lanework</div>
   <h1>You're unsubscribed</h1>
   <p>${detail}</p>
-  <p style="font-size:13px;color:#9ca3af;">If this was a mistake, you can always resubscribe from our website.</p>
-  <a href="${siteUrl}">Return to Homepage</a>
+  <p style="font-size:12.5px;">If this was a mistake, you can resubscribe from the research page any time.</p>
+  <a class="btn" href="${siteUrl}">Back to Lanework</a>
 </div></body></html>`,
     { status: 200, headers: { 'Content-Type': 'text/html' } }
   )
@@ -57,11 +81,12 @@ function successPage(siteUrl: string, removedFromNewsletter: boolean, dripPaused
 function errorPage(siteUrl: string): NextResponse {
   return new NextResponse(
     `<!DOCTYPE html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Unsubscribe - Rapid Relay</title><style>${PAGE_STYLES}</style></head>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex"><title>Unsubscribe | Lanework</title><style>${PAGE_STYLES}</style></head>
 <body><div class="container">
+  <div class="mark">Lanework</div>
   <h1>We couldn't process that just now</h1>
-  <p>Something went wrong on our end while updating your preferences. Please try the link again in a few minutes. If it keeps happening, email <a style="background:none;color:#235784;padding:0;text-decoration:underline;" href="mailto:support@rapidrelay.ai">support@rapidrelay.ai</a> and we'll take care of it right away.</p>
-  <a href="${siteUrl}">Return to Homepage</a>
+  <p>Something went wrong on our end while updating your preferences. Please try the link again in a few minutes. If it keeps happening, email <a class="inline" href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a> and we'll take care of it right away.</p>
+  <a class="btn" href="${siteUrl}">Back to Lanework</a>
 </div></body></html>`,
     { status: 200, headers: { 'Content-Type': 'text/html' } }
   )

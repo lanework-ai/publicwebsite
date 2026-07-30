@@ -25,7 +25,7 @@ const corpusQuery = `{
 }`
 
 export async function GET() {
-  const base = (process.env.NEXT_PUBLIC_SITE_URL || 'https://rapidrelay.ai') + LANEWORK_BASE
+  const base = (process.env.NEXT_PUBLIC_SITE_URL || 'https://lanework.ai') + LANEWORK_BASE
   const { whitePapers, benchmarks, posts } = await client.fetch<{ whitePapers: any[]; benchmarks: any[]; posts: any[] }>(corpusQuery)
 
   const sections: string[] = []

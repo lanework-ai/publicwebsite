@@ -82,11 +82,14 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
     // Validate request body
     const validatedData = newsletterSchema.parse(body) as NewsletterFormData
 
-    // Retained on the row for reporting. This app only serves Lanework.
+    // Retained on the row for reporting. This app only serves Lanework, and an
+    // omitted flag must still read 'lanework': sendLaneworkBlogNewsletter selects
+    // subscribers on brand, so a row tagged otherwise would silently never receive
+    // a broadcast.
     const brand =
-      typeof body === 'object' && body !== null && (body as { brand?: string }).brand === 'lanework'
-        ? 'lanework'
-        : 'rapidrelay'
+      typeof body === 'object' && body !== null && (body as { brand?: string }).brand === 'rapidrelay'
+        ? 'rapidrelay'
+        : 'lanework'
 
     // Save to database
     const newsletter = await prisma.newsletter.create({

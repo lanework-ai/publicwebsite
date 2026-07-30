@@ -122,11 +122,13 @@ export async function POST(request: NextRequest) {
     const dripNextSendAt = new Date(now.getTime() + DRIP_FIRST_DELAY_MS)
 
     // Retained on the row for reporting. This app only serves Lanework, so every
-    // lead takes the Lanework templates regardless.
+    // lead takes the Lanework templates regardless, and an omitted flag must still
+    // read 'lanework' — the blog broadcast selects on brand, so a row tagged
+    // otherwise would silently never receive one.
     const brand =
-      typeof body === 'object' && body !== null && (body as { brand?: string }).brand === 'lanework'
-        ? 'lanework'
-        : 'rapidrelay'
+      typeof body === 'object' && body !== null && (body as { brand?: string }).brand === 'rapidrelay'
+        ? 'rapidrelay'
+        : 'lanework'
 
     const lead = await prisma.gatedContentLead.create({
       data: {

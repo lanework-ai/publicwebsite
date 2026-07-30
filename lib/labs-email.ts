@@ -258,7 +258,7 @@ function dripStep2Html(ctx: LaneworkDripContext): string {
       <p style="margin:0 0 14px 0;">Most of our work starts the way your download did: with a question. Operators bring us a network or a dataset, we run the applied research, and we share what we find. Software only gets built when the evidence earns it.</p>
       <p style="margin:0;">Here is what that looks like on real networks.</p>
     </td></tr>
-    <tr><td align="center" style="padding:24px 40px;">${button('See applied research', `${SITE_ROOT}/case-studies`)}</td></tr>
+    <tr><td align="center" style="padding:24px 40px;">${button('See the field work', `${SITE_ROOT}/field-work`)}</td></tr>
     <tr><td class="px" style="padding:0 40px 0 40px;font-family:${FONT};font-size:16px;line-height:1.6;color:#1a2b3c;">
       <p style="margin:0 0 2px 0;">Thanks,</p>
       <p style="margin:0;color:#0f172a;">The Lanework team</p>

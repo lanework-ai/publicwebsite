@@ -1,8 +1,9 @@
 /**
  * Netlify Scheduled Function that pokes /api/cron/drip once a day.
  *
- * Schedule is set in `netlify.toml`. When promoted, Netlify hits this function
- * on the cron, which in turn calls the Next.js route handler. We do it this way
+ * The schedule lives in this file's own `config` export at the bottom, not in
+ * netlify.toml. Netlify hits this function on the cron, which in turn calls the
+ * Next.js route handler. We do it this way
  * (rather than scheduling the route handler directly) because Netlify Scheduled
  * Functions run via the Netlify Functions runtime, while Next.js route handlers
  * run via the Next.js runtime — invoking one from the other keeps the actual

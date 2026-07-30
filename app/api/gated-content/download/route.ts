@@ -15,11 +15,12 @@ function errorPage(title: string, message: string, status: number) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 </head>
-<body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0f;color:#fff;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:24px;text-align:center;">
-  <div style="max-width:480px;">
-    <h1 style="font-size:28px;margin:0 0 12px;background:linear-gradient(135deg,#40a8c4,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${title}</h1>
-    <p style="font-size:16px;color:#cbd5e1;line-height:1.6;margin:0 0 24px;">${message}</p>
-    <a href="${siteUrl}/white-papers" style="display:inline-block;background:linear-gradient(135deg,#235784,#40a8c4);color:#fff;padding:12px 28px;text-decoration:none;border-radius:8px;font-weight:600;">Back to resources</a>
+<body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#08090a;color:#f4f5f6;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:24px;text-align:center;">
+  <div style="max-width:520px;background:#0d1016;border:1px solid #22262e;border-radius:12px;padding:40px;">
+    <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#868d97;margin-bottom:20px;">Lanework</div>
+    <h1 style="font-size:22px;font-weight:500;margin:0 0 16px;color:#f4f5f6;">${title}</h1>
+    <p style="font-size:14px;color:#868d97;line-height:1.65;margin:0 0 24px;">${message}</p>
+    <a href="${siteUrl}/research" style="display:inline-block;background:#4f6bff;color:#fff;padding:11px 26px;text-decoration:none;border-radius:6px;font-size:14px;">Back to the research</a>
   </div>
 </body></html>`,
     { status, headers: { 'Content-Type': 'text/html; charset=utf-8' } }

@@ -18,7 +18,7 @@ interface BenchmarkListing extends Listing {
 }
 
 export async function GET() {
-  const base = (process.env.NEXT_PUBLIC_SITE_URL || 'https://rapidrelay.ai') + LANEWORK_BASE
+  const base = (process.env.NEXT_PUBLIC_SITE_URL || 'https://lanework.ai') + LANEWORK_BASE
   const [papers, benchmarks] = await Promise.all([
     client.fetch<Listing[]>(whitePapersQuery),
     client.fetch<BenchmarkListing[]>(benchmarksQuery),

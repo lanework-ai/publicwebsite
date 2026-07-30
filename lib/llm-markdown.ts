@@ -110,9 +110,9 @@ interface WhitePaperDoc {
 }
 
 export function whitePaperToMarkdown(doc: WhitePaperDoc): string {
-  const url = `${siteUrl}/white-papers/${doc.slug.current}`
+  const url = `${siteUrl}/research/${doc.slug.current}`
   const lines = [
-    ...header(doc.title, url, doc.publishedAt, authorName(doc.author), 'Rapid Relay White Paper'),
+    ...header(doc.title, url, doc.publishedAt, authorName(doc.author), 'Lanework White Paper'),
   ]
   if (doc.description) lines.push(`_${doc.description}_`, '')
   if (doc.tldr) lines.push('## Summary', '', doc.tldr, '')
@@ -171,8 +171,9 @@ function renderTables(tables?: BenchmarkDoc['dataTables']): string[] {
 }
 
 export function benchmarkToMarkdown(doc: BenchmarkDoc): string {
-  const url = `${siteUrl}/benchmarks/${doc.slug.current}`
-  const kind = `Rapid Relay Benchmark${doc.period ? ` · ${doc.period}` : ''}`
+  // Benchmarks resolve on the same /research/[slug] route as white papers.
+  const url = `${siteUrl}/research/${doc.slug.current}`
+  const kind = `Lanework Benchmark${doc.period ? ` · ${doc.period}` : ''}`
   const lines = [...header(doc.title, url, doc.publishedAt, authorName(doc.author), kind)]
   if (doc.description) lines.push(`_${doc.description}_`, '')
   if (doc.tldr) lines.push('## Summary', '', doc.tldr, '')
@@ -197,7 +198,7 @@ interface PostDoc {
 
 export function postToMarkdown(doc: PostDoc): string {
   const url = `${siteUrl}/blog/${doc.slug.current}`
-  const lines = [...header(doc.title, url, doc.publishedAt, authorName(doc.author), 'Rapid Relay Blog')]
+  const lines = [...header(doc.title, url, doc.publishedAt, authorName(doc.author), 'Lanework Notes')]
   if (doc.excerpt) lines.push(`_${doc.excerpt}_`, '')
   const bodyMd = portableTextToMarkdown(doc.body)
   if (bodyMd) lines.push(bodyMd, '')

@@ -11,14 +11,17 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        // Lanework accent ramp, mirroring --lw-accent* in app/labs-theme.css.
+        // `accent.cyan` keeps its key (the two RichText usages read it) but now
+        // resolves to Lanework indigo instead of Rapid Relay's cyan.
         primary: {
-          DEFAULT: '#235784',
-          dark: '#1a4163',
-          light: '#2d6a9f',
+          DEFAULT: '#4f6bff',
+          dark: '#3a52d6',
+          light: '#7e95ff',
         },
         accent: {
-          cyan: '#40a8c4',
-          purple: '#a855f7',
+          cyan: '#4f6bff',
+          purple: '#7e95ff',
         }
       },
       animation: {

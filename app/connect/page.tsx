@@ -32,22 +32,19 @@ export default function LabsConnect() {
     e.preventDefault()
     setStatus('sending')
     const intentLabel = intents.find((i) => i.value === form.intent)?.label ?? form.intent
-    // Fleet size matters for every carrier-side engagement, not just a platform
-    // deployment. It is meaningless for investor diligence and careers.
-    const needsFleet = CARRIER_INTENTS.has(form.intent)
-    const fleetLine = needsFleet ? `\nFleet size: ${form.fleetSize}` : ''
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          // fleetSize is required by the shared contact API; only meaningful for
-          // platform inquiries, where we also surface it in the message body.
+          // fleetSize is required by the contact API and is rendered as its own row
+          // in the admin notification, so it is deliberately NOT repeated in the
+          // message body. Only asked for on carrier-side intents (CARRIER_INTENTS).
           name: form.name,
           email: form.email,
           company: form.company,
           fleetSize: form.fleetSize,
-          message: `Intent: ${intentLabel}${fleetLine}\n\n${form.message || '(no message)'}`,
+          message: `Intent: ${intentLabel}\n\n${form.message || '(no message)'}`,
           _honeypot: honeypot,
           formLoadedAt,
         }),

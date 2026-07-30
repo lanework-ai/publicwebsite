@@ -8,6 +8,30 @@ const howWeWork = [
   { step: 'Build', d: 'Not every improvement needs software. When one does, it becomes a product we stand behind. The research and the working system are the deliverable, never a slide deck.' },
 ]
 
+/**
+ * Disciplines the team covers. Deliberately skills and domains only: no individual
+ * names, no degrees, no employer names, consistent with the rest of the site's
+ * unnamed operator credential.
+ */
+const disciplines = [
+  {
+    t: 'Operations & supply chain',
+    d: 'Running large-scale logistics and fulfillment: network and lane design, dock and yard flow, frontline scheduling, and the cost models underneath all three.',
+  },
+  {
+    t: 'Data science & applied AI',
+    d: 'Turning operational exhaust from TMS, ELD, WMS, and HR systems into forecasting, optimization, and decision models that hold up against a real operation.',
+  },
+  {
+    t: 'Product & platform engineering',
+    d: 'Distributed systems, data pipelines, and analytics products built to enterprise reliability standards, so a finding can become software people depend on.',
+  },
+  {
+    t: 'Commercial & capital strategy',
+    d: 'Complex enterprise deals, operational due diligence, and value creation planning, framing every finding in terms an investment committee can act on.',
+  },
+]
+
 const values = [
   { t: 'Independent', d: 'The research stands on its own and we publish it openly. Findings come before any product we might sell.' },
   { t: 'Evidence-led', d: 'We combine logistics expertise with data science to understand the problem before we build anything.' },
@@ -110,9 +134,26 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* What the team covers */}
+      <section className="ll-section" style={{ paddingTop: 48, paddingBottom: 8 }}>
+        <SectionLabel index="05">What the team covers</SectionLabel>
+        <p style={{ fontSize: 'clamp(18px, 2.2vw, 22px)', lineHeight: 1.45, fontWeight: 500, letterSpacing: '-0.01em', color: 'var(--lw-fg)', maxWidth: 700, margin: '0 0 26px' }}>
+          Four disciplines in one small team, which is why the work moves from analysis to the floor
+          without a handoff gap.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
+          {disciplines.map((v) => (
+            <LabsCard key={v.t}>
+              <div style={{ fontWeight: 500, fontSize: 15, marginBottom: 8 }}>{v.t}</div>
+              <p style={{ fontSize: 12.5, color: 'var(--lw-faint)', lineHeight: 1.6, margin: 0 }}>{v.d}</p>
+            </LabsCard>
+          ))}
+        </div>
+      </section>
+
       {/* Values */}
       <section className="ll-section" style={{ paddingTop: 48, paddingBottom: 52 }}>
-        <SectionLabel index="05">Our values</SectionLabel>
+        <SectionLabel index="06">Our values</SectionLabel>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
           {values.map((v) => (
             <LabsCard key={v.t}>

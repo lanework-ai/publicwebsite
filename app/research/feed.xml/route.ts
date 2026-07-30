@@ -4,7 +4,7 @@ import { LANEWORK_BASE } from '@/lib/labs/config'
 
 export const revalidate = 86400
 
-const base = (process.env.NEXT_PUBLIC_SITE_URL || 'https://rapidrelay.ai') + LANEWORK_BASE
+const base = (process.env.NEXT_PUBLIC_SITE_URL || 'https://lanework.ai') + LANEWORK_BASE
 
 interface FeedItem {
   _type: 'whitePaper' | 'benchmark' | 'post'
