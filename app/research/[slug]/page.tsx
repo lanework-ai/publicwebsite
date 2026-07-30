@@ -43,7 +43,7 @@ function fmt(iso?: string) {
   return Number.isNaN(d.getTime()) ? '' : d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 }
 
-const h2: React.CSSProperties = { fontSize: 24, fontWeight: 500, letterSpacing: '-0.01em', margin: '0 0 18px' }
+const h2: React.CSSProperties = { fontSize: 28, fontWeight: 500, letterSpacing: '-0.01em', margin: '0 0 18px' }
 
 export default async function LabsResearchDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -63,16 +63,16 @@ export default async function LabsResearchDetail({ params }: { params: Promise<{
     <>
       <article className="ll-section" style={{ paddingTop: 56, paddingBottom: 48 }}>
         {/* Hero */}
-        <Link href={lw('/research')} style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--lw-muted)', letterSpacing: '0.06em' }}>
+        <Link href={lw('/research')} style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--lw-muted)', letterSpacing: '0.06em' }}>
           ← RESEARCH
         </Link>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 14, margin: '24px 0 14px', flexWrap: 'wrap' }}>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10.5, letterSpacing: '0.1em', color: 'var(--lw-accent-soft)', textTransform: 'uppercase' }}>{kind}</span>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, letterSpacing: '0.1em', color: 'var(--lw-accent-soft)', textTransform: 'uppercase' }}>{kind}</span>
         </div>
-        <h1 style={{ fontSize: 'clamp(28px, 4vw, 42px)', lineHeight: 1.1, fontWeight: 500, letterSpacing: '-0.02em', margin: '0 0 16px', maxWidth: 760 }}>
+        <h1 style={{ fontSize: 'clamp(32px, 4.4vw, 47px)', lineHeight: 1.1, fontWeight: 500, letterSpacing: '-0.02em', margin: '0 0 16px', maxWidth: 760 }}>
           {doc.title}
         </h1>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', fontSize: 13, color: 'var(--lw-faint)', marginBottom: 36 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', fontSize: 15, color: 'var(--lw-faint)', marginBottom: 36 }}>
           {authorName && <span>by {authorName}</span>}
           {authorName && <span style={{ color: 'var(--lw-dim)' }}>·</span>}
           <span>{fmt(doc.publishedAt)}</span>
@@ -160,8 +160,8 @@ export default async function LabsResearchDetail({ params }: { params: Promise<{
                 />
               ) : (
                 <div style={{ border: '1px solid var(--lw-line-2)', borderRadius: 12, padding: 22 }}>
-                  <div className="ll-label" style={{ fontSize: 10.5, marginBottom: 12 }}>Work with us</div>
-                  <p style={{ fontSize: 13, color: 'var(--lw-faint)', lineHeight: 1.6, margin: '0 0 16px' }}>
+                  <div className="ll-label" style={{ fontSize: 12, marginBottom: 12 }}>Work with us</div>
+                  <p style={{ fontSize: 15, color: 'var(--lw-faint)', lineHeight: 1.6, margin: '0 0 16px' }}>
                     Talk to the team about applying this research to your network.
                   </p>
                   <Button as={Link} href={lw('/connect')} arrow style={{ width: '100%', justifyContent: 'center' }}>
@@ -185,8 +185,8 @@ export default async function LabsResearchDetail({ params }: { params: Promise<{
                 const href = isPost ? lw(`/blog/${p.slug.current}`) : lw(`/research/${p.slug.current}`)
                 return (
                   <Link key={p._id} href={href} style={{ border: '1px solid var(--lw-line-2)', borderRadius: 10, padding: 20, display: 'block' }}>
-                    <div style={{ fontWeight: 500, fontSize: 15, lineHeight: 1.3, marginBottom: 8 }}>{p.title}</div>
-                    <p style={{ fontSize: 12.5, color: 'var(--lw-faint)', lineHeight: 1.6, margin: 0 }}>{p.excerpt ?? p.description ?? ''}</p>
+                    <div style={{ fontWeight: 500, fontSize: 17, lineHeight: 1.3, marginBottom: 8 }}>{p.title}</div>
+                    <p style={{ fontSize: 14, color: 'var(--lw-faint)', lineHeight: 1.6, margin: 0 }}>{p.excerpt ?? p.description ?? ''}</p>
                   </Link>
                 )
               })}

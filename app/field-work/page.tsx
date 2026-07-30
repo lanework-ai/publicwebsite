@@ -12,7 +12,7 @@ export default function FieldWorkIndex() {
     <>
       <PageHeader
         eyebrow="FIELD WORK"
-        title="What changed inside real operations."
+        title="Where the research met a real operation."
         sub="Every engagement starts as a question and a small team on the ground. These are the deployments that followed, what moved, and the software we built to prove the findings hold."
       />
 
@@ -21,13 +21,13 @@ export default function FieldWorkIndex() {
           <Link key={f.slug} href={lw(`/field-work/${f.slug}`)} style={{ display: 'block' }}>
             <Card padding={24} style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, marginBottom: 18 }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.08em', color: 'var(--lw-accent-soft)', border: '1px solid rgba(127,149,255,0.4)', borderRadius: 999, padding: '3px 9px', whiteSpace: 'nowrap' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, letterSpacing: '0.08em', color: 'var(--lw-accent-soft)', border: '1px solid rgba(127,149,255,0.4)', borderRadius: 999, padding: '3px 9px', whiteSpace: 'nowrap' }}>
                   {f.product}
                 </span>
-                <span className="ll-label" style={{ fontSize: 10 }}>{f.domain}</span>
+                <span className="ll-label" style={{ fontSize: 12 }}>{f.domain}</span>
               </div>
-              <div style={{ fontWeight: 500, fontSize: 16, lineHeight: 1.3, marginBottom: 10 }}>{f.title}</div>
-              <p style={{ fontSize: 12.5, color: 'var(--lw-faint)', lineHeight: 1.6, margin: '0 0 16px' }}>{f.summary}</p>
+              <div style={{ fontWeight: 500, fontSize: 18, lineHeight: 1.3, marginBottom: 10 }}>{f.title}</div>
+              <p style={{ fontSize: 14, color: 'var(--lw-faint)', lineHeight: 1.6, margin: '0 0 16px' }}>{f.summary}</p>
               {/* Pinned to the card floor so the status chips line up across the row */}
               <div style={{ marginTop: 'auto', paddingTop: 4 }}>
                 <Badge tone={f.status === 'live' ? 'live' : 'pilot'} dot>{statusLabel[f.status]}</Badge>

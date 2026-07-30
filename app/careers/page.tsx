@@ -40,8 +40,8 @@ export default function LabsCareers() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
           {why.map((w) => (
             <Card key={w.t} padding={24}>
-              <div style={{ fontWeight: 500, fontSize: 16, marginBottom: 10, color: 'var(--lw-fg)' }}>{w.t}</div>
-              <p style={{ fontSize: 13.5, color: 'var(--lw-faint)', lineHeight: 1.65, margin: 0 }}>{w.d}</p>
+              <div style={{ fontWeight: 500, fontSize: 18, marginBottom: 10, color: 'var(--lw-fg)' }}>{w.t}</div>
+              <p style={{ fontSize: 15, color: 'var(--lw-faint)', lineHeight: 1.65, margin: 0 }}>{w.d}</p>
             </Card>
           ))}
         </div>
@@ -52,8 +52,8 @@ export default function LabsCareers() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
           {how.map((h) => (
             <Card key={h.step}>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--lw-accent-soft)', marginBottom: 10 }}>{h.step}</div>
-              <p style={{ fontSize: 13.5, color: 'var(--lw-fg-2)', lineHeight: 1.6, margin: 0 }}>{h.d}</p>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 14, color: 'var(--lw-accent-soft)', marginBottom: 10 }}>{h.step}</div>
+              <p style={{ fontSize: 15, color: 'var(--lw-fg-2)', lineHeight: 1.6, margin: 0 }}>{h.d}</p>
             </Card>
           ))}
         </div>
@@ -65,7 +65,7 @@ export default function LabsCareers() {
           <h2 style={{ fontSize: 'var(--text-h2)', lineHeight: 1.15, fontWeight: 500, letterSpacing: 'var(--tracking-snug)', margin: '0 0 14px', maxWidth: 560 }}>
             Early roles opening soon.
           </h2>
-          <p style={{ fontSize: 15, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 520, margin: '0 0 26px' }}>
+          <p style={{ fontSize: 17, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 520, margin: '0 0 26px' }}>
             Engineering, operations, and research. If the work above sounds like yours, introduce
             yourself before the listings go up: tell us what you would study first.
           </p>

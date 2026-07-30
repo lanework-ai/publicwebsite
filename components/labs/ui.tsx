@@ -30,7 +30,7 @@ export function PageHeader({ eyebrow, title, sub }: { eyebrow: string; title: st
         {title}
       </h1>
       {sub && (
-        <p style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 600, margin: '20px 0 0' }}>{sub}</p>
+        <p style={{ fontSize: 18, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 600, margin: '20px 0 0' }}>{sub}</p>
       )}
     </section>
   )
@@ -59,7 +59,7 @@ export function CtaBand({
         >
           {title}
         </h2>
-        <p style={{ fontSize: 15, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 500, margin: '0 0 26px' }}>{body}</p>
+        <p style={{ fontSize: 17, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 500, margin: '0 0 26px' }}>{body}</p>
         <Button as={Link} href="/connect" arrow>
           Get in touch
         </Button>

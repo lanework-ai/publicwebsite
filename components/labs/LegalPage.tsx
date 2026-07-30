@@ -1,6 +1,5 @@
 /** Shared Lanework legal document renderer (privacy, terms). */
 import Link from 'next/link'
-import { lw } from '@/lib/labs/config'
 
 export type LegalBlock = { p: string; link?: { href: string; label: string } } | { ul: string[] }
 export type LegalSection = { heading: string; blocks: LegalBlock[] }
@@ -19,7 +18,7 @@ export function LegalPage({
       <div
         style={{
           fontFamily: 'var(--font-mono)',
-          fontSize: 13,
+          fontSize: 15,
           letterSpacing: '0.22em',
           color: 'var(--lw-accent-soft)',
           marginBottom: 20,
@@ -31,16 +30,16 @@ export function LegalPage({
       <h1 style={{ fontSize: 'var(--text-h1)', lineHeight: 'var(--leading-tight)', fontWeight: 500, letterSpacing: 'var(--tracking-tight)', margin: '0 0 12px' }}>
         {title}
       </h1>
-      <p style={{ fontSize: 13, color: 'var(--lw-faint)', margin: '0 0 44px', fontFamily: 'var(--font-mono)', letterSpacing: '0.04em' }}>{effective}</p>
+      <p style={{ fontSize: 15, color: 'var(--lw-faint)', margin: '0 0 44px', fontFamily: 'var(--font-mono)', letterSpacing: '0.04em' }}>{effective}</p>
 
       <div style={{ display: 'grid', gap: 36 }}>
         {sections.map((s, i) => (
           <div key={i}>
-            <h2 style={{ fontSize: 19, fontWeight: 500, letterSpacing: '-0.01em', color: 'var(--lw-fg)', margin: '0 0 12px' }}>{s.heading}</h2>
+            <h2 style={{ fontSize: 21, fontWeight: 500, letterSpacing: '-0.01em', color: 'var(--lw-fg)', margin: '0 0 12px' }}>{s.heading}</h2>
             <div style={{ display: 'grid', gap: 12 }}>
               {s.blocks.map((b, j) =>
                 'p' in b ? (
-                  <p key={j} style={{ fontSize: 15, lineHeight: 1.7, color: 'var(--lw-fg-2)', margin: 0 }}>
+                  <p key={j} style={{ fontSize: 17, lineHeight: 1.7, color: 'var(--lw-fg-2)', margin: 0 }}>
                     {b.p}
                     {b.link && (
                       <>
@@ -54,7 +53,7 @@ export function LegalPage({
                 ) : (
                   <ul key={j} style={{ margin: 0, paddingLeft: 20, display: 'grid', gap: 8 }}>
                     {b.ul.map((it, k) => (
-                      <li key={k} style={{ fontSize: 15, lineHeight: 1.6, color: 'var(--lw-fg-2)' }}>
+                      <li key={k} style={{ fontSize: 17, lineHeight: 1.6, color: 'var(--lw-fg-2)' }}>
                         {it}
                       </li>
                     ))}
@@ -66,10 +65,10 @@ export function LegalPage({
         ))}
       </div>
 
-      <p style={{ fontSize: 12.5, color: 'var(--lw-dim)', lineHeight: 1.6, marginTop: 48 }}>
-        Questions about this document?{' '}
-        <Link href={lw('/connect')} style={{ color: 'var(--lw-accent-soft)' }}>Submit them through our contact form</Link>.
-      </p>
+      {/* No generic "Questions about this document?" sign-off here. Each legal page
+          carries its own substantive contact section, which a policy needs anyway
+          (how to reach us, how to exercise data rights, response window), and a
+          duplicated sign-off underneath it was pure noise. */}
     </section>
   )
 }

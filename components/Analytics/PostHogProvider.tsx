@@ -26,6 +26,10 @@ export default function PostHogProvider({ children }: { children: React.ReactNod
       capture_pageleave: true,
       autocapture: true,
       person_profiles: 'identified_only',
+      // posthog-js defaults this to false. The Privacy Policy states that we honour
+      // Do Not Track and Global Privacy Control, so it has to be on for that claim to
+      // be true. There is no advertising business here that would suffer for it.
+      respect_dnt: true,
     })
     initialized = true
   }, [])

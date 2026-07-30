@@ -55,7 +55,7 @@ export default function LabsNav() {
           className={`ll-nav-links${open ? ' open' : ''}`}
           style={{
             fontFamily: 'var(--font-mono)',
-            fontSize: 12,
+            fontSize: 14,
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
           }}

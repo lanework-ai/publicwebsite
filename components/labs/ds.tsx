@@ -11,9 +11,9 @@ const FONT_MONO = 'var(--font-mono)'
 
 /* ---- Button ------------------------------------------------------------- */
 const BTN_SIZES = {
-  sm: { padding: '8px 13px', fontSize: 11 },
-  md: { padding: '11px 18px', fontSize: 12 },
-  lg: { padding: '13px 22px', fontSize: 13 },
+  sm: { padding: '8px 13px', fontSize: 13 },
+  md: { padding: '11px 18px', fontSize: 14 },
+  lg: { padding: '13px 22px', fontSize: 15 },
 } as const
 
 const BTN_VARIANTS = {
@@ -111,7 +111,7 @@ export function Badge({
         alignItems: 'center',
         gap: 6,
         fontFamily: FONT_MONO,
-        fontSize: 10,
+        fontSize: 12,
         letterSpacing: 'var(--tracking-mono-tight)',
         textTransform: 'uppercase',
         color,
@@ -182,8 +182,8 @@ export function Eyebrow({
   const Tag: ElementType = as
   const emphasisStyle =
     emphasis === 'hero'
-      ? { fontSize: 13, letterSpacing: 'var(--tracking-eyebrow)', color: 'var(--lw-accent-soft)' }
-      : { fontSize: 13, letterSpacing: 'var(--tracking-label)', color: 'var(--lw-muted)' }
+      ? { fontSize: 15, letterSpacing: 'var(--tracking-eyebrow)', color: 'var(--lw-accent-soft)' }
+      : { fontSize: 15, letterSpacing: 'var(--tracking-label)', color: 'var(--lw-muted)' }
   return (
     <Tag
       className={className}
@@ -211,14 +211,14 @@ export function SectionHeader({
   return (
     <div className={className} style={{ display: 'flex', alignItems: 'baseline', gap: 14, ...style }} {...rest}>
       {index != null && (
-        <span style={{ fontFamily: FONT_MONO, fontSize: 13, color: 'var(--lw-accent-soft)', letterSpacing: '0.1em' }}>
+        <span style={{ fontFamily: FONT_MONO, fontSize: 15, color: 'var(--lw-accent-soft)', letterSpacing: '0.1em' }}>
           {index}
         </span>
       )}
       <span
         style={{
           fontFamily: FONT_MONO,
-          fontSize: 13,
+          fontSize: 15,
           letterSpacing: 'var(--tracking-label)',
           color: 'var(--lw-muted)',
           textTransform: 'uppercase',
@@ -250,7 +250,7 @@ export function Stat({
       <div style={{ fontFamily: FONT_MONO, fontSize: size, color: 'var(--lw-fg)', letterSpacing: '-0.01em', lineHeight: 1 }}>
         {value}
       </div>
-      <div style={{ fontSize: 13, color: 'var(--lw-faint)', marginTop: 5 }}>{label}</div>
+      <div style={{ fontSize: 15, color: 'var(--lw-faint)', marginTop: 5 }}>{label}</div>
     </div>
   )
 }
@@ -272,9 +272,9 @@ export function StatCard({
 } & Extra) {
   return (
     <div className={['ll-card', className].filter(Boolean).join(' ')} style={{ border: '1px solid var(--lw-line-2)', borderRadius: 10, padding: 18, ...style }} {...rest}>
-      <div style={{ fontFamily: FONT_MONO, fontSize: 26, color: 'var(--lw-fg)' }}>{value}</div>
-      <div style={{ fontSize: 12.5, color: 'var(--lw-fg-2)', margin: '6px 0 4px', lineHeight: 1.5 }}>{label}</div>
-      {source && <div style={{ fontSize: 11, color: 'var(--lw-dim)', lineHeight: 1.5 }}>Source: {source}</div>}
+      <div style={{ fontFamily: FONT_MONO, fontSize: 30, color: 'var(--lw-fg)' }}>{value}</div>
+      <div style={{ fontSize: 14, color: 'var(--lw-fg-2)', margin: '6px 0 4px', lineHeight: 1.5 }}>{label}</div>
+      {source && <div style={{ fontSize: 13, color: 'var(--lw-dim)', lineHeight: 1.5 }}>Source: {source}</div>}
     </div>
   )
 }
@@ -313,10 +313,10 @@ export function DomainRow({
       {...rest}
     >
       {index != null && (
-        <span style={{ fontFamily: FONT_MONO, fontSize: 12, color: 'var(--lw-muted)', width: 26, flexShrink: 0 }}>{index}</span>
+        <span style={{ fontFamily: FONT_MONO, fontSize: 14, color: 'var(--lw-muted)', width: 26, flexShrink: 0 }}>{index}</span>
       )}
-      <span style={{ fontWeight: 500, fontSize: 14, width: 180, flexShrink: 0, color: 'var(--lw-fg)' }}>{title}</span>
-      <span style={{ fontSize: 13, color: 'var(--lw-faint)', flex: 1 }}>{description}</span>
+      <span style={{ fontWeight: 500, fontSize: 16, width: 180, flexShrink: 0, color: 'var(--lw-fg)' }}>{title}</span>
+      <span style={{ fontSize: 15, color: 'var(--lw-faint)', flex: 1 }}>{description}</span>
     </Tag>
   )
 }
@@ -344,7 +344,7 @@ export function Callout({
         <div
           style={{
             fontFamily: FONT_MONO,
-            fontSize: 10.5,
+            fontSize: 12,
             letterSpacing: 'var(--tracking-label)',
             textTransform: 'uppercase',
             color: 'var(--lw-accent-soft)',
@@ -354,7 +354,7 @@ export function Callout({
           {label}
         </div>
       )}
-      <div style={{ fontSize: 15.5, lineHeight: 1.6, color: 'var(--lw-fg)' }}>{children}</div>
+      <div style={{ fontSize: 17, lineHeight: 1.6, color: 'var(--lw-fg)' }}>{children}</div>
     </div>
   )
 }
@@ -382,11 +382,11 @@ export function Quote({
 } & Extra) {
   return (
     <figure className={className} style={{ border: '1px solid var(--lw-line-2)', borderRadius: 10, padding: '20px 22px', margin: 0, ...style }} {...rest}>
-      <blockquote style={{ margin: 0, fontSize: 15.5, lineHeight: 1.6, color: 'var(--lw-fg-2)', borderLeft: '2px solid var(--lw-accent)', paddingLeft: 16 }}>
+      <blockquote style={{ margin: 0, fontSize: 17, lineHeight: 1.6, color: 'var(--lw-fg-2)', borderLeft: '2px solid var(--lw-accent)', paddingLeft: 16 }}>
         {children}
       </blockquote>
       {(name || role || cite) && (
-        <figcaption style={{ marginTop: 14, paddingLeft: 18, fontSize: 13 }}>
+        <figcaption style={{ marginTop: 14, paddingLeft: 18, fontSize: 15 }}>
           {name &&
             (href ? (
               <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--lw-fg)', fontWeight: 500 }}>
@@ -398,7 +398,7 @@ export function Quote({
           {role && <span style={{ color: 'var(--lw-muted)' }}>, {role}</span>}
           {org && <span style={{ color: 'var(--lw-muted)' }}> · {org}</span>}
           {cite && (
-            <cite style={{ display: 'block', fontStyle: 'normal', fontSize: 11.5, color: 'var(--lw-dim)', marginTop: 4 }}>{cite}</cite>
+            <cite style={{ display: 'block', fontStyle: 'normal', fontSize: 13, color: 'var(--lw-dim)', marginTop: 4 }}>{cite}</cite>
           )}
         </figcaption>
       )}
@@ -420,7 +420,7 @@ export function BulletList({
   return (
     <ul className={className} style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: 12, ...style }} {...rest}>
       {items.map((item, i) => (
-        <li key={i} style={{ display: 'flex', gap: 12, fontSize: 15.5, lineHeight: 1.6, color: 'var(--lw-fg-2)' }}>
+        <li key={i} style={{ display: 'flex', gap: 12, fontSize: 17, lineHeight: 1.6, color: 'var(--lw-fg-2)' }}>
           <span aria-hidden="true" style={{ marginTop: 9, width: 5, height: 5, borderRadius: '50%', background: 'var(--lw-accent)', flexShrink: 0 }} />
           <span>{item}</span>
         </li>
@@ -447,7 +447,7 @@ export function FAQItem({
   return (
     <details open={open} className={className} style={{ border: '1px solid var(--lw-line-2)', borderRadius: 10, padding: '16px 18px', ...style }} {...rest}>
       <summary style={{ cursor: 'pointer', fontWeight: 500, fontSize: 14.5, color: 'var(--lw-fg)' }}>{question}</summary>
-      <div style={{ fontSize: 13.5, color: 'var(--lw-faint)', lineHeight: 1.6, margin: '10px 0 0' }}>{children}</div>
+      <div style={{ fontSize: 15, color: 'var(--lw-faint)', lineHeight: 1.6, margin: '10px 0 0' }}>{children}</div>
     </details>
   )
 }

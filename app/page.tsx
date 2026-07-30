@@ -52,7 +52,7 @@ export default async function LabsHome() {
         <h1 style={{ fontSize: 'var(--text-hero)', lineHeight: 'var(--leading-display)', fontWeight: 500, letterSpacing: 'var(--tracking-tight)', margin: '0 0 22px', maxWidth: 760 }}>
           We deploy into your operation and make it run better.
         </h1>
-        <p style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 560, margin: '0 0 32px' }}>
+        <p style={{ fontSize: 18, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 560, margin: '0 0 32px' }}>
           Lanework is a research lab for logistics and supply chain. We send in a small team, dig into the data you
           already have, and fix what it turns up. Sometimes the answer is a better process, sometimes
           it&rsquo;s software we build.
@@ -75,7 +75,7 @@ export default async function LabsHome() {
       {/* What we study (research domains) */}
       <section className="ll-section" style={{ paddingTop: 52, paddingBottom: 52 }}>
         <SectionHeader index="01" label="What we study" style={{ marginBottom: 26 }} />
-        <p style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--lw-fg-2)', maxWidth: 580, margin: '0 0 28px' }}>
+        <p style={{ fontSize: 18, lineHeight: 1.6, color: 'var(--lw-fg-2)', maxWidth: 580, margin: '0 0 28px' }}>
           Supply chains are fragmented across systems, markets, and silos. The same failures recur
           whether the asset is a truck or a dock door. We study it as one stack, six problems deep,
           and follow the evidence wherever the leverage is.
@@ -94,10 +94,10 @@ export default async function LabsHome() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
             {howWeWork.map((w, i) => (
               <Card key={w.step}>
-                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--lw-accent-soft)', marginBottom: 10 }}>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 14, color: 'var(--lw-accent-soft)', marginBottom: 10 }}>
                   0{i + 1} · {w.step.toUpperCase()}
                 </div>
-                <p style={{ fontSize: 13.5, color: 'var(--lw-fg-2)', lineHeight: 1.6, margin: 0 }}>{w.desc}</p>
+                <p style={{ fontSize: 15, color: 'var(--lw-fg-2)', lineHeight: 1.6, margin: 0 }}>{w.desc}</p>
               </Card>
             ))}
           </div>
@@ -108,13 +108,13 @@ export default async function LabsHome() {
       <section className="ll-section" style={{ paddingTop: 52, paddingBottom: 56, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
         <Card>
           <SectionHeader index="03" label="Field work" style={{ marginBottom: 20 }} />
-          <p style={{ fontSize: 13, color: 'var(--lw-faint)', lineHeight: 1.6, margin: '0 0 6px' }}>
-            What changed inside real operations, and the software that remained to prove the findings hold.
+          <p style={{ fontSize: 15, color: 'var(--lw-faint)', lineHeight: 1.6, margin: '0 0 6px' }}>
+            Where the research met a real operation, what moved, and the software we built to prove it holds.
           </p>
           {fieldWork.map((f) => (
             <Link key={f.slug} href={lw(`/field-work/${f.slug}`)} style={{ display: 'block', borderTop: '1px solid var(--lw-line)', paddingTop: 10, marginTop: 10 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                <span style={{ fontWeight: 500, fontSize: 14, color: 'var(--lw-fg)' }}>{f.product}</span>
+                <span style={{ fontWeight: 500, fontSize: 16, color: 'var(--lw-fg)' }}>{f.product}</span>
                 <Badge tone={f.status === 'live' ? 'live' : 'pilot'}>{statusLabel[f.status]}</Badge>
                 {f.logo && (
                   <span className="ll-partner" style={{ marginLeft: 'auto' }}>
@@ -122,7 +122,7 @@ export default async function LabsHome() {
                   </span>
                 )}
               </div>
-              <div style={{ fontSize: 12, color: 'var(--lw-faint)', marginTop: 3 }}>{f.title}</div>
+              <div style={{ fontSize: 14, color: 'var(--lw-faint)', marginTop: 3 }}>{f.title}</div>
             </Link>
           ))}
           <Button as={Link} href={lw('/field-work')} variant="ghost" size="sm" arrow style={{ marginTop: 16, paddingLeft: 0 }}>All field work</Button>
@@ -130,11 +130,11 @@ export default async function LabsHome() {
         <Card>
           <SectionHeader index="04" label="Research" style={{ marginBottom: 20 }} />
           {latest.map((r) => (
-            <Link key={r._id} href={lw(`/research/${r.slug.current}`)} style={{ display: 'block', fontSize: 13, color: 'var(--lw-fg-2)', lineHeight: 1.7, borderBottom: '1px solid var(--lw-line)', paddingBottom: 9, marginBottom: 9 }}>
+            <Link key={r._id} href={lw(`/research/${r.slug.current}`)} style={{ display: 'block', fontSize: 15, color: 'var(--lw-fg-2)', lineHeight: 1.7, borderBottom: '1px solid var(--lw-line)', paddingBottom: 9, marginBottom: 9 }}>
               {r.title}
             </Link>
           ))}
-          <p style={{ fontSize: 12, color: 'var(--lw-faint)', lineHeight: 1.6, margin: '0 0 10px' }}>
+          <p style={{ fontSize: 14, color: 'var(--lw-faint)', lineHeight: 1.6, margin: '0 0 10px' }}>
             Plus 7 more white papers and a carrier scorecard shipping through 2026.
           </p>
           <Button as={Link} href={lw('/research')} variant="ghost" size="sm" arrow style={{ paddingLeft: 0 }}>All research</Button>
@@ -148,15 +148,15 @@ export default async function LabsHome() {
           <h2 style={{ fontSize: 'var(--text-h2)', lineHeight: 1.15, fontWeight: 500, letterSpacing: 'var(--tracking-snug)', margin: '0 0 16px', maxWidth: 620 }}>
             Everyone else optimizes inside the architecture that creates the problem.
           </h2>
-          <p style={{ fontSize: 15, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 560, margin: '0 0 28px' }}>
+          <p style={{ fontSize: 17, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 560, margin: '0 0 28px' }}>
             We redesign the architecture, and price what that is worth. Start with one bounded problem:
             the snapshot is free and tells you whether the rest is worth doing.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16, marginBottom: 30 }}>
             {workWithUs.map((c) => (
               <Card key={c.t} padding={20}>
-                <div style={{ fontWeight: 500, fontSize: 14, marginBottom: 8, color: 'var(--lw-fg)' }}>{c.t}</div>
-                <p style={{ fontSize: 12.5, color: 'var(--lw-faint)', lineHeight: 1.6, margin: 0 }}>{c.d}</p>
+                <div style={{ fontWeight: 500, fontSize: 16, marginBottom: 8, color: 'var(--lw-fg)' }}>{c.t}</div>
+                <p style={{ fontSize: 14, color: 'var(--lw-faint)', lineHeight: 1.6, margin: 0 }}>{c.d}</p>
               </Card>
             ))}
           </div>

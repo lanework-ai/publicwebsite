@@ -24,8 +24,8 @@ export default function EngagementsPage() {
           <SectionLabel index={`0${ti + 1}`}>{t.label}</SectionLabel>
 
           <div style={{ maxWidth: 640, marginBottom: 26 }}>
-            <p style={{ fontSize: 15, lineHeight: 1.65, color: 'var(--lw-fg-2)', margin: '0 0 8px' }}>{t.premise}</p>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '0.06em', color: 'var(--lw-dim)', textTransform: 'uppercase', margin: 0 }}>
+            <p style={{ fontSize: 17, lineHeight: 1.65, color: 'var(--lw-fg-2)', margin: '0 0 8px' }}>{t.premise}</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: 13, letterSpacing: '0.06em', color: 'var(--lw-dim)', textTransform: 'uppercase', margin: 0 }}>
               {t.audience}
             </p>
           </div>
@@ -34,26 +34,24 @@ export default function EngagementsPage() {
             {t.engagements.map((e) => (
               <Card key={e.id} padding={26} accent={e.free}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14, flexWrap: 'wrap' }}>
-                  <span style={{ fontWeight: 500, fontSize: 18, color: 'var(--lw-fg)' }}>{e.name}</span>
+                  <span style={{ fontWeight: 500, fontSize: 21, color: 'var(--lw-fg)' }}>{e.name}</span>
                   {e.free && <Badge tone="paper" dot>Free</Badge>}
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10.5, letterSpacing: '0.06em', color: 'var(--lw-muted)', marginLeft: 'auto', whiteSpace: 'nowrap' }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, letterSpacing: '0.06em', color: 'var(--lw-muted)', marginLeft: 'auto', whiteSpace: 'nowrap' }}>
                     {e.duration}
                   </span>
                 </div>
 
-                <p style={{ fontSize: 15, lineHeight: 1.6, color: 'var(--lw-fg-2)', margin: '0 0 16px', fontStyle: 'italic' }}>
+                <p style={{ fontSize: 17, lineHeight: 1.6, color: 'var(--lw-fg-2)', margin: '0 0 16px', fontStyle: 'italic' }}>
                   &ldquo;{e.job}&rdquo;
                 </p>
 
-                <div style={{ display: 'grid', gap: 12 }}>
-                  <div>
-                    <div className="ll-label" style={{ fontSize: 10, marginBottom: 5 }}>Who it is for</div>
-                    <p style={{ fontSize: 13, color: 'var(--lw-faint)', lineHeight: 1.6, margin: 0 }}>{e.persona}</p>
-                  </div>
-                  <div>
-                    <div className="ll-label" style={{ fontSize: 10, marginBottom: 5 }}>What you get</div>
-                    <p style={{ fontSize: 13, color: 'var(--lw-faint)', lineHeight: 1.6, margin: 0 }}>{e.deliverable}</p>
-                  </div>
+                {/* No "Who it is for" block. Naming a job title tells every other
+                    reader the work is not for them, and the track-level audience line
+                    above already sets the scope without filtering anyone out. The
+                    persona data is retained in lib/labs/engagements.ts for internal use. */}
+                <div>
+                  <div className="ll-label" style={{ fontSize: 12, marginBottom: 5 }}>What you get</div>
+                  <p style={{ fontSize: 15, color: 'var(--lw-faint)', lineHeight: 1.6, margin: 0 }}>{e.deliverable}</p>
                 </div>
               </Card>
             ))}
@@ -67,12 +65,12 @@ export default function EngagementsPage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
           {alsoAvailable.map((a) => (
             <Card key={a.name} padding={20}>
-              <div style={{ fontWeight: 500, fontSize: 14, marginBottom: 6, color: 'var(--lw-fg)' }}>{a.name}</div>
-              <p style={{ fontSize: 12.5, color: 'var(--lw-faint)', lineHeight: 1.6, margin: 0 }}>{a.note}</p>
+              <div style={{ fontWeight: 500, fontSize: 16, marginBottom: 6, color: 'var(--lw-fg)' }}>{a.name}</div>
+              <p style={{ fontSize: 14, color: 'var(--lw-faint)', lineHeight: 1.6, margin: 0 }}>{a.note}</p>
             </Card>
           ))}
         </div>
-        <p style={{ fontSize: 13, color: 'var(--lw-dim)', lineHeight: 1.6, margin: '20px 0 0', maxWidth: 560 }}>
+        <p style={{ fontSize: 15, color: 'var(--lw-dim)', lineHeight: 1.6, margin: '20px 0 0', maxWidth: 560 }}>
           Every engagement is scoped and quoted against your network. The snapshot is the easiest way in:
           it costs nothing and tells you whether the rest is worth doing.
         </p>

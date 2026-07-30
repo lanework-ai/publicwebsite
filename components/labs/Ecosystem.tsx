@@ -1,11 +1,20 @@
 /**
  * Ecosystem band — "Runs with the stack you already have." The five integration
  * categories from the Rapid Relay site, restated in the Lanework voice, with
- * partner marks. Partners with a self-hosted logo in public/labs/partners/ (one
- * map entry below) render the real mark; everyone else renders as a monospace
- * wordmark chip, per the near-iconless design system. Dropping an official SVG
- * into public/labs/partners/ + one PARTNER_LOGOS entry upgrades a chip to a logo.
+ * partner marks.
+ *
+ * Logos are AUTO-DETECTED at build time: this is a server component, so it reads
+ * public/labs/partners/ and renders the real mark for any partner whose id has a
+ * matching file. Everyone else falls back to a monospace wordmark chip, per the
+ * near-iconless design system. Dropping `<id>.svg` (or .png) into that folder is
+ * therefore the only step needed to upgrade a chip to a logo, with no code change
+ * and no risk of a broken image pointing at a file that was never added.
+ *
+ * Marks render at 65% opacity, full on hover (`.ll-partner`), which is what keeps a
+ * row of full-colour third-party logos from overwhelming the austere palette.
  */
+import { readdirSync } from 'node:fs'
+import { join } from 'node:path'
 import { SectionHeader } from './ds'
 
 interface Partner {
@@ -19,10 +28,47 @@ interface Category {
   partners: Partner[]
 }
 
-// Self-hosted partner logos. Height is the render height; SVG aspect is preserved.
-const PARTNER_LOGOS: Record<string, { src: string; height: number }> = {
-  repowr: { src: '/labs/partners/repowr.svg', height: 14 },
+/**
+ * Filenames present in public/labs/partners/, keyed by id (basename without the
+ * extension). Read once at module load. Wrapped because the folder is allowed not
+ * to exist, and a missing folder must degrade to "all chips" rather than fail the
+ * build.
+ */
+const AVAILABLE_LOGOS: Record<string, string> = (() => {
+  try {
+    const dir = join(process.cwd(), 'public', 'labs', 'partners')
+    const found: Record<string, string> = {}
+    for (const file of readdirSync(dir)) {
+      const m = file.match(/^(.+)\.(svg|png|webp)$/i)
+      if (m) found[m[1].toLowerCase()] = `/labs/partners/${file}`
+    }
+    return found
+  } catch {
+    return {}
+  }
+})()
+
+/**
+ * Render height per mark. Wordmark-shaped logos (a word set in type) need less
+ * height than square icon marks to carry the same visual weight, so anything not
+ * listed falls back to a conservative default.
+ */
+const LOGO_HEIGHTS: Record<string, number> = {
+  repowr: 14,
+  truckstop: 15,
+  dat: 18,
+  landstar: 26,
+  werner: 18,
+  knx: 22,
+  nfi: 16,
+  schneider: 22,
+  spot: 22,
+  ntg: 24,
+  echo: 22,
+  loadsmart: 22,
+  chrobinson: 22,
 }
+const DEFAULT_LOGO_HEIGHT = 20
 
 const CATEGORIES: Category[] = [
   {
@@ -72,13 +118,14 @@ const CATEGORIES: Category[] = [
   },
 ]
 
-function PartnerBadge({ partner }: { partner: Partner }) {
-  const logo = PARTNER_LOGOS[partner.id]
-  if (logo) {
+export function PartnerBadge({ partner }: { partner: Partner }) {
+  const src = AVAILABLE_LOGOS[partner.id]
+  if (src) {
+    const height = LOGO_HEIGHTS[partner.id] ?? DEFAULT_LOGO_HEIGHT
     return (
       <span className="ll-partner" title={partner.name}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={logo.src} alt={partner.name} style={{ height: logo.height, width: 'auto', display: 'block' }} />
+        <img src={src} alt={partner.name} style={{ height, width: 'auto', display: 'block' }} />
       </span>
     )
   }
@@ -87,7 +134,7 @@ function PartnerBadge({ partner }: { partner: Partner }) {
       className="ll-partner"
       style={{
         fontFamily: 'var(--font-mono)',
-        fontSize: 10.5,
+        fontSize: 12,
         letterSpacing: '0.08em',
         textTransform: 'uppercase',
         color: 'var(--lw-muted)',
@@ -99,6 +146,41 @@ function PartnerBadge({ partner }: { partner: Partner }) {
     >
       {partner.name}
     </span>
+  )
+}
+
+/**
+ * A flat row of marks for a single deployment, headed "Connects with".
+ *
+ * Deliberately worded as integrations rather than partners or customers: these are
+ * systems and networks a deployment can connect to, and presenting a carrier's mark
+ * without that qualifier would imply an endorsement or an account we have not
+ * claimed. The Terms carry the matching third-party trademark notice.
+ */
+export function IntegrationRow({
+  partners,
+  label = 'Connects with',
+  note,
+}: {
+  partners: Partner[]
+  label?: string
+  note?: string
+}) {
+  if (!partners.length) return null
+  return (
+    <div style={{ marginTop: 30 }}>
+      <div className="ll-label" style={{ fontSize: 13, marginBottom: 14 }}>{label}</div>
+      {note && (
+        <p style={{ fontSize: 15, color: 'var(--lw-faint)', lineHeight: 1.6, margin: '0 0 16px', maxWidth: 620 }}>
+          {note}
+        </p>
+      )}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+        {partners.map((p) => (
+          <PartnerBadge key={p.id} partner={p} />
+        ))}
+      </div>
+    </div>
   )
 }
 
@@ -126,7 +208,7 @@ export default function Ecosystem({
   return (
     <section className="ll-section" style={{ paddingTop: 44, paddingBottom: 8 }}>
       <SectionHeader index={index} label="We sit above the stack you already run" style={{ marginBottom: 14 }} />
-      <p style={{ fontSize: 15, color: 'var(--lw-muted)', lineHeight: 1.6, maxWidth: 620, margin: '0 0 24px' }}>
+      <p style={{ fontSize: 17, color: 'var(--lw-muted)', lineHeight: 1.6, maxWidth: 620, margin: '0 0 24px' }}>
         Your TMS and your telematics tell you what happened. We tell you what to do about it, and what
         it is worth. That means we plug into the systems you already run rather than replacing them,
         and we work from data you already own.
@@ -138,8 +220,8 @@ export default function Ecosystem({
             style={{ background: 'var(--lw-panel)', padding: '16px 18px', display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}
           >
             <div style={{ width: 210, flexShrink: 0 }}>
-              <div style={{ fontWeight: 500, fontSize: 14, color: 'var(--lw-fg)' }}>{c.title}</div>
-              <div style={{ fontSize: 12, color: 'var(--lw-faint)', lineHeight: 1.5, marginTop: 3 }}>{c.desc}</div>
+              <div style={{ fontWeight: 500, fontSize: 16, color: 'var(--lw-fg)' }}>{c.title}</div>
+              <div style={{ fontSize: 14, color: 'var(--lw-faint)', lineHeight: 1.5, marginTop: 3 }}>{c.desc}</div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', flex: 1 }}>
               {c.partners.map((p) => (

@@ -46,19 +46,22 @@ export default function LabsFooter() {
       >
         <div>
           <Logo wordmark size={32} interaction="lead" />
-          <p style={{ fontSize: 13.5, color: 'var(--lw-muted)', lineHeight: 1.6, marginTop: 16, maxWidth: 300, textWrap: 'balance' }}>
+          <p style={{ fontSize: 15, color: 'var(--lw-muted)', lineHeight: 1.6, marginTop: 16, maxWidth: 300, textWrap: 'balance' }}>
             We embed with supply chain operators, turn the data they already hold into independent research, and build the AI systems that put it to work.
           </p>
         </div>
         {cols.map((c) => (
           <div key={c.title}>
-            <p className="ll-label" style={{ fontSize: 10.5, marginBottom: 14 }}>
+            {/* Brighter than .ll-label's default --lw-muted so a column heading reads
+                as a heading against the links below it. Overridden locally rather
+                than in .ll-label, which is used site-wide. */}
+            <p className="ll-label" style={{ fontSize: 13, marginBottom: 14, color: 'var(--lw-fg-2)' }}>
               {c.title}
             </p>
             <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: 9 }}>
               {c.links.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="ll-foot-link" style={{ fontSize: 13 }}>
+                  <Link href={l.href} className="ll-foot-link" style={{ fontSize: 15 }}>
                     {l.label}
                   </Link>
                 </li>
@@ -79,11 +82,14 @@ export default function LabsFooter() {
           gap: 10,
         }}
       >
-        <span style={{ fontSize: 12, color: 'var(--lw-dim)' }}>
+        <span style={{ fontSize: 14, color: 'var(--lw-dim)' }}>
           © {year} Lanework. All rights reserved.
         </span>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.1em', color: 'var(--lw-dim)', textTransform: 'uppercase' }}>
-          Applied AI research · logistics
+        {/* Names the three things we sell. The previous line, "Applied AI research ·
+            logistics", said logistics when the scope is logistics and supply chain,
+            and narrowed a firm that also runs embedded engagements and assessments. */}
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, letterSpacing: '0.1em', color: 'var(--lw-muted)', textTransform: 'uppercase' }}>
+          Research · Embedded teams · Software
         </span>
       </div>
     </footer>

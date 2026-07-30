@@ -55,18 +55,22 @@
   /* ===== Typography (system stacks, no webfonts) ===== */
   --font-sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  --text-hero: clamp(32px, 5vw, 46px);
-  --text-h1: clamp(30px, 4.5vw, 42px);
-  --text-h2: clamp(22px, 3vw, 30px);
-  --text-h3: 24px;
-  --text-stat: 28px;
-  --text-lead: 16px;
-  --text-body: 15px;
-  --text-body-sm: 13.5px;
-  --text-sm: 13px;
-  --text-xs: 12px;
-  --text-eyebrow: 13px;
-  --text-label: 11px;
+  /* Only hero, h1, h2, xs and eyebrow are consumed today (10 references total);
+     the rest of this scale is currently unreferenced and the pages set sizes
+     inline instead. Kept in step with the inline values so that migrating a
+     component onto a token does not change how it looks. */
+  --text-hero: clamp(36px, 5.4vw, 52px);
+  --text-h1: clamp(33px, 4.8vw, 47px);
+  --text-h2: clamp(25px, 3.2vw, 34px);
+  --text-h3: 28px;
+  --text-stat: 32px;
+  --text-lead: 18px;
+  --text-body: 17px;
+  --text-body-sm: 15px;
+  --text-sm: 14.5px;
+  --text-xs: 13.5px;
+  --text-eyebrow: 14px;
+  --text-label: 12.5px;
   --weight-regular: 400;
   --weight-medium: 500;
   --tracking-tight: -0.02em;
@@ -142,6 +146,23 @@
   min-height: 100vh;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+}
+
+/* Stop single-word last lines. `pretty` asks the browser to avoid orphans in body
+   copy; `balance` evens out short headings. Both degrade to normal wrapping where
+   unsupported, so there is no fallback to handle. */
+.ll-root p,
+.ll-root li,
+.ll-root figcaption,
+.ll-root blockquote {
+  text-wrap: pretty;
+}
+
+.ll-root h1,
+.ll-root h2,
+.ll-root h3,
+.ll-root h4 {
+  text-wrap: balance;
 }
 
 .ll-root a {

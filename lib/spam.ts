@@ -10,7 +10,20 @@ import { createHash } from 'node:crypto'
 import type { NextRequest } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
-const SALT = process.env.RATE_LIMIT_SALT || 'rr-dev-fallback-salt'
+/**
+ * IPv4 is a small keyspace, so a hash salted with a value anyone can read is
+ * reversible by brute force. The Privacy Policy states that we keep only a salted
+ * hash and never the raw IP, and that claim is only true if RATE_LIMIT_SALT is
+ * actually set in the runtime environment. Warn loudly outside development rather
+ * than falling back silently.
+ */
+const SALT = process.env.RATE_LIMIT_SALT || 'lanework-dev-fallback-salt'
+if (!process.env.RATE_LIMIT_SALT && process.env.NODE_ENV === 'production') {
+  console.error(
+    '[spam] RATE_LIMIT_SALT is not set. IP hashes are using a public fallback salt and ' +
+      'are effectively reversible. Set it in the Netlify site environment.'
+  )
+}
 
 // Tunables
 const RATE_WINDOW_MS = 60 * 60 * 1000 // 1 hour

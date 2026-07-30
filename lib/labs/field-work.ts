@@ -28,6 +28,15 @@ export interface FieldWork {
   /** Product logo (public path) where a mark exists. */
   logo?: string
   demoUrl?: string
+  /**
+   * Systems and networks this deployment connects to, rendered as a "Connects with"
+   * row. Ids match filenames in public/labs/partners/, so a mark appears as soon as
+   * a file is added and falls back to a wordmark chip until then. These are
+   * integrations, deliberately not framed as customers or endorsements.
+   */
+  integrations?: { id: string; name: string }[]
+  /** Optional lead-in above the integration row. */
+  integrationsNote?: string
 }
 
 export const fieldWork: FieldWork[] = [
@@ -72,6 +81,25 @@ export const fieldWork: FieldWork[] = [
       'Rapid Load aggregates the sources into one searchable board. It normalizes lane, rate, and equipment data into a single schema and deduplicates the same load posted in several places, so what a dispatcher sees is the real, unique market rather than noise.',
       'The result is a single pane for spot capacity: faster search, cleaner data, and a trustworthy market view to build matching and backhaul optimization on top of.',
     ],
+    integrationsNote:
+      'The board reads from load boards, brokerages, and carrier networks, normalizing each into one schema.',
+    integrations: [
+      { id: 'dat', name: 'DAT' },
+      { id: 'truckstop', name: 'Truckstop' },
+      { id: 'chrobinson', name: 'C.H. Robinson' },
+      { id: 'echo', name: 'Echo' },
+      { id: 'schneider', name: 'Schneider' },
+      { id: 'loadsmart', name: 'Loadsmart' },
+      { id: 'knx', name: 'KNX Logistics' },
+      { id: 'tql', name: 'TQL' },
+      { id: 'nfi', name: 'NFI Industries' },
+      { id: 'werner', name: 'Werner' },
+      { id: 'trinity', name: 'Trinity Logistics' },
+      { id: 'landstar', name: 'Landstar' },
+      { id: 'spot', name: 'Spot' },
+      { id: 'ntg', name: 'Nolan (NTG)' },
+      { id: 'shipcars', name: 'Ship.cars' },
+    ],
   },
   {
     slug: 'repowr-spot-market-integration',
@@ -86,6 +114,13 @@ export const fieldWork: FieldWork[] = [
       'Rapid Load + TaaS integrates REPOWR directly into the aggregated board, surfacing Trailer-as-a-Service capacity alongside spot freight in one place. Data integrations normalize listings from multiple sources into a single schema so dispatchers stop tab-switching and work from one view.',
       'The hard part is synchronization. We researched and built a multi-market layer that keeps aggregated capacity and loads consistent in near-real-time: it deduplicates overlapping inventory, reconciles state as listings change, and prevents a load or trailer matched in one market from being double-booked in another.',
       'The result is one view spanning spot freight and trailer capacity, faster matching, and cross-market backhaul opportunities manual workflows missed. This one is still in pilot.',
+    ],
+    integrationsNote:
+      'Trailer-pool capacity is synchronized with the spot sources already on the board.',
+    integrations: [
+      { id: 'repowr', name: 'REPOWR' },
+      { id: 'dat', name: 'DAT' },
+      { id: 'truckstop', name: 'Truckstop' },
     ],
   },
 ]

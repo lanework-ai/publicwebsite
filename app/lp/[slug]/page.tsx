@@ -59,18 +59,18 @@ export default async function LabsPaidLandingPage({ params, searchParams }: Page
       <div className="ll-lp-grid" style={{ display: 'grid', gap: 40 }}>
         <div>
           {copy.eyebrow && (
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 12, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--lw-accent-soft)', marginBottom: 18 }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 14, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--lw-accent-soft)', marginBottom: 18 }}>
               {copy.eyebrow}
             </div>
           )}
           <h1 style={{ fontSize: 'var(--text-hero)', lineHeight: 'var(--leading-display)', fontWeight: 500, letterSpacing: 'var(--tracking-tight)', margin: '0 0 20px', maxWidth: 620 }}>
             {copy.headline}
           </h1>
-          <p style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 560, margin: '0 0 28px' }}>{copy.subhead}</p>
+          <p style={{ fontSize: 18, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 560, margin: '0 0 28px' }}>{copy.subhead}</p>
 
           {copy.ctaCalloutHtml && (
             <div
-              style={{ border: '1px solid rgba(127,149,255,0.3)', borderRadius: 12, padding: '16px 18px', background: 'var(--lw-panel-accent)', maxWidth: 560, fontSize: 14, color: 'var(--lw-fg-2)', lineHeight: 1.6, marginBottom: 28 }}
+              style={{ border: '1px solid rgba(127,149,255,0.3)', borderRadius: 12, padding: '16px 18px', background: 'var(--lw-panel-accent)', maxWidth: 560, fontSize: 16, color: 'var(--lw-fg-2)', lineHeight: 1.6, marginBottom: 28 }}
               dangerouslySetInnerHTML={{ __html: copy.ctaCalloutHtml }}
             />
           )}
@@ -81,7 +81,7 @@ export default async function LabsPaidLandingPage({ params, searchParams }: Page
             </div>
           )}
 
-          <p style={{ fontSize: 12.5, color: 'var(--lw-dim)', marginTop: 24 }}>
+          <p style={{ fontSize: 14, color: 'var(--lw-dim)', marginTop: 24 }}>
             Prefer the full page?{' '}
             <Link href={lw(`/research/${slug}`)} style={{ color: 'var(--lw-accent-soft)' }}>Read the research →</Link>
           </p>

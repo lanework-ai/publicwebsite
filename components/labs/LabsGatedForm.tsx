@@ -63,14 +63,14 @@ export default function LabsGatedForm({
     borderRadius: 6,
     padding: '10px 12px',
     color: 'var(--lw-fg)',
-    fontSize: 13.5,
+    fontSize: 15,
     fontFamily: 'inherit',
   }
 
   return (
     <div style={{ border: '1px solid var(--lw-line-2)', borderRadius: 12, padding: 22 }}>
-      <div className="ll-label" style={{ fontSize: 10.5, marginBottom: 12 }}>Get the full paper</div>
-      <p style={{ fontSize: 13, color: 'var(--lw-faint)', lineHeight: 1.6, margin: '0 0 16px' }}>
+      <div className="ll-label" style={{ fontSize: 12, marginBottom: 12 }}>Get the full paper</div>
+      <p style={{ fontSize: 15, color: 'var(--lw-faint)', lineHeight: 1.6, margin: '0 0 16px' }}>
         The complete PDF, emailed to you. No spam.
       </p>
       <form onSubmit={submit} style={{ display: 'grid', gap: 10 }}>
@@ -80,13 +80,13 @@ export default function LabsGatedForm({
         <button
           type="submit"
           disabled={isLoading || isSuccess}
-          style={{ fontFamily: 'var(--font-mono)', fontSize: 11.5, letterSpacing: '0.06em', background: 'var(--lw-fg)', color: 'var(--lw-bg)', padding: '11px 14px', borderRadius: 6, border: 'none', cursor: isLoading || isSuccess ? 'default' : 'pointer', marginTop: 2, opacity: isLoading ? 0.6 : 1 }}
+          style={{ fontFamily: 'var(--font-mono)', fontSize: 13, letterSpacing: '0.06em', background: 'var(--lw-fg)', color: 'var(--lw-bg)', padding: '11px 14px', borderRadius: 6, border: 'none', cursor: isLoading || isSuccess ? 'default' : 'pointer', marginTop: 2, opacity: isLoading ? 0.6 : 1 }}
         >
           {isSuccess ? 'Sent ✓' : isLoading ? 'Sending…' : 'Email me the paper →'}
         </button>
       </form>
       {(err || apiError) && !isSuccess && (
-        <p style={{ fontSize: 12, color: '#ff8585', margin: '10px 0 0' }}>{err || 'Something went wrong. Please try again.'}</p>
+        <p style={{ fontSize: 14, color: '#ff8585', margin: '10px 0 0' }}>{err || 'Something went wrong. Please try again.'}</p>
       )}
     </div>
   )

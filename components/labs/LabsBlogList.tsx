@@ -45,7 +45,7 @@ export default function LabsBlogList({ posts }: { posts: Post[] }) {
                 onClick={() => setActive(c)}
                 style={{
                   fontFamily: 'var(--font-mono)',
-                  fontSize: 11,
+                  fontSize: 13,
                   letterSpacing: '0.06em',
                   textTransform: 'uppercase',
                   padding: '7px 13px',
@@ -72,20 +72,20 @@ export default function LabsBlogList({ posts }: { posts: Post[] }) {
               )}
             </div>
             <div style={{ padding: 18 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10, fontFamily: 'var(--font-mono)', fontSize: 10.5, color: 'var(--lw-dim)', letterSpacing: '0.06em' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10, fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--lw-dim)', letterSpacing: '0.06em' }}>
                 {p.categories?.[0] && <span style={{ color: 'var(--lw-accent-soft)' }}>{p.categories[0].toUpperCase()}</span>}
                 <span>{fmt(p.publishedAt)}</span>
                 {p.readTime && <span>· {p.readTime}</span>}
               </div>
-              <div style={{ fontWeight: 500, fontSize: 16, lineHeight: 1.3, marginBottom: 8, color: 'var(--lw-fg)' }}>{p.title}</div>
-              {p.excerpt && <p style={{ fontSize: 12.5, color: 'var(--lw-faint)', lineHeight: 1.6, margin: 0 }}>{p.excerpt}</p>}
+              <div style={{ fontWeight: 500, fontSize: 18, lineHeight: 1.3, marginBottom: 8, color: 'var(--lw-fg)' }}>{p.title}</div>
+              {p.excerpt && <p style={{ fontSize: 14, color: 'var(--lw-faint)', lineHeight: 1.6, margin: 0 }}>{p.excerpt}</p>}
             </div>
           </Card>
         ))}
       </div>
 
       {filtered.length === 0 && (
-        <p style={{ fontSize: 14, color: 'var(--lw-faint)' }}>No notes in this category yet.</p>
+        <p style={{ fontSize: 16, color: 'var(--lw-faint)' }}>No notes in this category yet.</p>
       )}
     </>
   )

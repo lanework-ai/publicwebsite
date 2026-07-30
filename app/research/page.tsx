@@ -86,16 +86,16 @@ export default async function LabsResearch() {
               style={{ display: 'block', borderBottom: '1px solid var(--lw-line)', padding: '22px 0' }}
             >
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 14, marginBottom: 8, flexWrap: 'wrap' }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10.5, letterSpacing: '0.1em', color: 'var(--lw-accent-soft)', textTransform: 'uppercase' }}>{r.kind}</span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10.5, color: 'var(--lw-dim)' }}>{fmt(r.publishedAt)}</span>
-                {r.period && <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10.5, color: 'var(--lw-dim)' }}>· {r.period}</span>}
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, letterSpacing: '0.1em', color: 'var(--lw-accent-soft)', textTransform: 'uppercase' }}>{r.kind}</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--lw-dim)' }}>{fmt(r.publishedAt)}</span>
+                {r.period && <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--lw-dim)' }}>· {r.period}</span>}
               </div>
-              <div style={{ fontSize: 19, fontWeight: 500, marginBottom: 6, letterSpacing: '-0.01em' }}>{r.title}</div>
-              <p style={{ fontSize: 13.5, color: 'var(--lw-faint)', lineHeight: 1.6, margin: 0, maxWidth: 680 }}>{r.description}</p>
+              <div style={{ fontSize: 21, fontWeight: 500, marginBottom: 6, letterSpacing: '-0.01em' }}>{r.title}</div>
+              <p style={{ fontSize: 15, color: 'var(--lw-faint)', lineHeight: 1.6, margin: 0, maxWidth: 680 }}>{r.description}</p>
             </Link>
           ))}
           {rows.length === 0 && (
-            <p style={{ fontSize: 14, color: 'var(--lw-faint)', padding: '22px 0' }}>Research is being prepared. Check back soon.</p>
+            <p style={{ fontSize: 16, color: 'var(--lw-faint)', padding: '22px 0' }}>Research is being prepared. Check back soon.</p>
           )}
         </div>
       </section>
@@ -103,7 +103,7 @@ export default async function LabsResearch() {
       {/* In the pipeline */}
       <section className="ll-section" style={{ paddingTop: 8, paddingBottom: 52 }}>
         <SectionLabel index="→">In the pipeline</SectionLabel>
-        <p style={{ fontSize: 14, color: 'var(--lw-muted)', lineHeight: 1.6, maxWidth: 560, margin: '0 0 28px' }}>
+        <p style={{ fontSize: 16, color: 'var(--lw-muted)', lineHeight: 1.6, maxWidth: 560, margin: '0 0 28px' }}>
           A look at what we&rsquo;re currently researching. Want early access to a draft, or to
           contribute data to one of these? <Link href="/connect" style={{ color: 'var(--lw-accent-soft)' }}>Get in touch.</Link>
         </p>
@@ -113,17 +113,17 @@ export default async function LabsResearch() {
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
                 {/* Work-in-progress mark: the accent lane fills as the batch nears shipping */}
                 <Logo wordmark={false} size={22} interaction="none" progress={batch.progress} />
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, letterSpacing: '0.1em', color: 'var(--lw-dim)', textTransform: 'uppercase' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 14, letterSpacing: '0.1em', color: 'var(--lw-dim)', textTransform: 'uppercase' }}>
                   {batch.window}
                 </span>
               </div>
               <div style={{ borderTop: '1px solid var(--lw-line)' }}>
                 {batch.titles.map((t) => (
                   <div key={t} style={{ display: 'flex', alignItems: 'center', gap: 14, borderBottom: '1px solid var(--lw-line)', padding: '15px 0' }}>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9.5, letterSpacing: '0.08em', color: 'var(--lw-faint)', border: '1px solid var(--lw-line-2)', borderRadius: 999, padding: '3px 9px', whiteSpace: 'nowrap' }}>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, letterSpacing: '0.08em', color: 'var(--lw-faint)', border: '1px solid var(--lw-line-2)', borderRadius: 999, padding: '3px 9px', whiteSpace: 'nowrap' }}>
                       COMING SOON
                     </span>
-                    <span style={{ fontSize: 15, color: 'var(--lw-fg-2)', letterSpacing: '-0.01em' }}>{t}</span>
+                    <span style={{ fontSize: 17, color: 'var(--lw-fg-2)', letterSpacing: '-0.01em' }}>{t}</span>
                   </div>
                 ))}
               </div>

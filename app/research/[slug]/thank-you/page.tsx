@@ -53,10 +53,10 @@ export default async function LabsResearchThankYou({ params }: { params: Promise
           <h1 style={{ fontSize: 'var(--text-h1)', lineHeight: 'var(--leading-tight)', fontWeight: 500, letterSpacing: 'var(--tracking-tight)', margin: '0 0 16px' }}>
             Check your inbox
           </h1>
-          <p style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--lw-muted)', margin: '0 0 10px' }}>
+          <p style={{ fontSize: 18, lineHeight: 1.6, color: 'var(--lw-muted)', margin: '0 0 10px' }}>
             We just emailed you a download link for <span style={{ color: 'var(--lw-fg)', fontWeight: 500 }}>{doc.title}</span>.
           </p>
-          <p style={{ fontSize: 13, color: 'var(--lw-faint)', margin: '0 0 30px' }}>
+          <p style={{ fontSize: 15, color: 'var(--lw-faint)', margin: '0 0 30px' }}>
             Not there within a couple of minutes? Check spam, or{' '}
             <Link href={lw(`/research/${slug}`)} style={{ color: 'var(--lw-accent-soft)' }}>request a fresh link</Link>.
           </p>
@@ -70,22 +70,22 @@ export default async function LabsResearchThankYou({ params }: { params: Promise
       {relatedCount > 0 && (
         <section style={{ borderTop: '1px solid var(--lw-line)' }}>
           <div className="ll-section" style={{ paddingTop: 48, paddingBottom: 56 }}>
-            <h2 style={{ fontSize: 22, fontWeight: 500, letterSpacing: '-0.01em', textAlign: 'center', margin: '0 0 24px' }}>
+            <h2 style={{ fontSize: 24, fontWeight: 500, letterSpacing: '-0.01em', textAlign: 'center', margin: '0 0 24px' }}>
               Keep exploring the research
             </h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
               {related.whitePapers.map((p: any) => (
                 <Card as={Link} key={p._id} href={lw(`/research/${p.slug.current}`)} padding={20} style={{ display: 'block' }}>
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.08em', color: 'var(--lw-accent-soft)', textTransform: 'uppercase', marginBottom: 8 }}>White paper</div>
-                  <div style={{ fontWeight: 500, fontSize: 15, lineHeight: 1.3, marginBottom: 8 }}>{p.title}</div>
-                  <p style={{ fontSize: 12.5, color: 'var(--lw-faint)', lineHeight: 1.6, margin: 0 }}>{p.description ?? ''}</p>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: 12, letterSpacing: '0.08em', color: 'var(--lw-accent-soft)', textTransform: 'uppercase', marginBottom: 8 }}>White paper</div>
+                  <div style={{ fontWeight: 500, fontSize: 17, lineHeight: 1.3, marginBottom: 8 }}>{p.title}</div>
+                  <p style={{ fontSize: 14, color: 'var(--lw-faint)', lineHeight: 1.6, margin: 0 }}>{p.description ?? ''}</p>
                 </Card>
               ))}
               {related.posts.map((b: any) => (
                 <Card as={Link} key={b._id} href={lw(`/blog/${b.slug.current}`)} padding={20} style={{ display: 'block' }}>
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.08em', color: 'var(--lw-accent-soft)', textTransform: 'uppercase', marginBottom: 8 }}>{b.category ?? 'Note'}</div>
-                  <div style={{ fontWeight: 500, fontSize: 15, lineHeight: 1.3, marginBottom: 8 }}>{b.title}</div>
-                  <p style={{ fontSize: 12.5, color: 'var(--lw-faint)', lineHeight: 1.6, margin: 0 }}>{b.excerpt ?? ''}</p>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: 12, letterSpacing: '0.08em', color: 'var(--lw-accent-soft)', textTransform: 'uppercase', marginBottom: 8 }}>{b.category ?? 'Note'}</div>
+                  <div style={{ fontWeight: 500, fontSize: 17, lineHeight: 1.3, marginBottom: 8 }}>{b.title}</div>
+                  <p style={{ fontSize: 14, color: 'var(--lw-faint)', lineHeight: 1.6, margin: 0 }}>{b.excerpt ?? ''}</p>
                 </Card>
               ))}
             </div>

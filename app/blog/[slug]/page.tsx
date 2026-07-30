@@ -26,7 +26,7 @@ function fmt(iso?: string) {
   return Number.isNaN(d.getTime()) ? '' : d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 }
 
-const h2: React.CSSProperties = { fontSize: 22, fontWeight: 500, letterSpacing: '-0.01em', margin: '0 0 16px' }
+const h2: React.CSSProperties = { fontSize: 24, fontWeight: 500, letterSpacing: '-0.01em', margin: '0 0 16px' }
 
 export default async function LabsNoteDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -38,18 +38,18 @@ export default async function LabsNoteDetail({ params }: { params: Promise<{ slu
   return (
     <>
       <article className="ll-section" style={{ paddingTop: 56, paddingBottom: 48, maxWidth: 780 }}>
-        <Link href={lw('/blog')} style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--lw-muted)', letterSpacing: '0.06em' }}>
+        <Link href={lw('/blog')} style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--lw-muted)', letterSpacing: '0.06em' }}>
           ← NOTES
         </Link>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', margin: '24px 0 14px', fontFamily: 'var(--font-mono)', fontSize: 10.5, color: 'var(--lw-dim)', letterSpacing: '0.06em' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', margin: '24px 0 14px', fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--lw-dim)', letterSpacing: '0.06em' }}>
           {category && <span style={{ color: 'var(--lw-accent-soft)' }}>{category.toUpperCase()}</span>}
           <span>{fmt(post.publishedAt)}</span>
           {post.readTime && <span>· {post.readTime}</span>}
           {authorName && <span>· {authorName}</span>}
         </div>
 
-        <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', lineHeight: 1.12, fontWeight: 500, letterSpacing: '-0.02em', margin: '0 0 28px' }}>
+        <h1 style={{ fontSize: 'clamp(32px, 4.4vw, 45px)', lineHeight: 1.12, fontWeight: 500, letterSpacing: '-0.02em', margin: '0 0 28px' }}>
           {post.title}
         </h1>
 
@@ -60,7 +60,7 @@ export default async function LabsNoteDetail({ params }: { params: Promise<{ slu
         )}
 
         {Array.isArray(post.body) && post.body.length > 0 && (
-          <div style={{ fontSize: 16, lineHeight: 1.7 }}>
+          <div style={{ fontSize: 18, lineHeight: 1.7 }}>
             <RichText value={post.body} />
           </div>
         )}
@@ -86,8 +86,8 @@ export default async function LabsNoteDetail({ params }: { params: Promise<{ slu
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
               {post.relatedPosts.map((p: any) => (
                 <Card as={Link} key={p._id} href={lw(`/blog/${p.slug.current}`)} padding={20} style={{ display: 'block' }}>
-                  <div style={{ fontWeight: 500, fontSize: 15, lineHeight: 1.3, marginBottom: 8 }}>{p.title}</div>
-                  <p style={{ fontSize: 12.5, color: 'var(--lw-faint)', lineHeight: 1.6, margin: 0 }}>{p.excerpt ?? ''}</p>
+                  <div style={{ fontWeight: 500, fontSize: 17, lineHeight: 1.3, marginBottom: 8 }}>{p.title}</div>
+                  <p style={{ fontSize: 14, color: 'var(--lw-faint)', lineHeight: 1.6, margin: 0 }}>{p.excerpt ?? ''}</p>
                 </Card>
               ))}
             </div>
