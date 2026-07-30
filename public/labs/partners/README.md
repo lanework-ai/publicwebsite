@@ -15,13 +15,39 @@ produces a broken image.
 **SVG is strongly preferred**: these render small and on a near-black background,
 where a low-resolution PNG shows its edges.
 
+## How marks are rendered
+
+As **white knockouts**, not in brand colour (`.ll-partner img` in `app/labs-theme.css`).
+That is deliberate and measured: against the `#08090a` canvas several supplied marks
+were not legible, KNX at 22 mean luminance, Truckstop at 40, Ship.cars at 52, which
+at 65% opacity land near 18, 29 and 37. A knockout fixes all of them at once and
+keeps a fifteen-logo row from reading as a badge farm on an otherwise austere page.
+
+To restore brand colour, delete that one rule. Replace the three dark marks above
+with light-background variants first, or they will vanish.
+
 ## Expected filenames
 
-Present today:
+Present today (14 traced from supplied artwork, plus REPOWR):
 
-| File | Brand |
-|---|---|
-| `repowr.svg` | REPOWR |
+| File | Brand | | File | Brand |
+|---|---|---|---|---|
+| `repowr.svg` | REPOWR | | `tql.svg` | TQL |
+| `dat.svg` | DAT | | `trinity.svg` | Trinity Logistics |
+| `truckstop.svg` | Truckstop | | `landstar.svg` | Landstar |
+| `chrobinson.svg` | C.H. Robinson | | `werner.svg` | Werner |
+| `schneider.svg` | Schneider | | `spot.svg` | Spot |
+| `echo.svg` | Echo | | `ntg.svg` | Nolan (NTG) |
+| `loadsmart.svg` | Loadsmart | | `shipcars.svg` | Ship.cars |
+| `knx.svg` | KNX Logistics | | | |
+
+Still missing, so still rendering as a wordmark chip: **`nfi.svg`** (NFI Industries).
+
+A note on weight: these were traced from raster art, so a few are heavy for what
+they are. `ntg.svg` is 238 KB raw (88 KB gzipped) to draw a 24px silhouette,
+`shipcars.svg` 122 KB and `spot.svg` 97 KB. They are static and CDN-cached so this
+is not urgent, but an official SVG from the brand's press kit would be both sharper
+and far smaller if one is easy to get.
 
 Wanted for the "Runs with your stack" band:
 

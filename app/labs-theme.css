@@ -249,6 +249,28 @@
   opacity: 1;
 }
 
+/* Partner marks render as white knockouts rather than in brand colour.
+ *
+ * Two reasons, one of them measured. Against this canvas (luminance ~9) several
+ * supplied marks are simply not legible: KNX measured 22, Truckstop 40 and
+ * Ship.cars 52 mean luminance, which at 65% opacity lands at roughly 18, 29 and 37.
+ * KNX in particular disappears. A knockout fixes every case at once instead of
+ * hand-tuning a filter per brand, and half-measures like invert() wreck the marks
+ * that are already fine (Truckstop's red pin would turn cyan).
+ *
+ * The second reason is that the design system is near-iconless and monochrome. A
+ * row of fifteen full-colour third-party logos reads as a badge farm and pulls
+ * against everything else on the page. REPOWR, the one mark here from the start,
+ * has always been a white knockout and is why that band looks calm.
+ *
+ * Reversing this is one rule: delete the filter and the marks return to brand
+ * colour. If that is wanted, the three dark marks above need replacing with
+ * light-background variants first.
+ */
+.ll-partner img {
+  filter: brightness(0) invert(1);
+}
+
 /* Paid landing page: content + gated form, stacks on narrow screens. */
 .ll-lp-grid {
   grid-template-columns: minmax(0, 1fr);
