@@ -92,7 +92,7 @@ export const fieldWork: FieldWork[] = [
       { id: 'loadsmart', name: 'Loadsmart' },
       { id: 'knx', name: 'KNX Logistics' },
       { id: 'tql', name: 'TQL' },
-      { id: 'nfi', name: 'NFI Industries' },
+      { id: 'nfi', name: 'NFI' },
       { id: 'werner', name: 'Werner' },
       { id: 'trinity', name: 'Trinity Logistics' },
       { id: 'landstar', name: 'Landstar' },

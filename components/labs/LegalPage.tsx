@@ -54,7 +54,11 @@ export function LegalPage({
                     )}
                   </p>
                 ) : (
-                  <ul key={j} style={{ margin: 0, paddingLeft: 20, display: 'grid', gap: 8 }}>
+                  /* listStyleType is set explicitly because Tailwind's preflight resets
+                     ul to list-style: none globally. Without it these render as
+                     unmarked indented lines that read as stray fragments rather than
+                     a list. */
+                  <ul key={j} className="ll-legal-list" style={{ margin: 0, paddingLeft: 22, display: 'grid', gap: 8, listStyleType: 'disc' }}>
                     {b.ul.map((it, k) => (
                       <li key={k} style={{ fontSize: 17, lineHeight: 1.6, color: 'var(--lw-fg-2)' }}>
                         {bindWidow(it)}

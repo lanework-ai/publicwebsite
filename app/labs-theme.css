@@ -239,6 +239,12 @@
 }
 
 /* Partner marks in the ecosystem band: muted at rest, full on hover (no loops). */
+/* Legal page lists. The marker is dimmed so the bullet sits behind the text rather
+   than competing with it, matching how the rest of the site treats structure. */
+.ll-legal-list li::marker {
+  color: var(--lw-dim);
+}
+
 /* Partner marks: a fixed-footprint cell, so a row of wordmarks and square badge
    icons reads as one grid despite the mismatched aspect ratios. The mark scales to
    fit its box; the name sits underneath. */

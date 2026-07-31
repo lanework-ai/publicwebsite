@@ -50,28 +50,6 @@ const AVAILABLE_LOGOS: Record<string, string> = (() => {
 })()
 
 /**
- * Render height per mark. Wordmark-shaped logos (a word set in type) need less
- * height than square icon marks to carry the same visual weight, so anything not
- * listed falls back to a conservative default.
- */
-const LOGO_HEIGHTS: Record<string, number> = {
-  repowr: 14,
-  truckstop: 15,
-  dat: 18,
-  landstar: 26,
-  werner: 18,
-  knx: 22,
-  nfi: 16,
-  schneider: 22,
-  spot: 22,
-  ntg: 24,
-  echo: 22,
-  loadsmart: 22,
-  chrobinson: 22,
-}
-const DEFAULT_LOGO_HEIGHT = 20
-
-/**
  * Marks whose artwork is dark and has no background of its own, so it disappears
  * against this canvas. These get a light plate behind them, which is how a dark
  * wordmark is normally placed on a dark page.

@@ -41,7 +41,14 @@ Present today (14 traced from supplied artwork, plus REPOWR):
 | `loadsmart.svg` | Loadsmart | | `shipcars.svg` | Ship.cars |
 | `knx.svg` | KNX Logistics | | | |
 
-Still missing, so still rendering as a wordmark chip: **`nfi.svg`** (NFI Industries).
+Still missing, so still showing its name in the mark slot: **`nfi.svg`** (or `nfi.png`).
+
+## Render size
+
+Do not set per-logo heights. Every mark sits in an identical cell (108px wide, 44px
+tall) and is scaled to fit with `object-fit: contain`, which is what makes a row of
+wide wordmarks and square badge icons read as one grid. An earlier per-brand
+`LOGO_HEIGHTS` map was removed once the cell took over sizing.
 
 A note on weight: these were traced from raster art, so a few are heavy for what
 they are. `ntg.svg` is 238 KB raw (88 KB gzipped) to draw a 24px silhouette,
