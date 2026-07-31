@@ -59,8 +59,14 @@ const AVAILABLE_LOGOS: Record<string, string> = (() => {
  * because most of these marks are badge icons that carry their own coloured disc
  * and already read fine. Do not turn this into a global rule: knocking every mark
  * out to white flattened those discs into featureless circles.
+ *
+ * `nfi` is here for a different reason: that file is an opaque PNG with a baked-in
+ * white background (no tRNS chunk), so without a plate it renders as a white
+ * rectangle among transparent marks. The plate is pure white, so the image's own
+ * background blends into it and the seam does not show. Replacing it with a
+ * transparent SVG from NFI's press kit would let it leave this set.
  */
-const NEEDS_LIGHT_PLATE = new Set(['knx', 'truckstop', 'shipcars'])
+const NEEDS_LIGHT_PLATE = new Set(['knx', 'truckstop', 'shipcars', 'nfi'])
 
 const CATEGORIES: Category[] = [
   {

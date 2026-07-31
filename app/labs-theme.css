@@ -282,7 +282,9 @@
    here. Kept per-mark in Ecosystem.tsx (NEEDS_LIGHT_PLATE), never global: knocking
    every mark out to white flattened the badge icons into featureless circles. */
 .ll-partner-plate {
-  background: #e9ebee;
+  /* Pure white, not off-white: nfi.png carries a baked-in white background, and an
+     off-white plate would leave a visible seam around it. */
+  background: #fff;
   border-radius: 6px;
   padding: 5px 8px;
 }
@@ -309,22 +311,6 @@
   color: var(--lw-dim);
   text-align: center;
   line-height: 1.35;
-}
-
-/* Marks render in brand colour. A previous attempt knocked them all out to white,
- * which destroyed every badge-style mark: on Echo, Schneider, Loadsmart,
- * C.H. Robinson, TQL, Trinity and NTG the coloured disc IS the artwork, so filling
- * it white produced a row of featureless circles. Luminance alone was the wrong
- * thing to optimise for.
- *
- * The three marks that genuinely cannot be read on this canvas are handled instead
- * by putting them on a light plate, per-mark, in Ecosystem.tsx. */
-.ll-partner-plate {
-  background: #e9ebee;
-  border-radius: 5px;
-  padding: 4px 7px;
-  display: inline-flex;
-  align-items: center;
 }
 
 /* Paid landing page: content + gated form, stacks on narrow screens. */
