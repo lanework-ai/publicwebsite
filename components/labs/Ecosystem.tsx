@@ -71,6 +71,19 @@ const LOGO_HEIGHTS: Record<string, number> = {
 }
 const DEFAULT_LOGO_HEIGHT = 20
 
+/**
+ * Marks whose artwork is dark and has no background of its own, so it disappears
+ * against this canvas. These get a light plate behind them, which is how a dark
+ * wordmark is normally placed on a dark page.
+ *
+ * Measured mean luminance against the #08090a background (~9): knx 22,
+ * truckstop 40, shipcars 52. Everything else sits at 72 or above and is left alone,
+ * because most of these marks are badge icons that carry their own coloured disc
+ * and already read fine. Do not turn this into a global rule: knocking every mark
+ * out to white flattened those discs into featureless circles.
+ */
+const NEEDS_LIGHT_PLATE = new Set(['knx', 'truckstop', 'shipcars'])
+
 const CATEGORIES: Category[] = [
   {
     title: 'Transportation management',
@@ -119,33 +132,35 @@ const CATEGORIES: Category[] = [
   },
 ]
 
+/**
+ * One partner, as a fixed-footprint labelled cell.
+ *
+ * Matching logo heights does not produce a uniform row, because these marks have
+ * wildly different aspect ratios: DAT and Werner are wide wordmarks, most of the
+ * carriers are square badge icons, Landstar is a tall star. Setting a common height
+ * makes the wordmarks enormous and the icons tiny.
+ *
+ * So every mark instead gets an identical box and is scaled to fit inside it with
+ * object-fit: contain. The footprint is uniform even though the artwork is not, and
+ * the name sits underneath so a mark nobody recognises is still readable. A brand
+ * with no file yet shows its name in the mark slot, so it occupies the same cell as
+ * everything else rather than looking like a different kind of thing.
+ */
 export function PartnerBadge({ partner }: { partner: Partner }) {
   const src = AVAILABLE_LOGOS[partner.id]
-  if (src) {
-    const height = LOGO_HEIGHTS[partner.id] ?? DEFAULT_LOGO_HEIGHT
-    return (
-      <span className="ll-partner" title={partner.name}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={src} alt={partner.name} style={{ height, width: 'auto', display: 'block' }} />
-      </span>
-    )
-  }
   return (
-    <span
-      className="ll-partner"
-      style={{
-        fontFamily: 'var(--font-mono)',
-        fontSize: 12,
-        letterSpacing: '0.08em',
-        textTransform: 'uppercase',
-        color: 'var(--lw-muted)',
-        border: '1px solid var(--lw-line-2)',
-        borderRadius: 999,
-        padding: '5px 11px',
-        whiteSpace: 'nowrap',
-      }}
-    >
-      {partner.name}
+    <span className="ll-partner-cell" title={partner.name}>
+      <span className={['ll-partner', NEEDS_LIGHT_PLATE.has(partner.id) ? 'll-partner-plate' : ''].filter(Boolean).join(' ')}>
+        {src ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img src={src} alt="" />
+        ) : (
+          <span className="ll-partner-fallback">{partner.name}</span>
+        )}
+      </span>
+      {/* The label names the mark. A brand without a logo file already shows its name
+          in the slot above, so repeating it underneath would just say it twice. */}
+      {src && <span className="ll-partner-label">{partner.name}</span>}
     </span>
   )
 }
@@ -176,7 +191,7 @@ export function IntegrationRow({
           {bindWidow(note)}
         </p>
       )}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '22px 16px', flexWrap: 'wrap' }}>
         {partners.map((p) => (
           <PartnerBadge key={p.id} partner={p} />
         ))}
@@ -197,7 +212,7 @@ export default function Ecosystem({
     return (
       <section className="ll-section" style={{ paddingTop: 44, paddingBottom: 8 }}>
         <SectionHeader index={index} label="Runs with your stack" style={{ marginBottom: 18 }} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '22px 16px', flexWrap: 'wrap' }}>
           {all.map((p) => (
             <PartnerBadge key={p.id} partner={p} />
           ))}
@@ -218,13 +233,13 @@ export default function Ecosystem({
         {CATEGORIES.map((c) => (
           <div
             key={c.title}
-            style={{ background: 'var(--lw-panel)', padding: '16px 18px', display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}
+            style={{ background: 'var(--lw-panel)', padding: '20px 18px', display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}
           >
             <div style={{ width: 210, flexShrink: 0 }}>
               <div style={{ fontWeight: 500, fontSize: 16, color: 'var(--lw-fg)' }}>{c.title}</div>
               <div style={{ fontSize: 14, color: 'var(--lw-faint)', lineHeight: 1.5, marginTop: 3 }}>{bindWidow(c.desc)}</div>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', flex: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '18px 12px', flexWrap: 'wrap', flex: 1 }}>
               {c.partners.map((p) => (
                 <PartnerBadge key={p.id} partner={p} />
               ))}
