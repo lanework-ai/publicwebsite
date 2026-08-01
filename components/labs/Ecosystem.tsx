@@ -40,7 +40,7 @@ const AVAILABLE_LOGOS: Record<string, string> = (() => {
     const dir = join(process.cwd(), 'public', 'labs', 'partners')
     const found: Record<string, string> = {}
     for (const file of readdirSync(dir)) {
-      const m = file.match(/^(.+)\.(svg|png|webp)$/i)
+      const m = file.match(/^(.+)\.(svg|png|webp|avif)$/i)
       if (m) found[m[1].toLowerCase()] = `/labs/partners/${file}`
     }
     return found
@@ -66,7 +66,28 @@ const AVAILABLE_LOGOS: Record<string, string> = (() => {
  * background blends into it and the seam does not show. Replacing it with a
  * transparent SVG from NFI's press kit would let it leave this set.
  */
-const NEEDS_LIGHT_PLATE = new Set(['knx', 'truckstop', 'shipcars', 'nfi'])
+const NEEDS_LIGHT_PLATE = new Set([
+  // Dark artwork on transparency: invisible without a plate.
+  'knx',
+  'truckstop',
+  'shipcars',
+  // Opaque files with a baked-in white background. Rendered bare they are hard white
+  // squares; on the plate they become a logo on a rounded white tile, which is both
+  // tidier and the conventional way to place these. Corner luminance measured 255.
+  'nfi',
+  'mcleod',
+  'trimble',
+  'mercurygate',
+  'roserocket',
+  'samsara',
+  'omnitracs',
+  'fourkites',
+  'transporeon',
+  // Deliberately NOT plated: motive (corner luminance 0), macropoint (22) and geotab
+  // (50) are near-black tiles that disappear into this canvas and read as if they
+  // were transparent, and project44 (99) is a mid-tone coloured tile that stands on
+  // its own. Putting any of them on a white plate would frame a dark square in white.
+])
 
 const CATEGORIES: Category[] = [
   {
