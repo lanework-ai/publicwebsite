@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getWhitePaperBySlug, getBenchmarkBySlug, getRelatedResources } from '@/lib/sanity-queries'
 import { Card, Button } from '@/components/labs/ds'
+import ThankYouAnalytics from '@/components/labs/ThankYouAnalytics'
+import DemoCtaLink from '@/components/labs/DemoCtaLink'
 import { lw } from '@/lib/labs/config'
 
 export const metadata = {
@@ -10,16 +12,21 @@ export const metadata = {
 }
 export const revalidate = 86400
 
+/** Returns the doc plus which of the two gated types it is — the analytics
+ *  event needs the type, so it can't be thrown away here. */
 async function resolve(slug: string) {
   const wp = (await getWhitePaperBySlug(slug)) as any
-  if (wp) return wp
-  return (await getBenchmarkBySlug(slug)) as any
+  if (wp) return { doc: wp, contentType: 'whitepaper' as const }
+  const bm = (await getBenchmarkBySlug(slug)) as any
+  if (bm) return { doc: bm, contentType: 'benchmark' as const }
+  return null
 }
 
 export default async function LabsResearchThankYou({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const doc = await resolve(slug)
-  if (!doc) notFound()
+  const resolved = await resolve(slug)
+  if (!resolved) notFound()
+  const { doc, contentType } = resolved
 
   const related = await getRelatedResources({
     currentId: doc._id,
@@ -31,6 +38,7 @@ export default async function LabsResearchThankYou({ params }: { params: Promise
 
   return (
     <>
+      <ThankYouAnalytics contentType={contentType} contentSlug={slug} contentTitle={doc.title} />
       <section className="ll-section" style={{ paddingTop: 72, paddingBottom: 52 }}>
         <div style={{ maxWidth: 640, margin: '0 auto', textAlign: 'center' }}>
           <div
@@ -61,7 +69,7 @@ export default async function LabsResearchThankYou({ params }: { params: Promise
             <Link href={lw(`/research/${slug}`)} style={{ color: 'var(--lw-accent-soft)' }}>request a fresh link</Link>.
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Button as={Link} href={lw('/connect')} arrow>Talk research with us</Button>
+            <DemoCtaLink href={lw('/connect')} source="research_thank_you" arrow>Talk research with us</DemoCtaLink>
             <Button as={Link} href={lw('/research')} variant="outline">Browse more research</Button>
           </div>
         </div>

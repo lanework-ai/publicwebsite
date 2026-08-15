@@ -46,13 +46,19 @@ function safe<T>(fn: () => T): T | void {
 /**
  * Fired when a visitor lands on a white-paper or benchmark detail page.
  * Useful for retargeting audiences ("viewed but didn't convert").
+ *
+ * `gated` records whether the page actually offered a download. Not every research
+ * doc has a PDF, and the ungated ones can never convert — without this flag they
+ * pad the top of the funnel and make the view→lead rate read artificially low.
+ * Firing on both, tagged, keeps total engagement visible AND the funnel honest.
  */
-export function trackResourceView(params: GatedContentParams) {
+export function trackResourceView(params: GatedContentParams & { gated: boolean }) {
   safe(() => {
     window.gtag?.('event', 'view_resource', {
       content_type: params.contentType,
       content_slug: params.contentSlug,
       content_title: params.contentTitle,
+      gated: params.gated,
     })
     window.fbq?.('trackCustom', 'ViewResource', {
       content_category: params.contentType,
@@ -62,6 +68,7 @@ export function trackResourceView(params: GatedContentParams) {
       content_type: params.contentType,
       content_slug: params.contentSlug,
       content_title: params.contentTitle,
+      gated: params.gated,
     })
   })
 }

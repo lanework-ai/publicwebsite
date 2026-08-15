@@ -11,6 +11,7 @@ import {
 import RichText from '@/components/Resources/RichText'
 import { Callout, BulletList, StatCard, Quote, FAQItem, Button } from '@/components/labs/ds'
 import LabsGatedForm from '@/components/labs/LabsGatedForm'
+import ResearchViewAnalytics from '@/components/labs/ResearchViewAnalytics'
 import JsonLd from '@/components/labs/JsonLd'
 import { lw } from '@/lib/labs/config'
 import { docMetadata, articleSchema, faqSchema, breadcrumbSchema } from '@/lib/seo'
@@ -62,6 +63,7 @@ export default async function LabsResearchDetail({ params }: { params: Promise<{
   const category = Array.isArray(doc.categories) ? doc.categories[0] : undefined
   const related = doc.relatedPosts?.length ? doc.relatedPosts : doc.relatedWhitePapers
   const path = lw(`/research/${slug}`)
+  const contentType = kind === 'White paper' ? 'whitepaper' : 'benchmark'
 
   return (
     <>
@@ -74,6 +76,12 @@ export default async function LabsResearchDetail({ params }: { params: Promise<{
             { name: doc.title, path },
           ]),
         ]}
+      />
+      <ResearchViewAnalytics
+        contentType={contentType}
+        contentSlug={slug}
+        contentTitle={doc.title}
+        gated={Boolean(doc.hasPdf)}
       />
       <article className="ll-section" style={{ paddingTop: 56, paddingBottom: 48 }}>
         {/* Hero */}
@@ -167,7 +175,7 @@ export default async function LabsResearchDetail({ params }: { params: Promise<{
             <div className="ll-sticky" style={{ display: 'grid', gap: 12 }}>
               {doc.hasPdf ? (
                 <LabsGatedForm
-                  contentType={kind === 'White paper' ? 'whitepaper' : 'benchmark'}
+                  contentType={contentType}
                   contentSlug={slug}
                   contentTitle={doc.title}
                   thankYouPath={lw(`/research/${slug}/thank-you`)}
