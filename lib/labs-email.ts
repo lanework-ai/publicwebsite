@@ -32,7 +32,11 @@ const HEADER_BG = '#0d1016'
 const esc = (v: unknown): string =>
   String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 
-const firstName = (full: string): string => (full || '').trim().split(/\s+/)[0] || 'there'
+const firstName = (full: string): string => {
+  const first = (full || '').trim().split(/\s+/)[0] || 'there'
+  // Capitalize so lowercase form entries read like a name (matches lib/email.ts).
+  return first.charAt(0).toUpperCase() + first.slice(1)
+}
 
 function unsubscribeUrl(email: string): string {
   return `${SITE_ROOT}/api/newsletter/unsubscribe?email=${encodeURIComponent(email)}`
@@ -223,10 +227,15 @@ export async function sendLaneworkNewsletter(email: string) {
 
 // ---- Drip nurture (Lanework-voiced, research-first; same Day 2/5/12 cadence) ----
 
-/** Named sender for the final personal note (shared with the RR sequence's sender). */
+/**
+ * Named sender for the final personal note (shared with the RR sequence's sender).
+ * Name and address are read together from env so they can never drift apart: setting
+ * only PERSONAL_SENDER_EMAIL would otherwise produce a From line like
+ * "Alexander at Lanework <someone.else@lanework.ai>".
+ */
 const PERSONAL = {
-  name: 'Ahmed',
-  email: process.env.PERSONAL_SENDER_EMAIL || 'ahmed.hegazy@lanework.ai',
+  name: process.env.PERSONAL_SENDER_NAME || 'Alexander',
+  email: process.env.PERSONAL_SENDER_EMAIL || 'alexander@lanework.ai',
 }
 
 interface LaneworkDripContext {
@@ -236,66 +245,209 @@ interface LaneworkDripContext {
   contentSlug: string
 }
 
-function dripStep1Html(ctx: LaneworkDripContext): string {
-  const body = `
-    <tr><td class="px" style="padding:0 40px 0 40px;font-family:${FONT};font-size:16px;line-height:1.65;color:#1a2b3c;">
-      <p style="margin:0 0 14px 0;">Hi ${esc(firstName(ctx.name))},</p>
-      <p style="margin:0 0 14px 0;">A couple of days ago you read &#8216;<strong>${esc(ctx.contentTitle)}</strong>.&#8217; If the findings raised questions, the rest of our research digs into the same territory: driver retention, asset utilization, and the operational data behind fleet results.</p>
-      <p style="margin:0;">Everything we publish is independent and free to read.</p>
-    </td></tr>
-    <tr><td align="center" style="padding:24px 40px;">${button('Read the research', `${SITE_ROOT}/research`)}</td></tr>
-    <tr><td class="px" style="padding:0 40px 0 40px;font-family:${FONT};font-size:16px;line-height:1.6;color:#1a2b3c;">
-      <p style="margin:0 0 2px 0;">Thanks,</p>
-      <p style="margin:0;color:#0f172a;">The Lanework team</p>
-    </td></tr>`
-  return shell({ title: 'The data behind the paper', preheader: 'More research on the same territory, free to read.', heading: 'The data behind the paper', body, email: ctx.to })
+/**
+ * Per-paper drip copy, keyed by contentSlug. Mirrors the variantsBySlug pattern in
+ * the Rapid Relay app's lib/paid-lp-variants.ts: look the slug up, fall back cleanly
+ * when it is not mapped.
+ *
+ * `paras` are trusted HTML fragments authored here. Anything derived from the lead
+ * or the Sanity doc must be passed through esc() when the copy is built.
+ */
+interface DripStepCopy {
+  subject: string
+  heading: string
+  preheader: string
+  paras: string[]
+  cta: { label: string; href: string }
+}
+interface DripPaperCopy {
+  step1: DripStepCopy
+  step2: DripStepCopy
+  /** Step 3 keeps the `One last note, <first>` subject and the unbranded layout. */
+  step3: { paras: string[] }
+}
+type DripCopyFactory = (ctx: LaneworkDripContext) => DripPaperCopy
+
+/**
+ * Content-agnostic default. A paper with no entry below still gets copy that is
+ * true of any Lanework research, so a newly published paper can never inherit a
+ * different paper's argument.
+ */
+const genericDripCopy: DripCopyFactory = (ctx) => ({
+  step1: {
+    subject: 'The data behind the paper',
+    heading: 'The data behind the paper',
+    preheader: 'More research on the same territory, free to read.',
+    paras: [
+      `A couple of days ago you read &#8216;<strong>${esc(ctx.contentTitle)}</strong>.&#8217; If the findings raised questions, the rest of our research digs into the same territory: driver retention, asset utilization, and the operational data behind fleet results.`,
+      'Everything we publish is independent and free to read.',
+    ],
+    cta: { label: 'Read the research', href: `${SITE_ROOT}/research` },
+  },
+  step2: {
+    subject: 'Start with a study, not a contract',
+    heading: 'Start with a study, not a contract',
+    preheader: 'How an applied study with Lanework works.',
+    paras: [
+      'Most of our work starts the way your download did: with a question. Operators bring us a network or a dataset, we run the applied research, and we share what we find. Software only gets built when the evidence earns it.',
+      'Here is what that looks like on real networks.',
+    ],
+    cta: { label: 'See the field work', href: `${SITE_ROOT}/field-work` },
+  },
+  step3: {
+    paras: [
+      `${PERSONAL.name} here. I lead research at Lanework. You read &#8216;${esc(ctx.contentTitle)}&#8217; a couple of weeks ago, and I wanted to ask one thing: did it hold up against what you see in your own network?`,
+      'Whether a finding matches your data or contradicts it, that is the most useful reply you could send us. And if you want us to look at your network directly, we start with a study, not a contract.',
+      'Either way, thanks for reading.',
+    ],
+  },
+})
+
+/** White paper #2: "One in Six Miles Earns $0" (deadhead / empty miles). */
+const deadheadDripCopy: DripCopyFactory = (ctx) => ({
+  step1: {
+    subject: 'One in six miles earns nothing',
+    heading: 'One in six miles earns nothing',
+    preheader: 'The 2024 deadhead number, and what it costs per truck.',
+    paras: [
+      `A couple of days ago you read &#8216;<strong>${esc(ctx.contentTitle)}</strong>.&#8217; The number underneath the title is worth sitting with: the average U.S. truckload carrier drove 16.7% of its miles empty in 2024. Across all fleet types the unfiltered range runs 15% to 35%.`,
+      'On a truck running 100,000 miles a year at a 20% empty rate, that is about $37,000 gone. Across a 50 truck fleet it is roughly $1.85M a year. Industry wide the estimate lands somewhere between $27B and $54B.',
+      'It compounds a margin problem that is already tight. Non-fuel operating costs hit a record $1.779 per mile in 2024, against an average truckload operating margin of negative 2.3%.',
+    ],
+    cta: { label: 'Read the research', href: `${SITE_ROOT}/research` },
+  },
+  step2: {
+    subject: 'Why load boards did not fix it',
+    heading: 'Why load boards did not fix it',
+    preheader: 'Every fix so far optimizes the wrong unit.',
+    paras: [
+      'The second half of the paper is the part that tends to take longer to land: deadhead has not survived because nobody attacked it. It survived because every fix attacked the wrong unit.',
+      'Load boards, digital freight matching, and AI routing all do the same thing. They find a load for a truck that is already empty and already out of position. That helps at the margin, and reported gains land in the 10% to 45% range, but the architecture that created the empty mile is left untouched.',
+      'Relay changes the unit of optimization. It breaks a long haul into regional segments and designs the backhaul into the route before the driver departs, so the return leg is planned rather than hunted. Deadhead moves from a default condition to an exception, and asset utilization moves from roughly 65% toward 80% or better.',
+    ],
+    cta: { label: 'See the field work', href: `${SITE_ROOT}/field-work` },
+  },
+  step3: {
+    paras: [
+      `${PERSONAL.name} here. I lead research at Lanework. You read &#8216;${esc(ctx.contentTitle)}&#8217; a couple of weeks ago and I wanted to ask one thing: do you know your own deadhead rate, and does it sit above or below the 16.7% average?`,
+      'Most operators we talk to either do not measure it at the route level or measure it after the fact, once the empty mile is already paid for. If you have the number and it contradicts what we published, that is genuinely the most useful reply you could send.',
+      'And if you want us to look at your network directly, we start with a study, not a contract.',
+      'Either way, thanks for reading.',
+    ],
+  },
+})
+
+/**
+ * White paper #1: "Driver Retention is a Data Problem". Originally nurtured by the
+ * Rapid Relay sequence; moved here so both papers are Lanework-voiced as rapidrelay.ai
+ * sunsets. The drip cron routes this slug to the Lanework sender regardless of brand.
+ */
+const driverRetentionDripCopy: DripCopyFactory = (ctx) => ({
+  step1: {
+    subject: 'Bigger fleets lose more drivers',
+    heading: 'Bigger fleets lose more drivers',
+    preheader: 'A 94% turnover rate, and why it is not about pay.',
+    paras: [
+      `A couple of days ago you read &#8216;<strong>${esc(ctx.contentTitle)}</strong>.&#8217; The figure that reframes the whole conversation: large long-haul carriers lose roughly 94% of their drivers every year, against an industry average of 48%.`,
+      'The scale of it is easy to lose track of. Replacing one driver costs about $12,799, and the industry spends an estimated $18.7B a year on departures that were largely preventable.',
+      'The instinct is to read that as a pay problem. Our research does not support that. Route length, home time frequency, and asset utilization explain more of the variation in turnover than pay raises do.',
+    ],
+    cta: { label: 'Read the research', href: `${SITE_ROOT}/research` },
+  },
+  step2: {
+    subject: 'They are not leaving trucking',
+    heading: 'They are not leaving trucking',
+    preheader: 'Most turnover is a competitive loss, not an industry exit.',
+    paras: [
+      'The finding in the paper that tends to take longest to land is this one: most turnover is drivers switching carriers, not leaving trucking. That makes it a competitive failure rather than a labor shortage. Those drivers went to operators running better lanes.',
+      'The structure shows up clearly in the data. Around 80% of fleets with a length of haul under 500 miles report turnover below 50%, and 49.1% of job-seeking drivers cite the need for consistent miles as a reason for moving.',
+      'That is why short-haul, regional, and dedicated operations retain so much better than long-haul OTR. Relay restructures the same three variables that predict exits, which is the structural fix the paper builds toward.',
+    ],
+    cta: { label: 'See the field work', href: `${SITE_ROOT}/field-work` },
+  },
+  step3: {
+    paras: [
+      `${PERSONAL.name} here. I lead research at Lanework. You read &#8216;${esc(ctx.contentTitle)}&#8217; a couple of weeks ago and I wanted to ask one thing: do you know your own turnover number, and do you know which lanes produce it?`,
+      'Most operators can tell us the fleet-wide figure but not the route-level one, and the route level is where the decision that caused the exit actually happened. If your data contradicts what we published, that is genuinely the most useful reply you could send.',
+      'And if you want us to look at your network directly, we start with a study, not a contract.',
+      'Either way, thanks for reading.',
+    ],
+  },
+})
+
+const DRIP_COPY_BY_SLUG: Record<string, DripCopyFactory> = {
+  'driver-retention-is-a-data-problem': driverRetentionDripCopy,
+  'one-in-six-miles-earns-zero': deadheadDripCopy,
 }
 
-function dripStep2Html(ctx: LaneworkDripContext): string {
+function resolveDripCopy(ctx: LaneworkDripContext): DripPaperCopy {
+  return (DRIP_COPY_BY_SLUG[ctx.contentSlug] ?? genericDripCopy)(ctx)
+}
+
+/** Render body paragraphs; the last one drops its bottom margin. */
+function dripParas(items: string[]): string {
+  return items
+    .map((p, i) => `<p style="margin:0 0 ${i === items.length - 1 ? '0' : '14px'} 0;">${p}</p>`)
+    .join('\n      ')
+}
+
+function dripBrandedHtml(ctx: LaneworkDripContext, copy: DripStepCopy): string {
   const body = `
     <tr><td class="px" style="padding:0 40px 0 40px;font-family:${FONT};font-size:16px;line-height:1.65;color:#1a2b3c;">
       <p style="margin:0 0 14px 0;">Hi ${esc(firstName(ctx.name))},</p>
-      <p style="margin:0 0 14px 0;">Most of our work starts the way your download did: with a question. Operators bring us a network or a dataset, we run the applied research, and we share what we find. Software only gets built when the evidence earns it.</p>
-      <p style="margin:0;">Here is what that looks like on real networks.</p>
+      ${dripParas(copy.paras)}
     </td></tr>
-    <tr><td align="center" style="padding:24px 40px;">${button('See the field work', `${SITE_ROOT}/field-work`)}</td></tr>
+    <tr><td align="center" style="padding:24px 40px;">${button(copy.cta.label, copy.cta.href)}</td></tr>
     <tr><td class="px" style="padding:0 40px 0 40px;font-family:${FONT};font-size:16px;line-height:1.6;color:#1a2b3c;">
       <p style="margin:0 0 2px 0;">Thanks,</p>
       <p style="margin:0;color:#0f172a;">The Lanework team</p>
     </td></tr>`
-  return shell({ title: 'Start with a study, not a contract', preheader: 'How an applied study with Lanework works.', heading: 'Start with a study, not a contract', body, email: ctx.to })
+  return shell({ title: copy.subject, preheader: copy.preheader, heading: copy.heading, body, email: ctx.to })
 }
 
 /** Final note is a plain personal 1:1, deliberately unbranded (no header band). */
-function dripFinalHtml(ctx: LaneworkDripContext): string {
+function dripFinalHtml(ctx: LaneworkDripContext, copy: DripPaperCopy['step3']): string {
   return `<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="utf-8"><meta name="color-scheme" content="light only"><meta name="supported-color-schemes" content="light only"><title>One last note</title></head>
 <body style="margin:0;padding:24px;background-color:#ffffff;">
   <div style="max-width:560px;margin:0 auto;font-family:${FONT};font-size:15px;line-height:1.7;color:#1a2b3c;">
     <p style="margin:0 0 14px 0;">Hi ${esc(firstName(ctx.name))},</p>
-    <p style="margin:0 0 14px 0;">Ahmed here. I lead research at Lanework. You read &#8216;${esc(ctx.contentTitle)}&#8217; a couple of weeks ago, and I wanted to ask one thing: did it hold up against what you see in your own network?</p>
-    <p style="margin:0 0 14px 0;">Whether a finding matches your data or contradicts it, that is the most useful reply you could send us. And if you want us to look at your network directly, we start with a study, not a contract.</p>
-    <p style="margin:0 0 14px 0;">Either way, thanks for reading.</p>
-    <p style="margin:0;">Ahmed<br><span style="color:#64748b;font-size:13px;">Lanework · applied AI research for logistics</span></p>
+    ${copy.paras.map((p) => `<p style="margin:0 0 14px 0;">${p}</p>`).join('\n    ')}
+    <p style="margin:0;">${PERSONAL.name}<br><span style="color:#64748b;font-size:13px;">Lanework · applied AI research for logistics</span></p>
     <p style="margin:24px 0 0 0;font-size:12px;color:#94a3b8;"><a href="${unsubscribeUrl(ctx.to)}" style="color:#94a3b8;text-decoration:underline;">Stop these emails</a></p>
   </div>
 </body>
 </html>`.trim()
 }
 
-/** Lanework drip sender; the drip cron routes lanework-brand leads here. */
-export async function sendLaneworkDripEmail(step: 1 | 2 | 3, ctx: LaneworkDripContext) {
-  const subjects: Record<typeof step, string> = {
-    1: 'The data behind the paper',
-    2: 'Start with a study, not a contract',
+/**
+ * Subject + HTML for one step of the sequence. Exported so local previews and tests
+ * render the real copy rather than duplicating it (see scripts/preview-drip-emails.mjs).
+ */
+export function renderLaneworkDrip(
+  step: 1 | 2 | 3,
+  ctx: LaneworkDripContext
+): { subject: string; html: string } {
+  const copy = resolveDripCopy(ctx)
+  const subjects: Record<1 | 2 | 3, string> = {
+    1: copy.step1.subject,
+    2: copy.step2.subject,
     3: `One last note, ${firstName(ctx.name)}`,
   }
-  const htmls: Record<typeof step, string> = {
-    1: dripStep1Html(ctx),
-    2: dripStep2Html(ctx),
-    3: dripFinalHtml(ctx),
+  const htmls: Record<1 | 2 | 3, string> = {
+    1: dripBrandedHtml(ctx, copy.step1),
+    2: dripBrandedHtml(ctx, copy.step2),
+    3: dripFinalHtml(ctx, copy.step3),
   }
+  return { subject: subjects[step], html: htmls[step] }
+}
+
+/** Lanework drip sender; the drip cron routes lanework-brand leads here. */
+export async function sendLaneworkDripEmail(step: 1 | 2 | 3, ctx: LaneworkDripContext) {
+  const rendered = renderLaneworkDrip(step, ctx)
+  const subjects = { [step]: rendered.subject } as Record<1 | 2 | 3, string>
+  const htmls = { [step]: rendered.html } as Record<1 | 2 | 3, string>
   const from = step === 3 ? `${PERSONAL.name} at Lanework <${PERSONAL.email}>` : `Lanework <${FROM_EMAIL}>`
   const replyTo = step === 3 ? PERSONAL.email : REPLY_TO
   try {

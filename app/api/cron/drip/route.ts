@@ -20,7 +20,7 @@ import { sendLaneworkDripEmail } from '@/lib/labs-email'
 
 // Days between drip steps. Index = step we're about to send.
 // step 1 (Day 2)  -> next at step 2 in 3 days  (Day 5)
-// step 2 (Day 5)  -> next at step 3 in 7 days  (Day 12, final note from Ahmed)
+// step 2 (Day 5)  -> next at step 3 in 7 days  (Day 12, final personal note)
 // step 3 (Day 12) -> sequence complete, dripNextSendAt = null
 const DELAYS_DAYS_AFTER_STEP: Record<number, number | null> = {
   1: 3,
