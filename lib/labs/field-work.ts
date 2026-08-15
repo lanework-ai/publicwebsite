@@ -49,7 +49,9 @@ export const fieldWork: FieldWork[] = [
     summary:
       'Long-haul lanes rebuilt as coordinated regional relays, so the trailer keeps moving and drivers stay regional and home.',
     logo: '/rapid-relay-logo.png',
-    demoUrl: 'https://demo.rapidrelay.ai/dashboard',
+    // No demoUrl: the old demo ran on demo.rapidrelay.ai, which retires with that
+    // domain. Set this again once the demo has a host that outlives the sunset;
+    // the "VIEW LIVE DEMO" button renders automatically when it is present.
     results: [
       { value: '92% → 51%', label: 'driver turnover, 350-truck carrier' },
       { value: '52% → 81%', label: 'asset utilization, 175-truck fleet' },
