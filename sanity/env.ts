@@ -11,8 +11,11 @@ export const projectId = assertValue(
   'Missing environment variable: NEXT_PUBLIC_SANITY_PROJECT_ID'
 )
 
-// Site URL for newsletter action (must use SANITY_STUDIO_ prefix for Vite to inject it)
-export const siteUrl = process.env.SANITY_STUDIO_SITE_URL!
+// Site URL the newsletter action posts to. Reuses NEXT_PUBLIC_SITE_URL, which
+// sanity.cli.ts already injects into the Studio bundle and netlify.toml already
+// sets to https://lanework.ai. The old SANITY_STUDIO_SITE_URL was a second
+// source of truth that was never injected and still pointed at rapidrelay.ai.
+export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://lanework.ai'
 
 // Newsletter API key for Sanity Studio
 export const newsletterApiKey = process.env.SANITY_STUDIO_NEWSLETTER_API_KEY!

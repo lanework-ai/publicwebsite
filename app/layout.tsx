@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./labs-theme.css";
-import LabsNav from "@/components/labs/LabsNav";
 import LabsFooter from "@/components/labs/LabsFooter";
-import SectionReveal from "@/components/labs/SectionReveal";
+import SiteChrome from "@/components/labs/SiteChrome";
 import Pixels from "@/components/Analytics/Pixels";
 import PostHogProvider from "@/components/Analytics/PostHogProvider";
 
@@ -47,8 +46,15 @@ export const metadata: Metadata = {
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION || undefined,
   },
+  // Canonical here serves the homepage; every other route overrides it via the
+  // helpers in lib/seo.ts. text/markdown points at the LLM corpus index, which is
+  // how answer engines find the Markdown mirror of the site.
   alternates: {
-    types: { "application/rss+xml": "/research/feed.xml" },
+    canonical: SITE_URL,
+    types: {
+      "application/rss+xml": "/research/feed.xml",
+      "text/markdown": "/llms.txt",
+    },
   },
 };
 
@@ -107,15 +113,7 @@ export default function RootLayout({
       <body className="antialiased">
         <Pixels />
         <PostHogProvider>
-          <div className="ll-root">
-            <a href="#main" className="ll-skip">
-              Skip to content
-            </a>
-            <LabsNav />
-            <main id="main">{children}</main>
-            <LabsFooter />
-            <SectionReveal />
-          </div>
+          <SiteChrome footer={<LabsFooter />}>{children}</SiteChrome>
         </PostHogProvider>
       </body>
     </html>

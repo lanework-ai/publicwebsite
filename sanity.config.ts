@@ -7,7 +7,7 @@ import { projectId, dataset } from './sanity/env'
 
 export default defineConfig({
   name: 'default',
-  title: 'Rapid Relay Admin',
+  title: 'Lanework Admin',
 
   // Studio is embedded in the Next.js app at /admin/studio (see
   // app/admin/studio/[[...tool]]/page.tsx). This is the canonical Studio.
