@@ -5,7 +5,9 @@
 # Public, non-secret build-time config (these NEXT_PUBLIC_* values ship in the
 # browser bundle anyway). Secrets — DATABASE_URL, RESEND_API_KEY, EMAIL_FROM,
 # ADMIN_EMAIL, SANITY_API_WRITE_TOKEN, CRON_SECRET, RATE_LIMIT_SALT,
-# NEXT_PUBLIC_POSTHOG_KEY — must be set in the Netlify site env, NOT committed here.
+# NEXT_PUBLIC_POSTHOG_KEY, POSTHOG_PERSONAL_API_KEY, POSTHOG_PROJECT_ID — must be
+# set in the Netlify site env, NOT committed here. The last two back the dashboard
+# at /admin/analytics; without them it renders its setup panel in production.
 [build.environment]
   NEXT_PUBLIC_SANITY_PROJECT_ID = "7vdz7vm0"
   NEXT_PUBLIC_SANITY_DATASET = "production"
