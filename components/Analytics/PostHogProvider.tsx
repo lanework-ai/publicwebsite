@@ -36,12 +36,41 @@ let initialized = false
  * completes before any descendant mounts. The `initialized` guard keeps it
  * idempotent across re-renders and Strict Mode's double invocation.
  */
+/**
+ * Path that netlify.toml proxies to PostHog. Deliberately unremarkable rather than
+ * PostHog's documented /ingest.
+ */
+const PROXY_PATH = '/api/v1/m'
+
+/** PostHog's real host. Also what lib/posthog-query.ts uses server-side. */
+const directHost = () => process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com'
+
+/**
+ * Where the browser should send events.
+ *
+ * Production goes through the first-party proxy so ad blockers have no
+ * third-party hostname to match. Local dev cannot: the proxy is a set of
+ * netlify.toml redirects, which `next dev` knows nothing about, so pointing at
+ * PROXY_PATH locally would 404 every capture. Dev talks to PostHog directly —
+ * and localhost traffic is excluded from the admin dashboard anyway
+ * (see windowClause in lib/posthog-query.ts).
+ */
+function ingestionHost(): string {
+  const h = window.location.hostname
+  const isLocal = h === 'localhost' || h === '127.0.0.1' || h === '[::1]'
+  return isLocal ? directHost() : PROXY_PATH
+}
+
 function ensureInitialized() {
   if (initialized || typeof window === 'undefined') return
   const key = process.env.NEXT_PUBLIC_POSTHOG_KEY
   if (!key) return
   posthog.init(key, {
-    api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com',
+    api_host: ingestionHost(),
+    // Without this, posthog-js assumes the PostHog app lives at api_host, and the
+    // Toolbar and its "view in PostHog" links would point at lanework.ai. The
+    // ingestion host (us.i.) and the app host (us.) are different subdomains.
+    ui_host: directHost().replace('.i.posthog.com', '.posthog.com'),
     capture_pageview: false, // captured manually below for the App Router
     capture_pageleave: true,
     autocapture: true,
