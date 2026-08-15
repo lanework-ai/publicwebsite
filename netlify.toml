@@ -14,6 +14,41 @@
   NEXT_PUBLIC_SANITY_API_VERSION = "2025-12-30"
   NEXT_PUBLIC_SITE_URL = "https://lanework.ai"
 
+# First-party reverse proxy for PostHog. Tracking posted straight to
+# us.i.posthog.com, a hostname every major blocklist carries, so a meaningful share
+# of real visitors was never counted. Routing it through this domain makes it
+# same-origin: nothing third-party for a blocker to match, and no CORS preflight.
+#
+# The path is deliberately unremarkable rather than PostHog's documented /ingest.
+#
+# These are edge proxies (status 200), so they cost no function invocations and
+# forward the path verbatim — which matters because PostHog's ingestion endpoint is
+# `/e/`, with a trailing slash. Routing this through Next.js rewrites instead would
+# have required skipTrailingSlashRedirect, a global flag that would also stop
+# `/research/` redirecting to `/research` across the whole site.
+#
+# Order is significant: Netlify matches top-down, so both assets-host rules must
+# precede the catch-all or it swallows them. posthog-js loads its extensions AND its
+# remote config (/array/<token>/config.js) from the separate assets host — sending
+# /array through the catch-all would point remote config at the wrong host.
+[[redirects]]
+  from = "/api/v1/m/static/*"
+  to = "https://us-assets.i.posthog.com/static/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/v1/m/array/*"
+  to = "https://us-assets.i.posthog.com/array/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/v1/m/*"
+  to = "https://us.i.posthog.com/:splat"
+  status = 200
+  force = true
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
