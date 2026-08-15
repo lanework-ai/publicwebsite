@@ -1,7 +1,13 @@
 import { LegalPage, type LegalSection } from '@/components/labs/LegalPage'
 import { lw } from '@/lib/labs/config'
+import { pageMetadata } from '@/lib/seo'
 
-export const metadata = { title: 'Privacy Policy · Lanework' }
+export const metadata = pageMetadata({
+  title: 'Privacy Policy · Lanework',
+  description:
+    'What Lanework collects, the processors in the request path, and how contact and research-download data is handled.',
+  path: '/privacy-policy',
+})
 
 /**
  * Written against what this site actually does rather than a generic template: the

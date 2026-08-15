@@ -3,8 +3,10 @@ import { notFound } from 'next/navigation'
 import { CtaBand, SectionLabel } from '@/components/labs/ui'
 import { Card, Badge } from '@/components/labs/ds'
 import Ecosystem, { IntegrationRow } from '@/components/labs/Ecosystem'
+import JsonLd from '@/components/labs/JsonLd'
 import { lw } from '@/lib/labs/config'
 import { fieldWork, getFieldWork, statusLabel } from '@/lib/labs/field-work'
+import { pageMetadata, breadcrumbSchema, absoluteUrl, ORG_ID, WEBSITE_ID } from '@/lib/seo'
 
 export function generateStaticParams() {
   return fieldWork.map((f) => ({ slug: f.slug }))
@@ -13,7 +15,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const f = getFieldWork(slug)
-  return { title: f ? `${f.title} · Lanework` : 'Field work · Lanework' }
+  if (!f) return { title: 'Field work · Lanework' }
+  return pageMetadata({
+    title: `${f.title} · Lanework`,
+    description: f.summary,
+    path: lw(`/field-work/${slug}`),
+  })
 }
 
 export default async function FieldWorkDetail({ params }: { params: Promise<{ slug: string }> }) {
@@ -21,8 +28,36 @@ export default async function FieldWorkDetail({ params }: { params: Promise<{ sl
   const f = getFieldWork(slug)
   if (!f) notFound()
 
+  const path = lw(`/field-work/${slug}`)
+  // Case studies are code-defined rather than CMS-backed, so there is no
+  // publish date to model. Article carries the narrative; the results table is
+  // exposed as `about` so the outcome claims are machine-readable.
+  const article = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    '@id': `${absoluteUrl(path)}#article`,
+    url: absoluteUrl(path),
+    mainEntityOfPage: { '@type': 'WebPage', '@id': absoluteUrl(path) },
+    headline: f.title,
+    description: f.summary,
+    articleSection: f.domain,
+    author: { '@id': ORG_ID },
+    publisher: { '@id': ORG_ID },
+    isPartOf: { '@id': WEBSITE_ID },
+    about: { '@type': 'Thing', name: f.product },
+  }
+
   return (
     <>
+      <JsonLd
+        schema={[
+          article,
+          breadcrumbSchema([
+            { name: 'Field work', path: lw('/field-work') },
+            { name: f.title, path },
+          ]),
+        ]}
+      />
       <article className="ll-section" style={{ paddingTop: 56, paddingBottom: 44, maxWidth: 760 }}>
         <Link href={lw('/field-work')} style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--lw-muted)', letterSpacing: '0.06em' }}>
           ← FIELD WORK

@@ -1,7 +1,13 @@
 import { LegalPage, type LegalSection } from '@/components/labs/LegalPage'
 import { lw } from '@/lib/labs/config'
+import { pageMetadata } from '@/lib/seo'
 
-export const metadata = { title: 'Terms & Conditions · Lanework' }
+export const metadata = pageMetadata({
+  title: 'Terms & Conditions · Lanework',
+  description:
+    'The terms covering use of lanework.ai, the research published on it, and the material available for download.',
+  path: '/terms-and-conditions',
+})
 
 /**
  * Rewritten to describe this site as it actually exists. Two sections were removed
@@ -91,7 +97,7 @@ const sections: LegalSection[] = [
   {
     heading: '9. Links out',
     blocks: [
-      { p: 'We link to third-party sites, including a live product demo. We do not control them and are not responsible for their content, availability, or privacy practices. Follow those links at your own discretion.' },
+      { p: 'We link to third-party sites from time to time. We do not control them and are not responsible for their content, availability, or privacy practices. Follow those links at your own discretion.' },
     ],
   },
   {

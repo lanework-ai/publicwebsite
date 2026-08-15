@@ -1,6 +1,12 @@
 import { PageHeader, SectionLabel, CtaBand, LabsCard } from '@/components/labs/ui'
+import { pageMetadata } from '@/lib/seo'
 
-export const metadata = { title: 'About · Lanework' }
+export const metadata = pageMetadata({
+  title: 'About · Lanework',
+  description:
+    'Lanework is an applied research lab for logistics and supply chain. Operators, technologists, and data scientists who embed with the teams running freight, fulfillment, and warehousing.',
+  path: '/about',
+})
 
 const howWeWork = [
   { step: 'Study', d: 'We run independent research on the operational data operators already hold, and publish what we find. The research stands on its own.' },

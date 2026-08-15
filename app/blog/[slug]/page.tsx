@@ -5,7 +5,9 @@ import { client } from '@/sanity/client'
 import { postSlugsQuery, getPostBySlug } from '@/lib/sanity-queries'
 import RichText from '@/components/Resources/RichText'
 import { FAQItem, Card } from '@/components/labs/ds'
+import JsonLd from '@/components/labs/JsonLd'
 import { lw } from '@/lib/labs/config'
+import { docMetadata, articleSchema, faqSchema, breadcrumbSchema } from '@/lib/seo'
 
 export const revalidate = 86400
 
@@ -17,7 +19,8 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const post = (await getPostBySlug(slug)) as any
-  return { title: post ? `${post.title} · Lanework Notes` : 'Notes · Lanework' }
+  if (!post) return { title: 'Notes · Lanework' }
+  return docMetadata({ doc: post, path: lw(`/blog/${slug}`), titleSuffix: 'Lanework Notes' })
 }
 
 function fmt(iso?: string) {
@@ -32,11 +35,26 @@ export default async function LabsNoteDetail({ params }: { params: Promise<{ slu
   const { slug } = await params
   const post = (await getPostBySlug(slug)) as any
   if (!post) notFound()
+  // noIndex already drops a post from the listings, the sitemap and
+  // generateStaticParams, but the detail page would still render on demand and
+  // stay indexable. Matches the guard on the research detail page.
+  if (post.noIndex) notFound()
   const authorName = typeof post.author === 'string' ? post.author : post.author?.name
   const category = Array.isArray(post.categories) ? post.categories[0] : undefined
+  const path = lw(`/blog/${slug}`)
 
   return (
     <>
+      <JsonLd
+        schema={[
+          articleSchema({ doc: post, path, type: 'BlogPosting' }),
+          faqSchema(post.faqs),
+          breadcrumbSchema([
+            { name: 'Notes', path: lw('/blog') },
+            { name: post.title, path },
+          ]),
+        ]}
+      />
       <article className="ll-section" style={{ paddingTop: 56, paddingBottom: 48, maxWidth: 780 }}>
         <Link href={lw('/blog')} style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--lw-muted)', letterSpacing: '0.06em' }}>
           ← NOTES

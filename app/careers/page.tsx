@@ -2,8 +2,14 @@ import Link from 'next/link'
 import { PageHeader, SectionLabel } from '@/components/labs/ui'
 import { Card, Button } from '@/components/labs/ds'
 import { lw } from '@/lib/labs/config'
+import { pageMetadata } from '@/lib/seo'
 
-export const metadata = { title: 'Careers · Lanework' }
+export const metadata = pageMetadata({
+  title: 'Careers · Lanework',
+  description:
+    'Lanework is a lean, forward-deployed team of operators, engineers, and researchers. Early roles are opening in engineering, operations, and research.',
+  path: '/careers',
+})
 
 const why = [
   {

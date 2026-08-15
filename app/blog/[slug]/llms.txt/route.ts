@@ -12,8 +12,10 @@ export async function generateStaticParams() {
 
 export async function GET(_req: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const doc = await getPostBySlug(slug)
-  if (!doc) return new Response('Not found', { status: 404 })
+  const doc = (await getPostBySlug(slug)) as any
+  // Mirror the detail page: a noIndex draft must not leak through the Markdown
+  // view either, which is the one crawlers are most likely to fetch.
+  if (!doc || doc.noIndex) return new Response('Not found', { status: 404 })
   return new Response(postToMarkdown(doc as never), {
     headers: { 'Content-Type': 'text/markdown; charset=utf-8', 'Cache-Control': 'public, max-age=3600, s-maxage=3600' },
   })

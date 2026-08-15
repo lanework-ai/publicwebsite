@@ -3,12 +3,14 @@ import { PageHeader, SectionLabel, CtaBand } from '@/components/labs/ui'
 import { Card, Badge, Button } from '@/components/labs/ds'
 import { lw } from '@/lib/labs/config'
 import { tracks, alsoAvailable } from '@/lib/labs/engagements'
+import { pageMetadata } from '@/lib/seo'
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: 'Engagements · Lanework',
   description:
     'How to work with Lanework: a free network readiness snapshot, network assessments for operators, and operational due diligence for investors and acquirers.',
-}
+  path: '/engagements',
+})
 
 export default function EngagementsPage() {
   return (

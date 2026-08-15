@@ -23,8 +23,8 @@ const aiUserAgents = [
 export default function robots(): MetadataRoute.Robots {
   // Block API routes and the tokenized gated-download redirect. Paid landing
   // pages (/lp/*) are noindex via their own metadata, but keep crawlers off the
-  // duplicate funnel path too.
-  const disallow = ['/api/gated-content/download', '/api/', '/lp/']
+  // duplicate funnel path too. /admin/* is the Basic-Auth-gated Sanity Studio.
+  const disallow = ['/api/gated-content/download', '/api/', '/lp/', '/admin/']
   return {
     rules: [
       { userAgent: '*', allow: '/', disallow },

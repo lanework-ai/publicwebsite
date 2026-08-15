@@ -3,8 +3,14 @@ import { postsQuery } from '@/lib/sanity-queries'
 import { PageHeader, CtaBand } from '@/components/labs/ui'
 import LabsBlogList from '@/components/labs/LabsBlogList'
 import LabsNewsletter from '@/components/labs/LabsNewsletter'
+import { pageMetadata } from '@/lib/seo'
 
-export const metadata = { title: 'Notes · Lanework' }
+export const metadata = pageMetadata({
+  title: 'Notes · Lanework',
+  description:
+    'Field notes, analysis, and commentary on freight, data, and the operating reality of logistics. Shorter writing between the research.',
+  path: '/blog',
+})
 export const revalidate = 86400
 
 export default async function LabsNotes() {

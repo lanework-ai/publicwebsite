@@ -4,8 +4,14 @@ import { whitePapersQuery, benchmarksQuery } from '@/lib/sanity-queries'
 import { PageHeader, SectionLabel, CtaBand } from '@/components/labs/ui'
 import LabsNewsletter from '@/components/labs/LabsNewsletter'
 import { Logo } from '@/components/labs/LaneworkLogo'
+import { pageMetadata } from '@/lib/seo'
 
-export const metadata = { title: 'Research · Lanework' }
+export const metadata = pageMetadata({
+  title: 'Research · Lanework',
+  description:
+    'White papers and recurring benchmarks on frontline retention, network and facility performance, asset utilization, and the operational decisions that define the result.',
+  path: '/research',
+})
 export const revalidate = 86400
 
 // Upcoming white papers — shown as "in the pipeline" so visitors know more is

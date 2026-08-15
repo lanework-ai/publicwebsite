@@ -4,8 +4,14 @@ import { Card, Badge } from '@/components/labs/ds'
 import Ecosystem from '@/components/labs/Ecosystem'
 import { lw } from '@/lib/labs/config'
 import { fieldWork, statusLabel } from '@/lib/labs/field-work'
+import { pageMetadata } from '@/lib/seo'
 
-export const metadata = { title: 'Field work · Lanework' }
+export const metadata = pageMetadata({
+  title: 'Field work · Lanework',
+  description:
+    'The deployments that followed our research: what moved inside real freight and fulfillment operations, and the software we built to prove the findings hold.',
+  path: '/field-work',
+})
 
 export default function FieldWorkIndex() {
   return (

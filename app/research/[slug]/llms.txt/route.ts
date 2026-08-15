@@ -25,9 +25,13 @@ const md = (body: string) =>
 
 export async function GET(_req: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const wp = await getWhitePaperBySlug(slug)
-  if (wp) return md(whitePaperToMarkdown(wp as never))
-  const bm = await getBenchmarkBySlug(slug)
-  if (bm) return md(benchmarkToMarkdown(bm as never))
-  return new Response('Not found', { status: 404 })
+  // Resolve in the same order as the detail page (white paper wins on a slug
+  // collision) so both views agree on which doc a slug refers to.
+  const wp = (await getWhitePaperBySlug(slug)) as any
+  const bm = wp ? null : ((await getBenchmarkBySlug(slug)) as any)
+  const doc = wp ?? bm
+  // Mirror the detail page: a noIndex draft must not leak through the Markdown
+  // view either, which is the one crawlers are most likely to fetch.
+  if (!doc || doc.noIndex) return new Response('Not found', { status: 404 })
+  return md(wp ? whitePaperToMarkdown(wp as never) : benchmarkToMarkdown(bm as never))
 }

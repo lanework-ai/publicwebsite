@@ -11,7 +11,9 @@ import {
 import RichText from '@/components/Resources/RichText'
 import { Callout, BulletList, StatCard, Quote, FAQItem, Button } from '@/components/labs/ds'
 import LabsGatedForm from '@/components/labs/LabsGatedForm'
+import JsonLd from '@/components/labs/JsonLd'
 import { lw } from '@/lib/labs/config'
+import { docMetadata, articleSchema, faqSchema, breadcrumbSchema } from '@/lib/seo'
 
 export const revalidate = 86400
 
@@ -34,7 +36,8 @@ async function resolve(slug: string) {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const r = await resolve(slug)
-  return { title: r ? `${r.doc.title} · Lanework` : 'Research · Lanework' }
+  if (!r) return { title: 'Research · Lanework' }
+  return docMetadata({ doc: r.doc, path: lw(`/research/${slug}`) })
 }
 
 function fmt(iso?: string) {
@@ -58,9 +61,20 @@ export default async function LabsResearchDetail({ params }: { params: Promise<{
   const metrics = doc.stats ?? doc.headlineMetrics
   const category = Array.isArray(doc.categories) ? doc.categories[0] : undefined
   const related = doc.relatedPosts?.length ? doc.relatedPosts : doc.relatedWhitePapers
+  const path = lw(`/research/${slug}`)
 
   return (
     <>
+      <JsonLd
+        schema={[
+          articleSchema({ doc, path, type: 'Report' }),
+          faqSchema(doc.faqs),
+          breadcrumbSchema([
+            { name: 'Research', path: lw('/research') },
+            { name: doc.title, path },
+          ]),
+        ]}
+      />
       <article className="ll-section" style={{ paddingTop: 56, paddingBottom: 48 }}>
         {/* Hero */}
         <Link href={lw('/research')} style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--lw-muted)', letterSpacing: '0.06em' }}>
