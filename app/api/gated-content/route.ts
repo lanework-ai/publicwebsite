@@ -121,15 +121,10 @@ export async function POST(request: NextRequest) {
     const tokenExpiresAt = new Date(now.getTime() + TOKEN_TTL_HOURS * 60 * 60 * 1000)
     const dripNextSendAt = new Date(now.getTime() + DRIP_FIRST_DELAY_MS)
 
-    // Retained on the row for reporting. This app only serves Lanework, so every
-    // lead takes the Lanework templates regardless, and an omitted flag must still
-    // read 'lanework' — the blog broadcast selects on brand, so a row tagged
-    // otherwise would silently never receive one.
-    const brand =
-      typeof body === 'object' && body !== null && (body as { brand?: string }).brand === 'rapidrelay'
-        ? 'rapidrelay'
-        : 'lanework'
-
+    // `brand` is deliberately not settable from the request: this app only serves
+    // Lanework, every lead takes the Lanework templates regardless, and the blog
+    // broadcast selects on brand, so a row tagged anything else would silently
+    // never receive one. The Prisma default ("lanework") is the only value.
     const lead = await prisma.gatedContentLead.create({
       data: {
         contentType: data.contentType,
@@ -138,7 +133,6 @@ export async function POST(request: NextRequest) {
         email: data.email,
         name: data.name,
         company: data.company,
-        brand,
         downloadToken,
         tokenExpiresAt,
         // Drip starts at step 0 (= day-0 confirmation sent inline below). Day-2 is queued.
