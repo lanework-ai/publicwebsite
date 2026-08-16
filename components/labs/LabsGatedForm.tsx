@@ -1,10 +1,30 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useApiRequest } from '@/lib/hooks/useApiRequest'
 import { trackLeadSubmit } from '@/lib/analytics'
 
-interface GatedPayload {
+interface Attribution {
+  utmSource: string
+  utmMedium: string
+  utmCampaign: string
+  utmContent: string
+  utmTerm: string
+  referrer: string
+  landingPage: string
+}
+
+const EMPTY_ATTRIBUTION: Attribution = {
+  utmSource: '',
+  utmMedium: '',
+  utmCampaign: '',
+  utmContent: '',
+  utmTerm: '',
+  referrer: '',
+  landingPage: '',
+}
+
+interface GatedPayload extends Partial<Attribution> {
   name: string
   email: string
   company: string
@@ -30,6 +50,35 @@ export default function LabsGatedForm({
 }) {
   const [form, setForm] = useState({ name: '', email: '', company: '' })
   const [err, setErr] = useState('')
+  const [attribution, setAttribution] = useState<Attribution>(EMPTY_ATTRIBUTION)
+
+  /**
+   * Capture where this lead came from, on mount.
+   *
+   * /api/gated-content has always validated and persisted these seven fields, but
+   * nothing ever sent them, so every lead landed with NULL attribution. Without
+   * this the campaign columns on the admin dashboard stay permanently empty.
+   *
+   * landingPage does more work than it looks: /research/[slug] and /lp/[slug]
+   * render this same form with the same contentSlug, so the slug alone cannot say
+   * whether a lead came from organic research or a paid landing page. The path is
+   * the only thing that separates them.
+   *
+   * Read on mount rather than at submit because the query string can be cleared by
+   * client-side navigation before the form is filled in.
+   */
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    setAttribution({
+      utmSource: params.get('utm_source') ?? '',
+      utmMedium: params.get('utm_medium') ?? '',
+      utmCampaign: params.get('utm_campaign') ?? '',
+      utmContent: params.get('utm_content') ?? '',
+      utmTerm: params.get('utm_term') ?? '',
+      referrer: document.referrer ?? '',
+      landingPage: window.location.pathname,
+    })
+  }, [])
   const { isLoading, isSuccess, error: apiError, execute } = useApiRequest<GatedPayload>({
     onSuccess: () => {
       trackLeadSubmit({ contentType, contentSlug, contentTitle })
@@ -46,6 +95,13 @@ export default function LabsGatedForm({
       return
     }
     setErr('')
+    // Drop empty attribution fields rather than sending ''. The API stores
+    // `data.utmSource ?? null`, and an empty string is not nullish — it would
+    // persist as '' and then show up as its own bucket when grouping campaigns.
+    const presentAttribution = Object.fromEntries(
+      Object.entries(attribution).filter(([, v]) => v !== '')
+    )
+
     await execute('/api/gated-content', {
       name: form.name.trim(),
       email: form.email.trim(),
@@ -53,6 +109,7 @@ export default function LabsGatedForm({
       contentType,
       contentSlug,
       brand: 'lanework',
+      ...presentAttribution,
     })
   }
 

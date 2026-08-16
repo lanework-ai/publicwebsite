@@ -41,6 +41,27 @@ model Newsletter {
   @@map("newsletters")
 }
 
+/// Tombstone for newsletter unsubscribes.
+///
+/// The unsubscribe path deletes the Newsletter row outright, which keeps the
+/// subscriber list clean but destroys the churn signal — there is nothing left to
+/// count. This is an append-only event log written alongside that delete.
+///
+/// Deliberately NOT unique on email: someone can resubscribe and leave again, and
+/// both departures are real events worth keeping.
+model NewsletterUnsubscribe {
+  id             String   @id @default(cuid())
+  email          String
+  // "link" = clicked the unsubscribe URL; "one-click" = RFC 8058 button in Gmail
+  // or Yahoo. The two say different things about intent.
+  source         String   @default("link")
+  unsubscribedAt DateTime @default(now())
+
+  @@map("newsletter_unsubscribes")
+  @@index([unsubscribedAt])
+  @@index([email])
+}
+
 model NewsletterSend {
   id             String   @id @default(cuid())
   postSlug       String   @unique

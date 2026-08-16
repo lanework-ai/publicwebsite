@@ -17,13 +17,28 @@ import {
   getConversionFunnel,
 } from '@/lib/posthog-query'
 import {
+  getConversionTotals,
+  getContentPerformance,
+  getRecentLeads,
+  getDripSequenceHealth,
+  getRecentContacts,
+  getFleetSizeMix,
+  getLeadAttribution,
+  getNewsletterHealth,
+} from '@/lib/admin-metrics'
+import {
   StatCards,
   RangeToggle,
   AreaLineChart,
   BarList,
   Funnel,
   WidgetError,
+  DataTable,
+  StatList,
+  ConversionCards,
 } from '@/components/Analytics/charts'
+
+const dateFmt = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' })
 
 export const metadata = {
   title: 'Analytics · Lanework Admin',
@@ -72,6 +87,14 @@ export default async function AdminAnalytics({
     browsers,
     geo,
     funnel,
+    convTotals,
+    content,
+    leads,
+    drip,
+    contacts,
+    fleetMix,
+    attribution,
+    newsletter,
   ] = await Promise.allSettled([
     getTotals(days),
     getPageviewsTimeseries(days),
@@ -85,6 +108,15 @@ export default async function AdminAnalytics({
     getBrowserBreakdown(days),
     getGeoBreakdown(days),
     getConversionFunnel(days),
+    // Postgres-backed. Ground truth from our own tables rather than client events.
+    getConversionTotals(),
+    getContentPerformance(),
+    getRecentLeads(days),
+    getDripSequenceHealth(),
+    getRecentContacts(days),
+    getFleetSizeMix(days),
+    getLeadAttribution(),
+    getNewsletterHealth(days),
   ])
 
   const reason = (r: PromiseSettledResult<unknown>) =>
@@ -149,6 +181,137 @@ export default async function AdminAnalytics({
             {bars('Devices', devices)}
             {bars('Browsers', browsers)}
             {bars('Countries', geo)}
+          </div>
+        </div>
+
+        {/* Everything above is client-side events, so ad blockers and DNT erode it.
+            Everything below is rows our own API routes wrote — it is exact. Keeping
+            the two visually separate stops anyone comparing a blocked number against
+            a complete one and concluding something is broken. */}
+        <div style={{ borderTop: '1px solid var(--lw-line-2)', margin: '36px 0 24px', paddingTop: 28 }}>
+          <div className="ll-label" style={{ fontSize: 12, marginBottom: 6 }}>From the database</div>
+          <p style={{ fontSize: 14, color: 'var(--lw-faint)', lineHeight: 1.6, margin: '0 0 20px', maxWidth: 680 }}>
+            Submissions, downloads and drip state, counted from our own tables. Unlike
+            the panels above, nothing here is affected by ad blockers — every number is
+            a real row. Totals are all-time; the tables follow the {rangeLabel} range.
+          </p>
+        </div>
+
+        <div style={{ display: 'grid', gap: 16 }}>
+          {convTotals.status === 'fulfilled' ? (
+            <ConversionCards totals={convTotals.value} />
+          ) : (
+            <WidgetError title="Conversion totals" message={reason(convTotals)} />
+          )}
+
+          {content.status === 'fulfilled' ? (
+            <DataTable
+              title="Gated content performance"
+              columns={[
+                { key: 'slug', label: 'Content' },
+                { key: 'type', label: 'Type' },
+                { key: 'leads', label: 'Leads', numeric: true },
+                { key: 'downloaded', label: 'Downloaded', numeric: true },
+                { key: 'rate', label: 'Rate', numeric: true },
+              ]}
+              rows={content.value.map((c) => ({
+                slug: c.slug,
+                type: c.type,
+                leads: c.leads,
+                downloaded: c.downloaded,
+                rate: `${c.rate.toFixed(c.rate < 10 ? 1 : 0)}%`,
+              }))}
+              empty="No gated leads captured yet."
+            />
+          ) : (
+            <WidgetError title="Gated content performance" message={reason(content)} />
+          )}
+
+          {leads.status === 'fulfilled' ? (
+            <DataTable
+              title={`Recent leads · last ${rangeLabel}`}
+              columns={[
+                { key: 'when', label: 'Date' },
+                { key: 'name', label: 'Name' },
+                { key: 'company', label: 'Company' },
+                { key: 'slug', label: 'Content' },
+                { key: 'downloaded', label: 'Downloaded' },
+              ]}
+              rows={leads.value.map((l) => ({
+                when: dateFmt.format(l.createdAt),
+                name: l.name,
+                company: l.company,
+                slug: l.slug,
+                downloaded: l.downloaded ? `Yes (${l.downloadCount}×)` : 'Not yet',
+              }))}
+              empty={`No leads in the last ${rangeLabel}.`}
+            />
+          ) : (
+            <WidgetError title="Recent leads" message={reason(leads)} />
+          )}
+
+          {attribution.status === 'fulfilled' ? (
+            <DataTable
+              title="Lead attribution — what actually converted"
+              columns={[
+                { key: 'source', label: 'Source' },
+                { key: 'campaign', label: 'Campaign' },
+                { key: 'landingPage', label: 'Landing page' },
+                { key: 'leads', label: 'Leads', numeric: true },
+                { key: 'downloaded', label: 'Downloaded', numeric: true },
+              ]}
+              rows={attribution.value.map((a) => ({
+                source: a.source,
+                campaign: a.campaign,
+                landingPage: a.landingPage,
+                leads: a.leads,
+                downloaded: a.downloaded,
+              }))}
+              empty="No leads captured yet."
+            />
+          ) : (
+            <WidgetError title="Lead attribution" message={reason(attribution)} />
+          )}
+
+          {contacts.status === 'fulfilled' ? (
+            <DataTable
+              title={`Contact enquiries · last ${rangeLabel}`}
+              columns={[
+                { key: 'when', label: 'Date' },
+                { key: 'name', label: 'Name' },
+                { key: 'company', label: 'Company' },
+                { key: 'fleetSize', label: 'Fleet size' },
+                { key: 'flagged', label: 'Flagged' },
+              ]}
+              rows={contacts.value.map((c) => ({
+                when: dateFmt.format(c.createdAt),
+                name: c.name,
+                company: c.company,
+                fleetSize: c.fleetSize,
+                flagged: c.flagged ? 'Spam' : '—',
+              }))}
+              empty={`No enquiries in the last ${rangeLabel}.`}
+            />
+          ) : (
+            <WidgetError title="Contact enquiries" message={reason(contacts)} />
+          )}
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 16 }}>
+            {drip.status === 'fulfilled' ? (
+              <StatList title="Drip sequence health" items={drip.value} />
+            ) : (
+              <WidgetError title="Drip sequence health" message={reason(drip)} />
+            )}
+            {newsletter.status === 'fulfilled' ? (
+              <StatList title="Newsletter" items={newsletter.value} />
+            ) : (
+              <WidgetError title="Newsletter" message={reason(newsletter)} />
+            )}
+            {fleetMix.status === 'fulfilled' ? (
+              <BarList title="Fleet size mix" items={fleetMix.value} />
+            ) : (
+              <WidgetError title="Fleet size mix" message={reason(fleetMix)} />
+            )}
           </div>
         </div>
 

@@ -97,14 +97,35 @@ function errorPage(siteUrl: string): NextResponse {
  * active gated-content drip sequences. deleteMany/updateMany never throw on a
  * missing row, so this is safe for addresses that were never subscribed.
  */
-async function suppressEmail(email: string): Promise<{ newsletterRemoved: number; dripPaused: number }> {
+async function suppressEmail(
+  email: string,
+  source: 'link' | 'one-click'
+): Promise<{ newsletterRemoved: number; dripPaused: number }> {
   const newsletterResult = await prisma.newsletter.deleteMany({ where: { email } })
   const dripResult = await prisma.gatedContentLead.updateMany({
     where: { email, dripUnsubscribedAt: null },
     data: { dripUnsubscribedAt: new Date() },
   })
+
+  // Record the departure. Deleting the Newsletter row keeps the subscriber list
+  // clean but destroys the churn signal, so the tombstone is the only thing that
+  // makes newsletter unsubscribes countable at all.
+  //
+  // Only when a row was actually removed: this endpoint is reachable by anyone with
+  // a URL, and logging addresses that were never subscribed would pad churn with
+  // people who never subscribed. Drip-only unsubscribes are already recorded by
+  // dripUnsubscribedAt above, so nothing is lost by skipping them here.
+  //
+  // Never let bookkeeping fail the unsubscribe itself — the user's request to stop
+  // receiving mail matters more than our metrics.
+  if (newsletterResult.count > 0) {
+    await prisma.newsletterUnsubscribe
+      .create({ data: { email, source } })
+      .catch((e) => console.error('[unsubscribe] failed to record tombstone:', e))
+  }
+
   console.log(
-    `[unsubscribe] email=${email} newsletter_removed=${newsletterResult.count} drip_paused=${dripResult.count}`
+    `[unsubscribe] email=${email} source=${source} newsletter_removed=${newsletterResult.count} drip_paused=${dripResult.count}`
   )
   return { newsletterRemoved: newsletterResult.count, dripPaused: dripResult.count }
 }
@@ -116,7 +137,7 @@ export async function GET(request: NextRequest) {
     if (!emailRaw) {
       return NextResponse.json({ success: false, message: 'Email parameter required' }, { status: 400 })
     }
-    const { newsletterRemoved, dripPaused } = await suppressEmail(emailRaw.toLowerCase())
+    const { newsletterRemoved, dripPaused } = await suppressEmail(emailRaw.toLowerCase(), 'link')
     return successPage(siteUrl, newsletterRemoved > 0, dripPaused)
   } catch (error) {
     console.error('Unsubscribe error:', error)
@@ -141,7 +162,7 @@ export async function POST(request: NextRequest) {
     if (!email) {
       return NextResponse.json({ success: false, message: 'Email parameter required' }, { status: 400 })
     }
-    await suppressEmail(email.toLowerCase())
+    await suppressEmail(email.toLowerCase(), 'one-click')
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Unsubscribe (one-click) error:', error)
