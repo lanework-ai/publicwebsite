@@ -1,0 +1,53 @@
+# Build on GitHub Actions and upload the result to Netlify, so deploys stop
+# spending Netlify build minutes. Netlify's own Git-triggered builds must be
+# switched off (Site configuration → Build & deploy → Stop builds), or every push
+# would build twice.
+#
+# `netlify deploy --build` runs the same pipeline Netlify would — netlify.toml,
+# @netlify/plugin-nextjs, the scheduled function in netlify/functions — and pulls
+# the site's environment variables from Netlify, so app secrets stay there.
+# GitHub only holds:
+#   NETLIFY_AUTH_TOKEN — a Netlify personal access token
+#   NETLIFY_SITE_ID    — the site's API ID (Site configuration → General)
+#
+# Pushes to main deploy to production; pull requests get a draft preview URL.
+name: Deploy to Netlify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Never run two production deploys at once; a newer push waits for the older one.
+concurrency:
+  group: netlify-${{ github.event_name == 'pull_request' && github.head_ref || 'production' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # Fork PRs get no secrets, so skip them rather than fail.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm install -g netlify-cli
+
+      - name: Deploy to production
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: netlify deploy --build --prod --message "${{ github.sha }}"
+
+      - name: Deploy preview
+        if: github.event_name == 'pull_request'
+        run: netlify deploy --build --alias "pr-${{ github.event.number }}" --message "PR #${{ github.event.number }}"
