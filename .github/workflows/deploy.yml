@@ -33,9 +33,9 @@ jobs:
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
       NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
@@ -46,8 +46,11 @@ jobs:
 
       - name: Deploy to production
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-        run: netlify deploy --build --prod --message "${{ github.sha }}"
+        run: 'netlify deploy --build --prod --message "$GITHUB_SHA"'
 
       - name: Deploy preview
         if: github.event_name == 'pull_request'
-        run: netlify deploy --build --alias "pr-${{ github.event.number }}" --message "PR #${{ github.event.number }}"
+        # Quoted: a bare " #" in a YAML plain scalar starts a comment and truncates the command.
+        run: 'netlify deploy --build --alias "pr-$PR_NUMBER" --message "PR #$PR_NUMBER"'
+        env:
+          PR_NUMBER: ${{ github.event.number }}
