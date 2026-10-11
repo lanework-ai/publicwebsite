@@ -68,6 +68,7 @@ export type ContactRow = {
   company: string
   email: string
   fleetSize: string
+  message: string
   flagged: boolean
 }
 
@@ -214,6 +215,7 @@ export async function getRecentContacts(days: number, limit = 25): Promise<Conta
       company: true,
       email: true,
       fleetSize: true,
+      message: true,
       flagged: true,
     },
   })
@@ -226,6 +228,7 @@ export async function getRecentContacts(days: number, limit = 25): Promise<Conta
     // Null is meaningful, not missing: the form only asks for fleet size on
     // carrier intents (see the schema comment on Contact.fleetSize).
     fleetSize: r.fleetSize ?? 'Not asked',
+    message: r.message ?? '',
     flagged: r.flagged,
   }))
 }
