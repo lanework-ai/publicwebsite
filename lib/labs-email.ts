@@ -339,8 +339,8 @@ const deadheadDripCopy: DripCopyFactory = (ctx) => ({
 
 /**
  * White paper #1: "Driver Retention is a Data Problem". Originally nurtured by the
- * Rapid Relay sequence; moved here so both papers are Lanework-voiced as rapidrelay.ai
- * sunsets. The drip cron routes this slug to the Lanework sender regardless of brand.
+ * Rapid Relay sequence; moved here so both papers are Lanework-voiced. The drip cron
+ * routes this slug to the Lanework sender regardless of brand.
  */
 const driverRetentionDripCopy: DripCopyFactory = (ctx) => ({
   step1: {
