@@ -233,6 +233,7 @@ export default async function AdminAnalytics({
               columns={[
                 { key: 'when', label: 'Date' },
                 { key: 'name', label: 'Name' },
+                { key: 'email', label: 'Email' },
                 { key: 'company', label: 'Company' },
                 { key: 'slug', label: 'Content' },
                 { key: 'downloaded', label: 'Downloaded' },
@@ -240,6 +241,7 @@ export default async function AdminAnalytics({
               rows={leads.value.map((l) => ({
                 when: dateFmt.format(l.createdAt),
                 name: l.name,
+                email: <EmailLink email={l.email} />,
                 company: l.company,
                 slug: l.slug,
                 downloaded: l.downloaded ? `Yes (${l.downloadCount}×)` : 'Not yet',
@@ -279,15 +281,23 @@ export default async function AdminAnalytics({
               columns={[
                 { key: 'when', label: 'Date' },
                 { key: 'name', label: 'Name' },
+                { key: 'email', label: 'Email' },
                 { key: 'company', label: 'Company' },
                 { key: 'fleetSize', label: 'Fleet size' },
+                { key: 'message', label: 'Message' },
                 { key: 'flagged', label: 'Flagged' },
               ]}
               rows={contacts.value.map((c) => ({
                 when: dateFmt.format(c.createdAt),
                 name: c.name,
+                email: <EmailLink email={c.email} />,
                 company: c.company,
                 fleetSize: c.fleetSize,
+                message: c.message ? (
+                  <span style={{ display: 'block', maxWidth: 360, whiteSpace: 'pre-wrap' }}>{c.message}</span>
+                ) : (
+                  '—'
+                ),
                 flagged: c.flagged ? 'Spam' : '—',
               }))}
               empty={`No enquiries in the last ${rangeLabel}.`}
@@ -322,6 +332,15 @@ export default async function AdminAnalytics({
         </p>
       </div>
     </div>
+  )
+}
+
+/** Clickable address for the lead/contact tables. The page sits behind the /admin Basic-Auth gate. */
+function EmailLink({ email }: { email: string }) {
+  return (
+    <a href={`mailto:${email}`} style={{ color: 'var(--lw-accent-soft)', wordBreak: 'break-all' }}>
+      {email}
+    </a>
   )
 }
 
