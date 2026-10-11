@@ -50,3 +50,6 @@ next-env.d.ts
 
 # Rendered drip-email previews (scripts/preview-drip-emails.mjs)
 .drip-preview/
+
+# Netlify CLI local state
+.netlify
