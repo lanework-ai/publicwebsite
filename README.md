@@ -7,7 +7,7 @@ delivery, a drip sequence, and blog broadcasts).
 
 Split out of the Rapid Relay repo in July 2026, where it lived gated at `/labs`.
 Rapid Relay and Rapid Load still appear here as products in the field-work case
-studies; the rapidrelay.ai domain itself is being retired.
+studies; rapidrelay.ai remains live as a separate site.
 
 ## Stack
 
