@@ -6,12 +6,11 @@ import { client } from '@/sanity/client'
 import { whitePapersQuery, benchmarksQuery } from '@/lib/sanity-queries'
 import { domains } from '@/lib/labs/domains'
 import { fieldWork, statusLabel } from '@/lib/labs/field-work'
+import { pipeline } from '@/lib/labs/research-pipeline'
 
 export const revalidate = 86400
 
 const stats = [
-  // TODO(open-q): recheck against the real pipeline ship dates.
-  { value: '9', label: 'white papers in 2026' },
   { value: '92% → 51%', label: 'driver turnover at a live carrier' },
   { value: '$18.7B', label: 'driver turnover modeled' },
   { value: '3', label: 'deployments · 2 live, 1 in pilot' },
@@ -144,9 +143,8 @@ export default async function LabsHome() {
               {r.title}
             </Link>
           ))}
-          {/* TODO(open-q): recheck this count once the pipeline ship dates are set. */}
           <p style={{ fontSize: 14, color: 'var(--lw-faint)', lineHeight: 1.6, margin: '0 0 10px' }}>
-            Plus 7 more white papers and a carrier scorecard shipping through 2026.
+            Plus {pipeline.length} more in the pipeline.
           </p>
           <Button as={Link} href={lw('/research')} variant="ghost" size="sm" arrow style={{ paddingLeft: 0 }}>All research</Button>
         </Card>

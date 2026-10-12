@@ -5,7 +5,7 @@ import { PageHeader, SectionLabel, CtaBand } from '@/components/labs/ui'
 import { BulletList, Button } from '@/components/labs/ds'
 import { RESEARCH_PARTNER_HREF } from '@/lib/labs/config'
 import LabsNewsletter from '@/components/labs/LabsNewsletter'
-import { Logo } from '@/components/labs/LaneworkLogo'
+import { pipeline } from '@/lib/labs/research-pipeline'
 import { pageMetadata } from '@/lib/seo'
 
 export const metadata = pageMetadata({
@@ -15,43 +15,6 @@ export const metadata = pageMetadata({
   path: '/research',
 })
 export const revalidate = 86400
-
-// Upcoming white papers — shown as "in the pipeline" so visitors know more is
-// coming. `progress` drives the work-in-progress accent lane on the batch mark.
-// TODO(open-q): the month windows are past due; re-date them (or group as
-// "Q4 2026" / "Early 2027") once the team confirms real ship dates.
-const pipeline: { window: string; progress: number; titles: string[] }[] = [
-  {
-    window: 'August 2026',
-    progress: 0.75,
-    titles: [
-      'The Hidden Liability in Every Freight Acquisition',
-    ],
-  },
-  {
-    window: 'September 2026',
-    progress: 0.55,
-    titles: [
-      'The Driver Shortage Will Not Be Solved by Hiring More Drivers',
-      'Why Most Relay Attempts Fail at the Coordination Layer',
-    ],
-  },
-  {
-    window: 'October 2026',
-    progress: 0.3,
-    titles: [
-      'The Real Cost of Driver Turnover',
-      'The Rate Recovery Will Punish Carriers Without Relay Infrastructure',
-    ],
-  },
-  {
-    window: 'November 2026',
-    progress: 0.15,
-    // TODO(open-q): the WMS title sits outside the freight focus; move it to
-    // "Later" or drop it once the fulfillment question is answered.
-    titles: ['Why Most WMS Software Fails Frontline Ops'],
-  },
-]
 
 interface Item {
   _id: string
@@ -143,26 +106,13 @@ export default async function LabsResearch() {
           What we&rsquo;re writing next. Research partners get early drafts and can contribute data.{' '}
           <Link href={RESEARCH_PARTNER_HREF} style={{ color: 'var(--lw-accent-soft)' }}>Get in touch.</Link>
         </p>
-        <div style={{ display: 'grid', gap: 28 }}>
-          {pipeline.map((batch) => (
-            <div key={batch.window}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-                {/* Work-in-progress mark: the accent lane fills as the batch nears shipping */}
-                <Logo wordmark={false} size={22} interaction="none" progress={batch.progress} />
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 14, letterSpacing: '0.1em', color: 'var(--lw-dim)', textTransform: 'uppercase' }}>
-                  {batch.window}
-                </span>
-              </div>
-              <div style={{ borderTop: '1px solid var(--lw-line)' }}>
-                {batch.titles.map((t) => (
-                  <div key={t} style={{ display: 'flex', alignItems: 'center', gap: 14, borderBottom: '1px solid var(--lw-line)', padding: '15px 0' }}>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, letterSpacing: '0.08em', color: 'var(--lw-faint)', border: '1px solid var(--lw-line-2)', borderRadius: 999, padding: '3px 9px', whiteSpace: 'nowrap' }}>
-                      COMING SOON
-                    </span>
-                    <span style={{ fontSize: 17, color: 'var(--lw-fg-2)', letterSpacing: '-0.01em' }}>{t}</span>
-                  </div>
-                ))}
-              </div>
+        <div style={{ borderTop: '1px solid var(--lw-line)' }}>
+          {pipeline.map((t) => (
+            <div key={t} style={{ display: 'flex', alignItems: 'center', gap: 14, borderBottom: '1px solid var(--lw-line)', padding: '15px 0' }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, letterSpacing: '0.08em', color: 'var(--lw-faint)', border: '1px solid var(--lw-line-2)', borderRadius: 999, padding: '3px 9px', whiteSpace: 'nowrap' }}>
+                COMING SOON
+              </span>
+              <span style={{ fontSize: 17, color: 'var(--lw-fg-2)', letterSpacing: '-0.01em' }}>{t}</span>
             </div>
           ))}
         </div>
