@@ -68,6 +68,8 @@ export type ContactRow = {
   company: string
   email: string
   fleetSize: string
+  lengthOfHaul: string
+  intent: string
   message: string
   flagged: boolean
 }
@@ -215,6 +217,8 @@ export async function getRecentContacts(days: number, limit = 25): Promise<Conta
       company: true,
       email: true,
       fleetSize: true,
+      lengthOfHaul: true,
+      intent: true,
       message: true,
       flagged: true,
     },
@@ -228,6 +232,9 @@ export async function getRecentContacts(days: number, limit = 25): Promise<Conta
     // Null is meaningful, not missing: the form only asks for fleet size on
     // carrier intents (see the schema comment on Contact.fleetSize).
     fleetSize: r.fleetSize ?? 'Not asked',
+    lengthOfHaul: r.lengthOfHaul ?? 'Not asked',
+    // Null on enquiries from before the intent column existed (Oct 2026).
+    intent: r.intent ?? '—',
     message: r.message ?? '',
     flagged: r.flagged,
   }))

@@ -16,6 +16,8 @@ export interface ContactSyncData {
   email: string
   company: string
   fleetSize?: string | null
+  lengthOfHaul?: string | null
+  intent?: string | null
   message?: string | null
   submittedAt: string
 }
@@ -37,6 +39,8 @@ export async function syncContactToSanity(data: ContactSyncData) {
       email: data.email,
       company: data.company,
       fleetSize: data.fleetSize,
+      lengthOfHaul: data.lengthOfHaul,
+      intent: data.intent,
       message: data.message,
       submittedAt: data.submittedAt,
     }

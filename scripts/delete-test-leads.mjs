@@ -1,8 +1,15 @@
 /**
- * Deletes the two smoke-test leads from Supabase + Sanity.
- * Matches on: email = 'rapidrelayapp@gmail.com' AND company LIKE 'Rapid Relay (test%'
+ * Deletes smoke-test submissions from Supabase + Sanity.
  *
- * Run: node scripts/delete-test-leads.mjs
+ * Default (gated-content leads):
+ *   Matches on: email = 'rapidrelayapp@gmail.com' AND company LIKE 'Rapid Relay (test%'
+ *   Run: node scripts/delete-test-leads.mjs
+ *
+ * --contacts (contact-form enquiries):
+ *   Matches on: email = 'rapidrelayapp@gmail.com' AND company LIKE 'Lanework (test%'
+ *   Deletes the Sanity contact docs, their sanity_syncs rows, then the contacts rows.
+ *   Run: node scripts/delete-test-leads.mjs --contacts
+ *
  * Add --dry-run to preview without deleting.
  */
 import { readFileSync } from 'node:fs'
@@ -33,6 +40,69 @@ const sanity = createClient({
 })
 
 const pgClient = new pg.Client({ connectionString: process.env.DATABASE_URL })
+
+// contacts has no sanityId column, so the Sanity doc ids come from sanity_syncs,
+// falling back to a lookup by postgresId. Read them before any row is deleted.
+async function deleteTestContacts() {
+  const { rows } = await pgClient.query(
+    `SELECT c.id, c.email, c.company, s."sanityId"
+     FROM contacts c
+     LEFT JOIN sanity_syncs s ON s."entityType" = 'contact' AND s."entityId" = c.id
+     WHERE c.email = 'rapidrelayapp@gmail.com' AND c.company LIKE 'Lanework (test%'`
+  )
+  console.log(`Found ${rows.length} test contact(s):`)
+  for (const r of rows) {
+    console.log(`  - ${r.id} | ${r.email} | ${r.company} | sanityId: ${r.sanityId || 'none'}`)
+  }
+  if (rows.length === 0) {
+    console.log('Nothing to delete.')
+    return
+  }
+
+  const contactIds = [...new Set(rows.map((r) => r.id))]
+  const byPostgresId = await sanity.fetch(
+    `*[_type == "contact" && postgresId in $ids]._id`,
+    { ids: contactIds }
+  )
+  const sanityIds = [...new Set([...rows.map((r) => r.sanityId).filter(Boolean), ...byPostgresId])]
+  console.log(`Sanity contact doc(s) to delete: ${sanityIds.length ? sanityIds.join(', ') : 'none'}`)
+
+  if (DRY_RUN) {
+    console.log('\nDry run; nothing deleted.')
+    return
+  }
+
+  if (sanityIds.length > 0) {
+    const tx = sanity.transaction()
+    for (const id of sanityIds) tx.delete(id)
+    await tx.commit()
+    console.log(`  Deleted ${sanityIds.length} Sanity contact doc(s).`)
+  }
+  const { rowCount: syncsDeleted } = await pgClient.query(
+    `DELETE FROM sanity_syncs WHERE "entityType" = 'contact' AND "entityId" = ANY($1::text[])`,
+    [contactIds]
+  )
+  console.log(`  Deleted ${syncsDeleted} sanity_syncs row(s).`)
+  const { rowCount: contactsDeleted } = await pgClient.query(
+    `DELETE FROM contacts WHERE id = ANY($1::text[])`,
+    [contactIds]
+  )
+  console.log(`  Deleted ${contactsDeleted} contacts row(s).`)
+  console.log('\n✅ Done.')
+}
+
+if (process.argv.includes('--contacts')) {
+  try {
+    await pgClient.connect()
+    await deleteTestContacts()
+  } catch (e) {
+    console.error('Failed:', e.message)
+    process.exitCode = 1
+  } finally {
+    await pgClient.end()
+  }
+  process.exit()
+}
 
 try {
   await pgClient.connect()

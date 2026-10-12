@@ -36,6 +36,18 @@ export default {
       readOnly: true,
     },
     {
+      name: 'lengthOfHaul',
+      type: 'string',
+      title: 'Typical Length of Haul',
+      readOnly: true,
+    },
+    {
+      name: 'intent',
+      type: 'string',
+      title: 'Intent',
+      readOnly: true,
+    },
+    {
       name: 'message',
       type: 'text',
       title: 'Message',
