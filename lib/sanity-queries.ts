@@ -1,8 +1,9 @@
 import { cache } from 'react'
 import { client } from '@/sanity/client'
 
-// Query for all published posts (excluding noIndex posts)
-export const postsQuery = `*[_type == "post" && noIndex != true] | order(publishedAt desc)[0...1000] {
+// Query for all published posts (excluding noIndex posts). Pinned posts lead,
+// then newest first; coalesce because posts that were never pinned have no value.
+export const postsQuery = `*[_type == "post" && noIndex != true] | order(coalesce(pinned, false) desc, publishedAt desc)[0...1000] {
   _id,
   title,
   slug,
@@ -71,7 +72,7 @@ export const postBySlugQuery = `*[_type == "post" && slug.current == $slug][0] {
     bio
   },
   "categories": categories[]->title,
-  "relatedPosts": relatedPosts[]->{
+  "relatedPosts": relatedPosts[@->noIndex != true]->{
     _id,
     title,
     slug,
@@ -181,7 +182,7 @@ export const whitePaperBySlugQuery = `*[_type == "whitePaper" && slug.current ==
     publishedAt,
     coverImage { asset->{ _id, url }, alt }
   },
-  "relatedPosts": relatedPosts[]->{
+  "relatedPosts": relatedPosts[@->noIndex != true]->{
     _id,
     title,
     slug,
@@ -236,7 +237,7 @@ const relatedPostProjection = `
 export const relatedByCategoryQuery = `{
   "whitePapers": *[_type == "whitePaper" && _id != $currentId && noIndex != true
     && count(categories[@._ref in $categoryIds]) > 0] | order(publishedAt desc)[0...3]{ ${relatedWpProjection} },
-  "posts": *[_type == "post" && count(categories[@._ref in $categoryIds]) > 0]
+  "posts": *[_type == "post" && noIndex != true && count(categories[@._ref in $categoryIds]) > 0]
     | order(publishedAt desc)[0...3]{ ${relatedPostProjection} }
 }`
 
@@ -244,7 +245,7 @@ export const relatedByCategoryQuery = `{
 export const latestResourcesQuery = `{
   "whitePapers": *[_type == "whitePaper" && _id != $currentId && noIndex != true]
     | order(publishedAt desc)[0...3]{ ${relatedWpProjection} },
-  "posts": *[_type == "post"] | order(publishedAt desc)[0...3]{ ${relatedPostProjection} }
+  "posts": *[_type == "post" && noIndex != true] | order(publishedAt desc)[0...3]{ ${relatedPostProjection} }
 }`
 
 type RelatedResources = { whitePapers: any[]; posts: any[] }
