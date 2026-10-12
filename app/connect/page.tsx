@@ -1,27 +1,23 @@
 'use client'
 
-import { useState } from 'react'
-
-const intents = [
-  { value: 'snapshot', label: 'Readiness snapshot (free)' },
-  { value: 'assessment', label: 'Network assessment' },
-  { value: 'fulfillment', label: 'Fulfillment performance diagnostic' },
-  { value: 'diligence', label: 'Operational due diligence (investors)' },
-  { value: 'advisory', label: 'Fractional analytics advisory' },
-  { value: 'platform', label: 'Deploy a proof (Rapid Relay / Rapid Load)' },
-  { value: 'careers', label: 'Join the team' },
-  { value: 'other', label: 'Something else' },
-]
-
-const fleetSizes = ['20-100', '100-250', '250-500', '500-1000', '1000+']
+import { useEffect, useState } from 'react'
+import { intents, fleetSizes, lengthsOfHaul, DEFAULT_INTENT, isIntent } from '@/lib/labs/contact-options'
 
 /** Intents where the fleet-size question is worth asking. */
-const CARRIER_INTENTS = new Set(['snapshot', 'assessment', 'advisory', 'platform'])
+const CARRIER_INTENTS = new Set<string>(['research', 'snapshot', 'assessment', 'advisory', 'platform'])
+
+/**
+ * Whether to ask for typical length of haul. It qualifies a carrier for the
+ * current relay research (550–600 mi lanes), so it follows the carrier gate.
+ */
+function showsLengthOfHaul(intent: string): boolean {
+  return CARRIER_INTENTS.has(intent)
+}
 
 export default function LabsConnect() {
-  // fleetSize starts blank: the field is optional, so nobody is defaulted into a
-  // band that does not describe their operation.
-  const [form, setForm] = useState({ name: '', email: '', company: '', intent: 'snapshot', fleetSize: '', message: '' })
+  // fleetSize and lengthOfHaul start blank: both are optional, so nobody is
+  // defaulted into a band that does not describe their operation.
+  const [form, setForm] = useState({ name: '', email: '', company: '', intent: DEFAULT_INTENT as string, fleetSize: '', lengthOfHaul: '', message: '' })
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [honeypot, setHoneypot] = useState('')
   // Mount timestamp for the API's submit-timing gate. Without it the route reads
@@ -29,6 +25,15 @@ export default function LabsConnect() {
   const [formLoadedAt] = useState(() => Date.now())
 
   const set = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }))
+
+  // Preselect the intent from ?intent= (partner CTAs link to ?intent=research).
+  // Read after mount rather than with useSearchParams, which would need a
+  // Suspense boundary and opt this static page out of prerendering. Server and
+  // first client render both use DEFAULT_INTENT, so there is no hydration mismatch.
+  useEffect(() => {
+    const requested = new URLSearchParams(window.location.search).get('intent')
+    if (isIntent(requested)) set('intent', requested)
+  }, [])
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -48,6 +53,10 @@ export default function LabsConnect() {
           email: form.email,
           company: form.company,
           ...(CARRIER_INTENTS.has(form.intent) && form.fleetSize ? { fleetSize: form.fleetSize } : {}),
+          ...(showsLengthOfHaul(form.intent) && form.lengthOfHaul ? { lengthOfHaul: form.lengthOfHaul } : {}),
+          intent: form.intent,
+          // The intent label stays in the message as well, so it survives in the
+          // email body and the Sanity record even where the intent column is unread.
           message: `Intent: ${intentLabel}\n\n${form.message || '(no message)'}`,
           _honeypot: honeypot,
           formLoadedAt,
@@ -74,16 +83,16 @@ export default function LabsConnect() {
   return (
     <section className="ll-section" style={{ paddingTop: 60, paddingBottom: 56, maxWidth: 640 }}>
       <div style={{ fontFamily: 'var(--font-mono)', fontSize: 15, letterSpacing: '0.22em', color: 'var(--lw-accent-soft)', marginBottom: 20 }}>
-        WORK WITH US
+        GET IN TOUCH
       </div>
       <h1 style={{ fontSize: 'clamp(32px, 4.4vw, 43px)', lineHeight: 1.12, fontWeight: 500, letterSpacing: '-0.02em', margin: '0 0 16px' }}>
         Start with a study.
       </h1>
       <p style={{ fontSize: 18, lineHeight: 1.6, color: 'var(--lw-muted)', margin: '0 0 36px' }}>
-        The easiest way in is a question. Bring us one, or your data, and we forward-deploy a small
-        team on one bounded problem: we work it alongside your operators, improve the process, and show
-        you the result. Platform deployments and roles too. No sales pitch, and we typically reply
-        within one business day.
+        The easiest way in is a question. Bring us one, or a few months of lane and dispatch history,
+        and we will tell you what the evidence says, including when it says not to change anything.
+        Research partnerships, platform deployments, and roles too. No sales pitch, and we typically
+        reply within one business day.
       </p>
 
       {status === 'sent' ? (
@@ -128,6 +137,15 @@ export default function LabsConnect() {
                     them. The API treats fleetSize as optional and stores null. */}
                 <option value="">Prefer not to say</option>
                 {fleetSizes.map((s) => <option key={s} value={s}>{s} trucks</option>)}
+              </select>
+            </div>
+          )}
+          {showsLengthOfHaul(form.intent) && (
+            <div>
+              <label style={labelStyle} htmlFor="ll-haul">Typical length of haul (optional)</label>
+              <select id="ll-haul" style={inputStyle} value={form.lengthOfHaul} onChange={(e) => set('lengthOfHaul', e.target.value)}>
+                <option value="">Prefer not to say</option>
+                {lengthsOfHaul.map((h) => <option key={h} value={h}>{h}</option>)}
               </select>
             </div>
           )}

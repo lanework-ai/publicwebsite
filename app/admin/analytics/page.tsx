@@ -283,7 +283,9 @@ export default async function AdminAnalytics({
                 { key: 'name', label: 'Name' },
                 { key: 'email', label: 'Email' },
                 { key: 'company', label: 'Company' },
+                { key: 'intent', label: 'Intent' },
                 { key: 'fleetSize', label: 'Fleet size' },
+                { key: 'lengthOfHaul', label: 'Length of haul' },
                 { key: 'message', label: 'Message' },
                 { key: 'flagged', label: 'Flagged' },
               ]}
@@ -292,7 +294,9 @@ export default async function AdminAnalytics({
                 name: c.name,
                 email: <EmailLink email={c.email} />,
                 company: c.company,
+                intent: c.intent,
                 fleetSize: c.fleetSize,
+                lengthOfHaul: c.lengthOfHaul,
                 message: c.message ? (
                   <span style={{ display: 'block', maxWidth: 360, whiteSpace: 'pre-wrap' }}>{c.message}</span>
                 ) : (

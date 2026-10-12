@@ -5,6 +5,7 @@ import { validateHoneypot } from '@/lib/rateLimit'
 import { hashIp, checkContactAbuse, looksLikeSpam } from '@/lib/spam'
 import { sendContactNotification } from '@/lib/labs-email'
 import { syncContactToSanity } from '@/lib/sanity-write-client'
+import { fleetSizes, lengthsOfHaul, intentValues, intents } from '@/lib/labs/contact-options'
 
 // Types for request and response
 interface ContactFormData {
@@ -12,6 +13,8 @@ interface ContactFormData {
   email: string
   company: string
   fleetSize?: string | null
+  lengthOfHaul?: string | null
+  intent?: string | null
   message?: string
   _honeypot?: string
   formLoadedAt?: number
@@ -59,15 +62,17 @@ const contactSchema = z.object({
   // fulfillment, or careers enquiry omits it, and a band is still validated
   // against the allowlist whenever one is sent.
   fleetSize: z
-    .string()
-    .refine(
-      // Keep in sync with fleetSizes in app/connect/page.tsx. Lanework engages
-      // fleets from 20 trucks up, so the smallest band starts there.
-      (value) => ['20-100', '100-250', '250-500', '500-1000', '1000+'].includes(value),
-      { message: 'Invalid fleet size selection' }
-    )
+    .enum(fleetSizes, { message: 'Invalid fleet size selection' })
     .optional()
     .nullable(),
+  // Optional carrier qualifier for the current relay research; same rules as fleetSize.
+  lengthOfHaul: z
+    .enum(lengthsOfHaul, { message: 'Invalid length of haul selection' })
+    .optional()
+    .nullable(),
+  // The value of the form's "I'd like to" select. Optional so an older cached
+  // form that does not send it still validates.
+  intent: z.enum(intentValues, { message: 'Invalid intent' }).optional().nullable(),
   message: z.string().max(500, 'Message must not exceed 500 characters').optional().nullable(),
   _honeypot: z.string().optional(),
 })
@@ -124,6 +129,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
         email: validatedData.email,
         company: validatedData.company,
         fleetSize: validatedData.fleetSize,
+        lengthOfHaul: validatedData.lengthOfHaul,
+        intent: validatedData.intent,
         message: cleanMessage,
         ipHash,
         flagged,
@@ -139,6 +146,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
         email: validatedData.email,
         company: validatedData.company,
         fleetSize: validatedData.fleetSize,
+        lengthOfHaul: validatedData.lengthOfHaul,
+        intent: intents.find((i) => i.value === validatedData.intent)?.label ?? null,
         message: cleanMessage,
       }).catch((error) => {
         console.error('Failed to send contact notification email:', error)
@@ -152,6 +161,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
           email: validatedData.email,
           company: validatedData.company,
           fleetSize: validatedData.fleetSize,
+          lengthOfHaul: validatedData.lengthOfHaul,
+          intent: validatedData.intent,
           message: cleanMessage,
           submittedAt: contact.createdAt.toISOString(),
         })
