@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Logo } from './LaneworkLogo'
+import { LAB_DESCRIPTOR } from '@/lib/labs/config'
 
 const cols: { title: string; links: { href: string; label: string }[] }[] = [
   {
@@ -21,7 +22,7 @@ const cols: { title: string; links: { href: string; label: string }[] }[] = [
     title: 'Company',
     links: [
       { href: '/about', label: 'About' },
-      { href: '/engagements', label: 'Engagements' },
+      { href: '/engagements', label: 'Partner' },
       { href: '/careers', label: 'Careers' },
       { href: '/connect', label: 'Work with us' },
       { href: '/privacy-policy', label: 'Privacy' },
@@ -47,7 +48,7 @@ export default function LabsFooter() {
         <div>
           <Logo wordmark size={32} interaction="lead" />
           <p style={{ fontSize: 15, color: 'var(--lw-muted)', lineHeight: 1.6, marginTop: 16, maxWidth: 300, textWrap: 'balance' }}>
-            We embed with supply chain operators, turn the data they already hold into independent research, and build the AI systems that put it to work.
+            An {LAB_DESCRIPTOR}. We test what works for drivers, carriers, and communities, and build the software that proves it.
           </p>
         </div>
         {cols.map((c) => (
@@ -87,11 +88,10 @@ export default function LabsFooter() {
         <span style={{ fontSize: 14, color: 'var(--lw-dim)', whiteSpace: 'nowrap' }}>
           © {year} Lanework. All rights reserved.
         </span>
-        {/* Names the three things we sell. The previous line, "Applied AI research ·
-            logistics", said logistics when the scope is logistics and supply chain,
-            and narrowed a firm that also runs embedded engagements and assessments. */}
+        {/* The three things the lab produces: the research, the field work that tests
+            it with partner carriers, and the software that proves it holds. */}
         <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, letterSpacing: '0.1em', color: 'var(--lw-muted)', textTransform: 'uppercase' }}>
-          Research · Embedded teams · Software
+          Research · Field work · Software
         </span>
       </div>
     </footer>

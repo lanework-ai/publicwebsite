@@ -8,7 +8,7 @@ import { Button } from './ds'
 
 const links = [
   { href: '/research', label: 'Research' },
-  { href: '/engagements', label: 'Engagements' },
+  { href: '/engagements', label: 'Partner' },
   { href: '/field-work', label: 'Field work' },
   { href: '/blog', label: 'Notes' },
   { href: '/about', label: 'About' },

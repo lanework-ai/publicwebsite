@@ -7,14 +7,14 @@ import { pageMetadata } from '@/lib/seo'
 export const metadata = pageMetadata({
   title: 'Careers · Lanework',
   description:
-    'Lanework is a lean, forward-deployed team of operators, engineers, and researchers. Early roles are opening in engineering, operations, and research.',
+    'Lanework is a lean team of operators, engineers, and researchers. Early roles are opening in engineering, operations, and research.',
   path: '/careers',
 })
 
 const why = [
   {
     t: 'Leverage',
-    d: 'A lean team where your work moves the needle. The research you run and the software you build ship to the real networks you are embedded in, not a backlog.',
+    d: 'A lean team where your work moves the needle. The research you run and the software you build ship to the real networks you work alongside, not a backlog.',
   },
   {
     t: 'Real stakes',
@@ -28,7 +28,7 @@ const why = [
 
 const how = [
   { step: '01 · STUDY', d: 'You start with a question and real operational data, not a spec handed down.' },
-  { step: '02 · EMBED', d: 'You deploy into the operation, work alongside planners and dispatchers, and improve the process in place. The software has to survive production.' },
+  { step: '02 · PROVE', d: 'You test findings inside partner operations, alongside planners and dispatchers. The software has to survive production.' },
   { step: '03 · BUILD', d: 'When a proof earns its keep, you turn it into a product and stand behind it.' },
 ]
 
@@ -37,8 +37,8 @@ export default function LabsCareers() {
     <>
       <PageHeader
         eyebrow="CAREERS"
-        title="Rebuild the supply chain from the evidence up."
-        sub="Lanework is a lean, forward-deployed team of operators, engineers, and researchers. You will sit inside real operations, from lane networks to fulfillment floors, not behind a backlog. Early roles are opening in engineering, operations, and research."
+        title="Rebuild freight from the evidence up."
+        sub="Lanework is a lean team of operators, engineers, and researchers. You will sit inside real operations, from lane networks to dispatch floors, not behind a backlog. Early roles are opening in engineering, operations, and research."
       />
 
       <section className="ll-section" style={{ paddingBottom: 8 }}>

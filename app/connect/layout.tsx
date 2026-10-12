@@ -6,9 +6,9 @@ import { pageMetadata } from '@/lib/seo'
  * title and description and had no canonical of its own.
  */
 export const metadata = pageMetadata({
-  title: 'Work with us · Lanework',
+  title: 'Get in touch · Lanework',
   description:
-    'Start with one bounded problem: a free network readiness snapshot, a network or fulfillment assessment, operational due diligence, or a fractional analytics engagement.',
+    'Support our research with a carrier introduction or lane and dispatch data, request a free network readiness snapshot, or ask about an assessment, operational due diligence, or a role.',
   path: '/connect',
 })
 

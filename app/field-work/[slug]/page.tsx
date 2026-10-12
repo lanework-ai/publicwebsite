@@ -4,7 +4,7 @@ import { CtaBand, SectionLabel } from '@/components/labs/ui'
 import { Card, Badge } from '@/components/labs/ds'
 import Ecosystem, { IntegrationRow } from '@/components/labs/Ecosystem'
 import JsonLd from '@/components/labs/JsonLd'
-import { lw } from '@/lib/labs/config'
+import { lw, RESEARCH_PARTNER_HREF } from '@/lib/labs/config'
 import { fieldWork, getFieldWork, statusLabel } from '@/lib/labs/field-work'
 import { pageMetadata, breadcrumbSchema, absoluteUrl, ORG_ID, WEBSITE_ID } from '@/lib/seo'
 
@@ -90,6 +90,15 @@ export default async function FieldWorkDetail({ params }: { params: Promise<{ sl
           <p key={i} style={{ fontSize: 18, lineHeight: 1.7, color: 'var(--lw-fg-2)', margin: '0 0 18px' }}>{p}</p>
         ))}
 
+        {f.followOn && (
+          <p style={{ fontSize: 18, lineHeight: 1.7, color: 'var(--lw-fg-2)', margin: '0 0 18px' }}>
+            {f.followOn.text}{' '}
+            <Link href={lw(f.followOn.href)} style={{ color: 'var(--lw-accent-soft)', whiteSpace: 'nowrap' }}>
+              {f.followOn.cta} →
+            </Link>
+          </p>
+        )}
+
         {/* What moved */}
         {f.results && f.results.length > 0 && (
           <div style={{ marginTop: 22 }}>
@@ -131,7 +140,11 @@ export default async function FieldWorkDetail({ params }: { params: Promise<{ sl
 
       <div style={{ paddingBottom: 44 }} />
 
-      <CtaBand title="Could this be your operation?" body="Tell us about your network and we will model the opportunity with you, starting with one bounded problem." />
+      <CtaBand
+        title="Could this be your operation?"
+        body="Our current research tests pooled relays across carriers on 550–600 mile lanes. Tell us about your network and we will show you what the evidence says."
+        href={RESEARCH_PARTNER_HREF}
+      />
     </>
   )
 }

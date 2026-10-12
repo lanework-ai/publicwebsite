@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { client } from '@/sanity/client'
 import { whitePapersQuery, benchmarksQuery } from '@/lib/sanity-queries'
 import { PageHeader, SectionLabel, CtaBand } from '@/components/labs/ui'
+import { BulletList, Button } from '@/components/labs/ds'
+import { RESEARCH_PARTNER_HREF } from '@/lib/labs/config'
 import LabsNewsletter from '@/components/labs/LabsNewsletter'
 import { Logo } from '@/components/labs/LaneworkLogo'
 import { pageMetadata } from '@/lib/seo'
@@ -9,20 +11,21 @@ import { pageMetadata } from '@/lib/seo'
 export const metadata = pageMetadata({
   title: 'Research · Lanework',
   description:
-    'White papers and recurring benchmarks on frontline retention, network and facility performance, asset utilization, and the operational decisions that define the result.',
+    'White papers and benchmarks on driver retention, network design, and asset utilization, tested against real carrier data. Freight first, because that is where the evidence is.',
   path: '/research',
 })
 export const revalidate = 86400
 
 // Upcoming white papers — shown as "in the pipeline" so visitors know more is
 // coming. `progress` drives the work-in-progress accent lane on the batch mark.
+// TODO(open-q): the month windows are past due; re-date them (or group as
+// "Q4 2026" / "Early 2027") once the team confirms real ship dates.
 const pipeline: { window: string; progress: number; titles: string[] }[] = [
   {
     window: 'August 2026',
     progress: 0.75,
     titles: [
       'The Hidden Liability in Every Freight Acquisition',
-      'Carrier Retention Risk Scorecards, Q2 2026',
     ],
   },
   {
@@ -44,7 +47,9 @@ const pipeline: { window: string; progress: number; titles: string[] }[] = [
   {
     window: 'November 2026',
     progress: 0.15,
-    titles: ['Why Most WMS Software Fails Frontline Ops', 'The Last Mile Math'],
+    // TODO(open-q): the WMS title sits outside the freight focus; move it to
+    // "Later" or drop it once the fulfillment question is answered.
+    titles: ['Why Most WMS Software Fails Frontline Ops'],
   },
 ]
 
@@ -80,10 +85,35 @@ export default async function LabsResearch() {
       <PageHeader
         eyebrow="RESEARCH"
         title="The data behind how supply chains perform."
-        sub="White papers and recurring benchmarks on frontline retention, network and facility performance, asset utilization, and the operational decisions that define the result. Freight first, because that is where we started."
+        sub="White papers and benchmarks on driver retention, network design, and asset utilization, tested against real carrier data. Freight first, because that is where the evidence is."
       />
 
+      {/* Current research: the question partners are asked to support */}
+      <section id="current" className="ll-section" style={{ paddingBottom: 52 }}>
+        <SectionLabel index="01">Current research</SectionLabel>
+        <h2 style={{ fontSize: 'var(--text-h2)', lineHeight: 1.15, fontWeight: 500, letterSpacing: 'var(--tracking-snug)', margin: '0 0 14px', maxWidth: 620 }}>
+          Coordinated Freight Networks
+        </h2>
+        <p style={{ fontSize: 17, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 620, margin: '0 0 24px' }}>
+          We are combining freight terminals and hubs with software to test whether carriers can pool
+          freight through drop-and-hook relays.
+        </p>
+        <BulletList
+          style={{ maxWidth: 680, marginBottom: 20 }}
+          items={[
+            <><strong style={{ fontWeight: 500, color: 'var(--lw-fg)' }}>H1:</strong> Single-carrier relay delivers measurable CPM savings versus solo-driver operations.</>,
+            <><strong style={{ fontWeight: 500, color: 'var(--lw-fg)' }}>H2:</strong> Multi-carrier pooling delivers additional CPM savings that exceed relay gains.</>,
+            <><strong style={{ fontWeight: 500, color: 'var(--lw-fg)' }}>H3:</strong> Pooled relay remains operationally feasible when travel, handling, and handoff times are explicitly accounted for.</>,
+          ]}
+        />
+        <p style={{ fontFamily: 'var(--font-mono)', fontSize: 13, letterSpacing: '0.06em', color: 'var(--lw-dim)', textTransform: 'uppercase', margin: '0 0 24px' }}>
+          Scope: hub-to-hub and DC-to-DC freight; drayage excluded
+        </p>
+        <Button as={Link} href={RESEARCH_PARTNER_HREF} arrow>Contribute data</Button>
+      </section>
+
       <section className="ll-section" style={{ paddingBottom: 52 }}>
+        <SectionLabel index="02">Published research</SectionLabel>
         <div style={{ borderTop: '1px solid var(--lw-line)' }}>
           {rows.map((r) => (
             <Link
@@ -110,8 +140,8 @@ export default async function LabsResearch() {
       <section className="ll-section" style={{ paddingTop: 8, paddingBottom: 52 }}>
         <SectionLabel index="→">In the pipeline</SectionLabel>
         <p style={{ fontSize: 16, color: 'var(--lw-muted)', lineHeight: 1.6, maxWidth: 560, margin: '0 0 28px' }}>
-          A look at what we&rsquo;re currently researching. Want early access to a draft, or to
-          contribute data to one of these? <Link href="/connect" style={{ color: 'var(--lw-accent-soft)' }}>Get in touch.</Link>
+          What we&rsquo;re writing next. Research partners get early drafts and can contribute data.{' '}
+          <Link href={RESEARCH_PARTNER_HREF} style={{ color: 'var(--lw-accent-soft)' }}>Get in touch.</Link>
         </p>
         <div style={{ display: 'grid', gap: 28 }}>
           {pipeline.map((batch) => (
@@ -144,7 +174,8 @@ export default async function LabsResearch() {
 
       <CtaBand
         title="Your network, not the industry average."
-        body="Published research tells you where the industry sits. Bring us your operating data and we will tell you where you sit, then put a small team on what it turns up."
+        body="Published research tells you where the industry sits. Bring us your operating data and we will tell you where you sit, and whether your lanes fit our current relay research."
+        href={RESEARCH_PARTNER_HREF}
       />
     </>
   )

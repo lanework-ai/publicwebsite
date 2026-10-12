@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { PageHeader, CtaBand } from '@/components/labs/ui'
 import { Card, Badge } from '@/components/labs/ds'
 import Ecosystem from '@/components/labs/Ecosystem'
-import { lw } from '@/lib/labs/config'
+import { lw, RESEARCH_PARTNER_HREF } from '@/lib/labs/config'
 import { fieldWork, statusLabel } from '@/lib/labs/field-work'
 import { pageMetadata } from '@/lib/seo'
 
@@ -19,7 +19,7 @@ export default function FieldWorkIndex() {
       <PageHeader
         eyebrow="FIELD WORK"
         title="Where the research met a real operation."
-        sub="Every engagement starts as a question and a small team on the ground. These are the deployments that followed, what moved, and the software we built to prove the findings hold."
+        sub="Every deployment starts as a research question tested with a partner carrier. These are the ones that reached a live operation, what moved, and the software we built to prove the findings hold."
       />
 
       <section className="ll-section" style={{ paddingBottom: 44, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
@@ -47,7 +47,7 @@ export default function FieldWorkIndex() {
 
       <div style={{ paddingBottom: 44 }} />
 
-      <CtaBand />
+      <CtaBand href={RESEARCH_PARTNER_HREF} />
     </>
   )
 }

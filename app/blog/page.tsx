@@ -4,6 +4,7 @@ import { PageHeader, CtaBand } from '@/components/labs/ui'
 import LabsBlogList from '@/components/labs/LabsBlogList'
 import LabsNewsletter from '@/components/labs/LabsNewsletter'
 import { pageMetadata } from '@/lib/seo'
+import { RESEARCH_PARTNER_HREF } from '@/lib/labs/config'
 
 export const metadata = pageMetadata({
   title: 'Notes · Lanework',
@@ -28,7 +29,7 @@ export default async function LabsNotes() {
       <section className="ll-section" style={{ paddingBottom: 52 }}>
         <LabsNewsletter />
       </section>
-      <CtaBand />
+      <CtaBand href={RESEARCH_PARTNER_HREF} />
     </>
   )
 }

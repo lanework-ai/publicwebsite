@@ -1,14 +1,14 @@
 import Link from 'next/link'
 import { PageHeader, SectionLabel, CtaBand } from '@/components/labs/ui'
 import { Card, Badge, Button } from '@/components/labs/ds'
-import { lw } from '@/lib/labs/config'
-import { tracks, alsoAvailable } from '@/lib/labs/engagements'
+import { lw, RESEARCH_PARTNER_HREF } from '@/lib/labs/config'
+import { tracks, alsoAvailable, researchPartnerAsks } from '@/lib/labs/engagements'
 import { pageMetadata } from '@/lib/seo'
 
 export const metadata = pageMetadata({
-  title: 'Engagements · Lanework',
+  title: 'Partner with us · Lanework',
   description:
-    'How to work with Lanework: a free network readiness snapshot, network assessments for operators, and operational due diligence for investors and acquirers.',
+    'Partner with Lanework: support our research on coordinated freight networks with a carrier introduction or lane and dispatch data, or commission a readiness snapshot, network assessment, or operational due diligence.',
   path: '/engagements',
 })
 
@@ -16,14 +16,42 @@ export default function EngagementsPage() {
   return (
     <>
       <PageHeader
-        eyebrow="ENGAGEMENTS"
-        title="Start with one bounded problem."
-        sub="We work with two kinds of buyer: the operators who run supply chains, from lane networks to fulfillment floors, and the investors who buy them. Both hire us for the same thing, a defensible number on what is leaking and what it is worth to fix."
+        eyebrow="PARTNER WITH US"
+        title="Start with one question."
+        sub="Most partners start by supporting our research with an introduction or a dataset. Operators and investors who want a direct, defensible read on their own network can also commission one."
       />
 
+      {/* Research partners: the first and easiest way in */}
+      <section className="ll-section" style={{ paddingTop: 0, paddingBottom: 8 }}>
+        <SectionLabel index="01">Research partners</SectionLabel>
+        <p style={{ fontSize: 17, lineHeight: 1.65, color: 'var(--lw-fg-2)', maxWidth: 640, margin: '0 0 26px' }}>
+          We are looking for industry partners to support our current research on coordinated freight
+          networks. All three asks are small, and none needs a budget line.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16, marginBottom: 22 }}>
+          {researchPartnerAsks.map((a) => (
+            <Card key={a.name} padding={22} accent>
+              <div style={{ fontWeight: 500, fontSize: 17, marginBottom: 8, color: 'var(--lw-fg)' }}>{a.name}</div>
+              <p style={{ fontSize: 15, color: 'var(--lw-faint)', lineHeight: 1.6, margin: 0 }}>{a.detail}</p>
+            </Card>
+          ))}
+        </div>
+        <div style={{ maxWidth: 640 }}>
+          <div className="ll-label" style={{ fontSize: 12, marginBottom: 5 }}>What you get</div>
+          <p style={{ fontSize: 15, color: 'var(--lw-faint)', lineHeight: 1.6, margin: 0 }}>
+            Early findings on your own lanes, and the result either way, including when the evidence says
+            not to change anything.
+          </p>
+        </div>
+        <Button as={Link} href={RESEARCH_PARTNER_HREF} arrow style={{ marginTop: 22 }}>
+          Become a research partner
+        </Button>
+      </section>
+
       {tracks.map((t, ti) => (
-        <section key={t.id} className="ll-section" style={{ paddingTop: ti === 0 ? 0 : 44, paddingBottom: 8 }}>
-          <SectionLabel index={`0${ti + 1}`}>{t.label}</SectionLabel>
+        <section key={t.id} className="ll-section" style={{ paddingTop: 44, paddingBottom: 8 }}>
+          {/* Research partners take 01, so the paid tracks start at 02. */}
+          <SectionLabel index={`0${ti + 2}`}>{t.label}</SectionLabel>
 
           <div style={{ maxWidth: 640, marginBottom: 26 }}>
             <p style={{ fontSize: 17, lineHeight: 1.65, color: 'var(--lw-fg-2)', margin: '0 0 8px' }}>{t.premise}</p>
@@ -63,7 +91,7 @@ export default function EngagementsPage() {
 
       {/* Secondary menu */}
       <section className="ll-section" style={{ paddingTop: 44, paddingBottom: 44 }}>
-        <SectionLabel index="03">Also available</SectionLabel>
+        <SectionLabel index="04">Also available</SectionLabel>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
           {alsoAvailable.map((a) => (
             <Card key={a.name} padding={20}>
@@ -73,10 +101,10 @@ export default function EngagementsPage() {
           ))}
         </div>
         <p style={{ fontSize: 15, color: 'var(--lw-dim)', lineHeight: 1.6, margin: '20px 0 0', maxWidth: 560 }}>
-          Every engagement is scoped and quoted against your network. The snapshot is the easiest way in:
-          it costs nothing and tells you whether the rest is worth doing.
+          Every engagement is scoped and quoted against your network. The easiest ways in cost nothing:
+          become a research partner, or request a snapshot.
         </p>
-        <Button as={Link} href={lw('/connect')} arrow style={{ marginTop: 22 }}>
+        <Button as={Link} href={lw('/connect?intent=snapshot')} arrow style={{ marginTop: 22 }}>
           Request a snapshot
         </Button>
       </section>

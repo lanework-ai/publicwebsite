@@ -43,7 +43,9 @@ export function bindWidow(text: string): string {
   // Skip whitespace-only strings and anything already bound.
   if (!text.trim() || text.includes(NBSP)) return text
 
-  // Preserve trailing whitespace so adjacent JSX fragments keep their spacing.
+  // Preserve leading and trailing whitespace so adjacent JSX fragments keep their
+  // spacing ("<strong>H1:</strong> Single-carrier…" must not become "H1:Single").
+  const leading = text.match(/^\s+/)?.[0] ?? ''
   const trailing = text.match(/\s+$/)?.[0] ?? ''
   const words = text.trim().split(/\s+/)
   if (words.length < MIN_WORDS) return text
@@ -59,7 +61,7 @@ export function bindWidow(text: string): string {
 
   const head = words.slice(0, words.length - bind)
   const tail = words.slice(words.length - bind).join(NBSP)
-  return (head.length ? head.join(' ') + ' ' : '') + tail + trailing
+  return leading + (head.length ? head.join(' ') + ' ' : '') + tail + trailing
 }
 
 /**

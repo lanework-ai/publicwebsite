@@ -37,6 +37,8 @@ export interface FieldWork {
   integrations?: { id: string; name: string }[]
   /** Optional lead-in above the integration row. */
   integrationsNote?: string
+  /** Optional closing line after the narrative, linking on to related research. */
+  followOn?: { text: string; href: string; cta: string }
 }
 
 export const fieldWork: FieldWork[] = [
@@ -64,6 +66,11 @@ export const fieldWork: FieldWork[] = [
       'We worked the carrier’s own lane and dispatch data alongside their planners, then rebuilt the longest lanes as coordinated regional relays. Drivers run a segment and hand off, so the trailer keeps moving 24/7 while each driver stays in their region and gets home. Dispatchers plan and adjust the multi-leg trips from one console, with segment mileage, shift alignment, handoff timing, and cost modeled as they go. The carrier keeps control of driver assignments, facilities, and assets throughout.',
       'The findings held in production. Retention, utilization, and transit time all moved together, and backhaul matching cut the empty miles that quietly erode margin. What survived that deployment became Rapid Relay, the platform we now run with carriers.',
     ],
+    followOn: {
+      text: 'Our current research asks the next question: what happens when several carriers share the same relay network?',
+      href: '/research#current',
+      cta: 'Read more',
+    },
     howItWorks: [
       { n: '01', t: 'Planning engine', d: 'Analyzes long-haul lanes and breaks them into segments built around predictable driver shifts, realistic time windows, and minimal dwell.' },
       { n: '02', t: 'Relay point selection', d: 'Identifies handoff locations along every route: terminals, drop yards, shared facilities, customer sites, or neutral third-party locations.' },
@@ -76,6 +83,9 @@ export const fieldWork: FieldWork[] = [
     product: 'Rapid Load',
     domain: 'Freight & pricing',
     status: 'live',
+    // TODO(open-q): Rapid Load numbers. The deck says "15 load boards" and "74%
+    // faster" (index card, homepage teaser, and a result line after body[2]);
+    // hold the swap until the source and test setup behind 74% are confirmed.
     title: 'One board for a fragmented spot market',
     summary:
       'Spot freight scattered across five systems consolidated into a single deduplicated board dispatchers actually work from.',

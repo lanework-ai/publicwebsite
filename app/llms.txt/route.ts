@@ -3,7 +3,7 @@
  */
 import { client } from '@/sanity/client'
 import { whitePapersQuery, benchmarksQuery, postsQuery } from '@/lib/sanity-queries'
-import { LANEWORK_BASE } from '@/lib/labs/config'
+import { LANEWORK_BASE, LAB_DESCRIPTOR } from '@/lib/labs/config'
 import { fieldWork } from '@/lib/labs/field-work'
 
 export const revalidate = 86400
@@ -34,10 +34,9 @@ export async function GET() {
   const lines: string[] = []
   lines.push('# Lanework')
   lines.push('')
-  lines.push('> Lanework is an applied AI research lab for logistics and supply chain, covering')
-  lines.push('> freight, fulfillment, and warehousing. We turn the operational data operators')
-  lines.push('> already hold into independent research, and into')
-  lines.push('> software when it proves out.')
+  lines.push(`> Lanework is an ${LAB_DESCRIPTOR}, covering freight, fulfillment, and`)
+  lines.push('> warehousing. We test promising ideas against real carrier data, publish what we')
+  lines.push('> find, and build software to prove the findings hold.')
   lines.push('')
   lines.push(`Canonical site: ${base}`)
   lines.push('')
@@ -87,8 +86,8 @@ export async function GET() {
 
   lines.push('## Company')
   lines.push('')
-  lines.push(`- [About](${base}/about): who Lanework is, and how a study, an embedded engagement, and a build fit together.`)
-  lines.push(`- [Engagements](${base}/engagements): how to work with us, from a free network readiness snapshot through network assessments and operational due diligence for investors.`)
+  lines.push(`- [About](${base}/about): who Lanework is, and how we study, prove, and build.`)
+  lines.push(`- [Partner](${base}/engagements): how to work with us. Support the research with carrier introductions or lane and dispatch data, or commission a readiness snapshot, network assessment, or operational due diligence.`)
   lines.push(`- [Careers](${base}/careers): open roles in engineering, operations, and research.`)
   lines.push(`- [Contact](${base}/connect): start a conversation.`)
   lines.push('')

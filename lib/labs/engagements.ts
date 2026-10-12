@@ -1,5 +1,6 @@
 /**
- * What you can hire Lanework for, organised by the two buyer tracks.
+ * How to partner with Lanework: the unpaid research-partner asks, then what you
+ * can commission, organised by the two buyer tracks.
  *
  * Single source of truth for the commercial surface, the same pattern as
  * lib/labs/field-work.ts. Scope and duration only: fees are quoted per
@@ -38,10 +39,12 @@ export const tracks: Track[] = [
   {
     id: 'operators',
     label: 'Operators',
+    // TODO(open-q): fulfillment. Narrow to "Carriers, fleets, 3PLs, brokers, and
+    // shippers." if the fulfillment offer is paused.
     audience:
       'Carriers, fleets, 3PLs, brokers, shippers, and the fulfillment and warehouse teams that move the same goods.',
     premise:
-      'You own the margin line. Idle capacity and frontline turnover are the two biggest leaks, whether the asset is a trailer or a dock door, and both are decided by how the operation is designed rather than by how hard the team works.',
+      'You own the margin line. Empty miles and driver turnover are the two biggest leaks, and both are decided by how the network is designed rather than by how hard the team works.',
     engagements: [
       {
         id: 'readiness-snapshot',
@@ -62,6 +65,8 @@ export const tracks: Track[] = [
           'Every lane ranked by empty-mile rate and fully loaded cost, the lanes with the bilateral density to support closed-loop corridors, relay points positioned against return-origin density, domiciles aligned, and a lane-level view of which routes are manufacturing driver exits. Delivered as a prioritised roadmap with the recovery modelled in dollars.',
         duration: 'Scoped to fleet size, typically 3 to 6 weeks',
       },
+      // TODO(open-q): fulfillment. Hide this card until there is a fulfillment
+      // deployment to point to, if the team confirms the pause.
       {
         id: 'fulfillment-diagnostic',
         name: 'Fulfillment performance diagnostic',
@@ -117,11 +122,23 @@ export const alsoAvailable = [
   { name: 'Data readiness review', note: 'What your systems already capture, and what is missing to answer the question.' },
 ]
 
-/** The three we lead with, surfaced on the homepage. */
-export const leadEngagements = [
-  { id: 'readiness-snapshot', track: 'operators' as const },
-  { id: 'network-assessment', track: 'operators' as const },
-  { id: 'operational-diligence', track: 'investors' as const },
+/**
+ * The research-partner asks that open the Partner page. Unpaid, and listed ahead
+ * of the commissioned work because they are the easiest way in.
+ */
+export const researchPartnerAsks = [
+  {
+    name: 'Introductions to regional carriers',
+    detail: 'Anyone running 550–600 mile lanes who would talk about how they schedule them.',
+  },
+  {
+    name: '3 months of lane and dispatch history',
+    detail: 'Whatever the TMS already exports, with no new instrumentation, and it can be anonymized.',
+  },
+  {
+    name: 'Introductions to others building at the frontier of freight',
+    detail: 'Researchers, operators, and founders working the same problem from another side.',
+  },
 ]
 
 export function getEngagement(id: string) {
