@@ -53,3 +53,6 @@ next-env.d.ts
 
 # Netlify CLI local state
 .netlify
+
+# notes-prune.mjs backups (local restore points, not source)
+scripts/notes-prune-backup-*.json

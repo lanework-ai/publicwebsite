@@ -72,6 +72,14 @@ export default {
       group: 'content'
     },
     {
+      name: 'pinned',
+      type: 'boolean',
+      title: 'Pinned',
+      description: 'Show this post ahead of the date-sorted list on Notes.',
+      initialValue: false,
+      group: 'content'
+    },
+    {
       name: 'excerpt',
       type: 'text',
       title: 'Excerpt',

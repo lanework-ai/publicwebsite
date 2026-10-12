@@ -17,6 +17,12 @@ interface Post {
   categories?: string[]
 }
 
+/**
+ * Filter chips follow this editorial order rather than first appearance in the
+ * date-sorted list. Any category not named here is appended after these.
+ */
+const CATEGORY_ORDER = ['Relay', 'Retention', 'Capacity', 'Spot market', 'Industry']
+
 function fmt(iso?: string) {
   if (!iso) return ''
   const d = new Date(iso)
@@ -27,7 +33,12 @@ export default function LabsBlogList({ posts }: { posts: Post[] }) {
   const categories = useMemo(() => {
     const set = new Set<string>()
     posts.forEach((p) => p.categories?.forEach((c) => set.add(c)))
-    return ['All', ...Array.from(set)]
+    const rank = (c: string) => {
+      const i = CATEGORY_ORDER.indexOf(c)
+      return i === -1 ? CATEGORY_ORDER.length : i
+    }
+    // Array.sort is stable, so unlisted categories keep their first-seen order.
+    return ['All', ...Array.from(set).sort((a, b) => rank(a) - rank(b))]
   }, [posts])
 
   const [active, setActive] = useState('All')
