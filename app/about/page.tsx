@@ -1,16 +1,17 @@
 import { PageHeader, SectionLabel, CtaBand, LabsCard } from '@/components/labs/ui'
 import { pageMetadata } from '@/lib/seo'
+import { LAB_DESCRIPTOR, RESEARCH_PARTNER_HREF } from '@/lib/labs/config'
 
 export const metadata = pageMetadata({
   title: 'About · Lanework',
   description:
-    'Lanework is an applied research lab for logistics and supply chain. Operators, technologists, and data scientists who embed with the teams running freight, fulfillment, and warehousing.',
+    `Lanework is an ${LAB_DESCRIPTOR}. Operators, engineers, and analysts studying where innovation changes what is possible for drivers, carriers, and communities.`,
   path: '/about',
 })
 
 const howWeWork = [
   { step: 'Study', d: 'We run independent research on the operational data operators already hold, and publish what we find. The research stands on its own.' },
-  { step: 'Embed', d: 'We forward-deploy a small team into the operation. We work your real data next to the people running it, and improve the process in place. Evidence over decks.' },
+  { step: 'Prove', d: 'We test findings with partner carriers, on their real lane and dispatch data and alongside their planners and dispatchers, to see whether they hold on the ground.' },
   { step: 'Build', d: 'Not every improvement needs software. When one does, it becomes a product we stand behind. The research and the working system are the deliverable, never a slide deck.' },
 ]
 
@@ -41,8 +42,8 @@ const disciplines = [
 const values = [
   { t: 'Independent', d: 'The research stands on its own and we publish it openly. Findings come before any product we might sell.' },
   { t: 'Evidence-led', d: 'We combine logistics expertise with data science to understand the problem before we build anything.' },
-  { t: 'Forward-deployed', d: 'We work from inside the operation, not above it. Our team sits with planners, dispatchers, and floor leads, and every claim is tested against a real operation.' },
-  { t: 'Operators, not theorists', d: 'We have run these networks ourselves. You start with a bounded, embedded study, not a statement of work, and what you get back is a decision you can act on rather than a deck.' },
+  { t: 'Field-tested', d: 'We work from inside the operation, not above it. Our team sits with planners, dispatchers, and floor leads, and every claim is tested against a real operation.' },
+  { t: 'Operators, not theorists', d: 'We have run these networks ourselves. You start with a bounded study, not a statement of work, and what you get back is a decision you can act on rather than a deck.' },
 ]
 
 export default function AboutPage() {
@@ -50,8 +51,8 @@ export default function AboutPage() {
     <>
       <PageHeader
         eyebrow="COMPANY"
-        title="An applied research lab for logistics and supply chain."
-        sub="Operators, technologists, and data scientists who embed with the teams running freight, fulfillment, and warehousing, study how the work actually happens, improve the process on the ground, and build software to prove what we find."
+        title={`An ${LAB_DESCRIPTOR}.`}
+        sub="Operators, engineers, and analysts studying where innovation changes what is possible for drivers, for the companies that move the freight, and for the communities it runs through."
       />
 
       {/* Thesis */}
@@ -60,14 +61,14 @@ export default function AboutPage() {
         <p style={{ fontSize: 'clamp(22px, 2.8vw, 29px)', lineHeight: 1.4, fontWeight: 500, letterSpacing: '-0.01em', color: 'var(--lw-fg)', maxWidth: 720, margin: '0 0 28px' }}>
           Supply chains run on fragmented data. The hardest problems are not a shortage of trucks,
           docks, or software, but a shortage of evidence about what actually works. We supply that
-          evidence from inside the operation: we deploy alongside your team, improve the process where
-          it runs, and build the AI systems that act on it.
+          evidence from inside the operation: we test findings with partner carriers where the work
+          runs, and build the AI systems that act on it.
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16 }}>
           {[
-            { t: 'Lower cost to serve', d: 'Cut the waste designed into the network and the facilities that feed it.' },
-            { t: 'Higher utilization', d: 'Get more out of the assets, docks, and hours you already pay for.' },
-            { t: 'Work people stay in', d: 'Predictable schedules and fewer avoidable exits on the frontline.' },
+            { t: 'For drivers', d: 'Long-haul freight, home every night.' },
+            { t: 'For carriers', d: 'Lower cost per mile, higher utilization, coordinated backhauls.' },
+            { t: 'For communities', d: 'Fewer empty miles and fewer trucks on the same roads.' },
           ].map((p) => (
             <LabsCard key={p.t}>
               <div style={{ fontWeight: 500, fontSize: 17, marginBottom: 8 }}>{p.t}</div>
@@ -99,8 +100,8 @@ export default function AboutPage() {
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 16, marginBottom: 20 }}>
           {[
-            { v: '35%', l: 'of miles run empty' },
-            { v: '$42B', l: 'lost to deadhead annually' },
+            { v: '1 in 6', l: 'miles run empty (16.7%, 2024)' },
+            { v: '$27–54B', l: 'lost to deadhead each year' },
             { v: '$18.7B', l: 'lost to driver turnover, modeled' },
           ].map((s) => (
             <div key={s.l}>
@@ -113,8 +114,8 @@ export default function AboutPage() {
           The same pattern holds everywhere we look: idle capacity, avoidable turnover, and demand
           mispriced against what the operation can actually do. It is as true of a fulfillment centre
           as it is of a lane network, and in both the losses are well known while the evidence on what
-          fixes them is not. We quantify where the leakage is, problem by problem, then embed with the
-          operators who live it and build the systems that close it.
+          fixes them is not. We quantify where the leakage is, problem by problem, then test the fix with
+          the operators who live it and build the systems that close it.
         </p>
       </section>
 
@@ -170,7 +171,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <CtaBand />
+      <CtaBand href={RESEARCH_PARTNER_HREF} />
     </>
   )
 }

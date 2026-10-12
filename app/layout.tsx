@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { LAB_DESCRIPTOR } from "@/lib/labs/config";
 import "./globals.css";
 import "./labs-theme.css";
 import LabsFooter from "@/components/labs/LabsFooter";
@@ -9,7 +10,7 @@ import PostHogProvider from "@/components/Analytics/PostHogProvider";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://lanework.ai";
 
 const DESCRIPTION =
-  "An applied research lab for logistics and supply chain. We embed with operators across freight, fulfillment, and warehousing, turn the data they already hold into independent research, and build the software that proves it.";
+  `An ${LAB_DESCRIPTOR}. We test promising ideas against real operating data across freight, fulfillment, and warehousing, publish what we find, and build the software that proves it.`;
 
 export const metadata: Metadata = {
   title: "Lanework | Applied research for logistics",

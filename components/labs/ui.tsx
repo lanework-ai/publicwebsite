@@ -37,13 +37,18 @@ export function PageHeader({ eyebrow, title, sub }: { eyebrow: string; title: st
   )
 }
 
-/** Reusable closing call-to-action band ("Work with us"). */
+/**
+ * Reusable closing call-to-action band ("Work with us"). The default copy is the
+ * research-partner ask, so pages using it should pass the research intent as href.
+ */
 export function CtaBand({
   title = 'Work with us',
-  body = 'Bring us a network, a dataset, or a question. We embed a small team on the problem, improve the process, and deploy our platforms with carriers when the evidence earns it.',
+  body = 'Bring us a network, a dataset, or a question. We are looking for regional carriers on 550–600 mile lanes to test coordinated relays with us. Software follows when the evidence earns it.',
+  href = '/connect',
 }: {
   title?: string
   body?: string
+  href?: string
 }) {
   return (
     <section style={{ borderTop: '1px solid var(--lw-line)' }}>
@@ -61,7 +66,7 @@ export function CtaBand({
           {bindWidow(title)}
         </h2>
         <p style={{ fontSize: 17, lineHeight: 1.6, color: 'var(--lw-muted)', maxWidth: 500, margin: '0 0 26px' }}>{bindWidow(body)}</p>
-        <Button as={Link} href="/connect" arrow>
+        <Button as={Link} href={href} arrow>
           Get in touch
         </Button>
       </div>
