@@ -57,6 +57,12 @@ function button(label: string, href: string): string {
     </table>`
 }
 
+/**
+ * Wraps body rows in the full Lanework email document. `body` is interpolated
+ * straight into a <table>, so it must be a sequence of <tr><td>...</td></tr> rows.
+ * A bare <table> or <p> here is reparented by the HTML parser: it lands outside the
+ * padded cell (flush against the card edge) and pushes the footer out of the card.
+ */
 function shell(opts: {
   title: string
   preheader: string
@@ -536,12 +542,8 @@ export async function sendLaneworkBlogNewsletter(postData: {
 }
 
 /* ---- Contact form: internal admin notification ---------------------------- */
-/**
- * Notifies the team when someone submits the contact form. Internal only, so it
- * uses the plain internal footer rather than the marketing one, and carries no
- * unsubscribe link. Replies go to the person who filled in the form.
- */
-export async function sendContactNotification(contact: {
+
+interface ContactNotification {
   name: string
   email: string
   company: string
@@ -549,32 +551,73 @@ export async function sendContactNotification(contact: {
   lengthOfHaul?: string | null
   message?: string | null
   intent?: string | null
-}) {
+}
+
+/**
+ * The connect page prefixes the message with `Intent: <label>\n\n` and sends
+ * `(no message)` when the field is blank, so the intent survives in the DB and
+ * Sanity record. The email already shows it as the "Interested in" row, so drop
+ * that prefix here. Exact match only: anything else is shown as sent.
+ */
+function visibleMessage(message: string | null | undefined, intent: string | null | undefined): string {
+  let text = (message ?? '').trim()
+  const prefix = intent ? `Intent: ${intent}` : ''
+  if (prefix && text.startsWith(prefix) && /^(\r?\n|$)/.test(text.slice(prefix.length))) {
+    text = text.slice(prefix.length).trim()
+  }
+  return text === '(no message)' ? '' : text
+}
+
+/** Admin notification body for a contact form submission. Exported for previews. */
+export function contactNotificationHtml(contact: ContactNotification): string {
+  const row = (label: string, valueHtml: string) => `
+        <tr>
+          <td style="padding:11px 0;border-bottom:1px solid #eef2f5;font-family:${FONT};font-size:13px;font-weight:600;color:#64748b;width:120px;vertical-align:top;">${esc(label)}</td>
+          <td style="padding:11px 0;border-bottom:1px solid #eef2f5;font-family:${FONT};font-size:14px;line-height:1.5;color:#0f172a;">${valueHtml}</td>
+        </tr>`
+
+  const message = visibleMessage(contact.message, contact.intent)
+  const body = `
+    <tr><td class="px" style="padding:0 40px 0 40px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+        ${row('Name', esc(contact.name))}
+        ${row('Email', `<a href="mailto:${esc(contact.email)}" style="color:${ACCENT};text-decoration:underline;">${esc(contact.email)}</a>`)}
+        ${row('Company', esc(contact.company))}
+        ${contact.intent ? row('Interested in', esc(contact.intent)) : ''}
+        ${contact.fleetSize ? row('Fleet size', esc(contact.fleetSize)) : ''}
+        ${contact.lengthOfHaul ? row('Length of haul', esc(contact.lengthOfHaul)) : ''}
+      </table>
+    </td></tr>
+    <tr><td class="px" style="padding:24px 40px 0 40px;font-family:${FONT};">
+      ${
+        message
+          ? `<p style="margin:0 0 10px 0;font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#94a3b8;">Message</p>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+        <td bgcolor="#f0f2ff" style="background-color:#f0f2ff;border-left:4px solid ${ACCENT};border-radius:0 8px 8px 0;padding:16px 18px;font-family:${FONT};font-size:14px;line-height:1.65;color:#0f172a;word-break:break-word;overflow-wrap:anywhere;">${esc(message).replace(/\r?\n/g, '<br>')}</td>
+      </tr></table>`
+          : `<p style="margin:0;font-size:13px;line-height:1.6;color:#94a3b8;">No message provided.</p>`
+      }
+    </td></tr>`
+
+  return shell({
+    title: 'New enquiry',
+    preheader: `${contact.name} at ${contact.company}`,
+    heading: 'New enquiry',
+    body,
+    footerVariant: 'internal',
+  })
+}
+
+/**
+ * Notifies the team when someone submits the contact form. Internal only, so it
+ * uses the plain internal footer rather than the marketing one, and carries no
+ * unsubscribe link. Replies go to the person who filled in the form.
+ */
+export async function sendContactNotification(contact: ContactNotification) {
   if (!ADMIN_EMAIL) {
     console.warn('[labs-email] ADMIN_EMAIL not set; skipping contact notification')
     return { skipped: true }
   }
-
-  const row = (label: string, value: string) => `
-    <tr>
-      <td style="padding:7px 0;font-family:${FONT};font-size:13px;color:#6b7280;width:120px;vertical-align:top;">${esc(label)}</td>
-      <td style="padding:7px 0;font-family:${FONT};font-size:14px;color:#111827;">${esc(value)}</td>
-    </tr>`
-
-  const body = `
-    <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
-      ${row('Name', contact.name)}
-      ${row('Email', contact.email)}
-      ${row('Company', contact.company)}
-      ${contact.intent ? row('Interested in', contact.intent) : ''}
-      ${contact.fleetSize ? row('Fleet size', contact.fleetSize) : ''}
-      ${contact.lengthOfHaul ? row('Length of haul', contact.lengthOfHaul) : ''}
-    </table>
-    ${
-      contact.message
-        ? `<p style="font-family:${FONT};font-size:14px;line-height:1.65;color:#374151;margin:20px 0 0;white-space:pre-wrap;">${esc(contact.message)}</p>`
-        : `<p style="font-family:${FONT};font-size:13px;color:#9ca3af;margin:20px 0 0;">No message provided.</p>`
-    }`
 
   try {
     const { data, error } = await resend.emails.send({
@@ -582,13 +625,7 @@ export async function sendContactNotification(contact: {
       to: ADMIN_EMAIL,
       replyTo: contact.email,
       subject: `New enquiry from ${contact.company}`,
-      html: shell({
-        title: 'New enquiry',
-        preheader: `${contact.name} at ${contact.company}`,
-        heading: 'New enquiry',
-        body,
-        footerVariant: 'internal',
-      }),
+      html: contactNotificationHtml(contact),
     })
     if (error) {
       console.error('[labs-email] contact notification failed', error)

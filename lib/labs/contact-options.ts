@@ -20,6 +20,16 @@ export type Intent = (typeof intents)[number]['value']
 
 export const intentValues = intents.map((i) => i.value) as [Intent, ...Intent[]]
 
+/** Longest message a visitor can type; the form's textarea enforces it. */
+export const MESSAGE_MAX_LENGTH = 500
+
+/**
+ * What the API accepts for `message`. The form prepends `Intent: <label>\n\n`, so
+ * the limit allows for the longest intent label on top of what the visitor typed.
+ */
+export const MESSAGE_FIELD_MAX_LENGTH =
+  MESSAGE_MAX_LENGTH + Math.max(...intents.map((i) => `Intent: ${i.label}\n\n`.length))
+
 /** The form opens on the research-partner ask, the first option above. */
 export const DEFAULT_INTENT: Intent = 'research'
 

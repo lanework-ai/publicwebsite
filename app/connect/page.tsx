@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { intents, fleetSizes, lengthsOfHaul, DEFAULT_INTENT, isIntent } from '@/lib/labs/contact-options'
+import { intents, fleetSizes, lengthsOfHaul, DEFAULT_INTENT, isIntent, MESSAGE_MAX_LENGTH } from '@/lib/labs/contact-options'
 
 /** Intents where the fleet-size question is worth asking. */
 const CARRIER_INTENTS = new Set<string>(['research', 'snapshot', 'assessment', 'advisory', 'platform'])
@@ -151,7 +151,7 @@ export default function LabsConnect() {
           )}
           <div>
             <label style={labelStyle} htmlFor="ll-msg">What&rsquo;s on your mind?</label>
-            <textarea id="ll-msg" rows={4} style={{ ...inputStyle, resize: 'vertical' }} value={form.message} onChange={(e) => set('message', e.target.value)} placeholder="A research question, a network you're thinking about, a role you're curious about." />
+            <textarea id="ll-msg" rows={4} maxLength={MESSAGE_MAX_LENGTH} style={{ ...inputStyle, resize: 'vertical' }} value={form.message} onChange={(e) => set('message', e.target.value)} placeholder="A research question, a network you're thinking about, a role you're curious about." />
           </div>
           {status === 'error' && (
             <p style={{ fontSize: 15, color: '#ff8585', margin: 0 }}>Something went wrong. Please try again, or email us directly.</p>

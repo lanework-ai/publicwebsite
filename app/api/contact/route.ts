@@ -5,7 +5,14 @@ import { validateHoneypot } from '@/lib/rateLimit'
 import { hashIp, checkContactAbuse, looksLikeSpam } from '@/lib/spam'
 import { sendContactNotification } from '@/lib/labs-email'
 import { syncContactToSanity } from '@/lib/sanity-write-client'
-import { fleetSizes, lengthsOfHaul, intentValues, intents } from '@/lib/labs/contact-options'
+import {
+  fleetSizes,
+  lengthsOfHaul,
+  intentValues,
+  intents,
+  MESSAGE_MAX_LENGTH,
+  MESSAGE_FIELD_MAX_LENGTH,
+} from '@/lib/labs/contact-options'
 
 // Types for request and response
 interface ContactFormData {
@@ -73,7 +80,13 @@ const contactSchema = z.object({
   // The value of the form's "I'd like to" select. Optional so an older cached
   // form that does not send it still validates.
   intent: z.enum(intentValues, { message: 'Invalid intent' }).optional().nullable(),
-  message: z.string().max(500, 'Message must not exceed 500 characters').optional().nullable(),
+  // The form prepends the intent label, so the cap allows for it on top of the
+  // MESSAGE_MAX_LENGTH characters the visitor can type.
+  message: z
+    .string()
+    .max(MESSAGE_FIELD_MAX_LENGTH, `Message must not exceed ${MESSAGE_MAX_LENGTH} characters`)
+    .optional()
+    .nullable(),
   _honeypot: z.string().optional(),
 })
 

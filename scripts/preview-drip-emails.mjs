@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 /**
- * Render every Lanework drip email to HTML so the copy can be reviewed in a browser
- * without sending anything. Bundles lib/labs-email.ts with esbuild and calls the real
- * renderLaneworkDrip(), so what you see here is exactly what Resend would deliver.
+ * Render every Lanework drip email, plus the contact-form admin notification, to HTML
+ * so they can be reviewed in a browser without sending anything. Bundles
+ * lib/labs-email.ts with esbuild and calls the real renderLaneworkDrip() and
+ * contactNotificationHtml(), so what you see here is exactly what Resend would deliver.
  *
  * Resend and Prisma are stubbed at bundle time: rendering touches neither, and this
  * script never opens a database connection or an API call.
@@ -29,6 +30,39 @@ const CASES = [
 
 const RECIPIENT = { to: 'preview@example.com', name: 'jordan reyes' }
 
+// Contact notification cases. `message` is shaped the way app/connect/page.tsx sends it,
+// `Intent: <label>\n\n<message or (no message)>`, after the API route trims it.
+const CONTACT_BASE = { name: 'Henry Hansen', email: 'info@example.com', company: 'Example Freight Co' }
+const CONTACT_CASES = [
+  {
+    label: 'Full enquiry, multi-line message and long URL',
+    file: 'contact-full.html',
+    contact: {
+      ...CONTACT_BASE,
+      intent: 'Carrier partnership',
+      fleetSize: '51-200',
+      lengthOfHaul: '500+ miles',
+      message:
+        'Intent: Carrier partnership\n\nHundreds of trucks are stuck in Kingman every night.\nWe would like to partner with you.\n\nhttps://example.com/a/very/long/path/that/should/wrap/instead/of/stretching/the/card/on/mobile?with=query&and=more',
+    },
+  },
+  {
+    label: 'No message',
+    file: 'contact-no-message.html',
+    contact: { ...CONTACT_BASE, intent: 'Join the team', message: 'Intent: Join the team\n\n(no message)' },
+  },
+  {
+    label: 'Whitespace-only message (route trims it to just the prefix)',
+    file: 'contact-whitespace.html',
+    contact: { ...CONTACT_BASE, intent: 'Join the team', message: 'Intent: Join the team' },
+  },
+  {
+    label: 'Message starting with unrelated "Intent:" text (kept as sent)',
+    file: 'contact-unmatched-prefix.html',
+    contact: { ...CONTACT_BASE, intent: 'Join the team', message: 'Intent: to discuss a pilot next quarter.' },
+  },
+]
+
 try {
   // Stub the two module-load side effects so the bundle is pure rendering.
   writeFileSync(join(tmp, 'prisma-stub.js'), 'export const prisma = {}\nexport default { prisma }\n')
@@ -52,7 +86,7 @@ try {
     },
   })
 
-  const { renderLaneworkDrip } = await import(pathToFileURL(bundlePath).href)
+  const { renderLaneworkDrip, contactNotificationHtml } = await import(pathToFileURL(bundlePath).href)
 
   mkdirSync(outDir, { recursive: true })
   const index = []
@@ -71,6 +105,12 @@ try {
     }
   }
 
+  for (const c of CONTACT_CASES) {
+    writeFileSync(join(outDir, c.file), contactNotificationHtml(c.contact), 'utf8')
+    console.log(`contact  ${c.file}`)
+  }
+  const contactRows = CONTACT_CASES.map((c) => `<tr><td>${c.label}</td><td><a href="./${c.file}">open</a></td></tr>`).join('\n')
+
   const rows = index
     .map(
       (r) =>
@@ -87,11 +127,15 @@ code{background:#f4f4f5;padding:2px 5px;border-radius:4px}</style>
 <p>Rendered from <code>lib/labs-email.ts</code>. Nothing was sent.</p>
 <table><tr><th>Paper</th><th>Send</th><th>Subject</th><th></th></tr>
 ${rows}
+</table>
+<h2>Contact notification</h2>
+<table><tr><th>Case</th><th></th></tr>
+${contactRows}
 </table>`,
     'utf8'
   )
 
-  console.log(`\nWrote ${index.length} emails to ${outDir}`)
+  console.log(`\nWrote ${index.length + CONTACT_CASES.length} emails to ${outDir}`)
   console.log(`Open ${join(outDir, 'index.html')}`)
 } finally {
   rmSync(tmp, { recursive: true, force: true })
