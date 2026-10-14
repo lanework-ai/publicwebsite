@@ -30,6 +30,11 @@ function since(days: number): Date {
 
 const pct = (part: number, whole: number) => (whole > 0 ? (part / whole) * 100 : 0)
 
+// rapidrelay.ai shares this database, so every contact, lead and subscriber
+// query is scoped to Lanework rows. newsletter_sends and newsletter_unsubscribes
+// have no brand column and are left unscoped.
+const LW = { brand: 'lanework' } as const
+
 // ---- Types ---------------------------------------------------------------------
 
 export type ConversionTotals = {
@@ -93,12 +98,12 @@ export async function getConversionTotals(): Promise<ConversionTotals> {
   const prisma = await db()
   const [leads, downloaded, contacts, subscribers, newsletterUnsubscribes, dripUnsubscribes] =
     await Promise.all([
-      prisma.gatedContentLead.count(),
-      prisma.gatedContentLead.count({ where: { downloadedAt: { not: null } } }),
-      prisma.contact.count(),
-      prisma.newsletter.count(),
+      prisma.gatedContentLead.count({ where: LW }),
+      prisma.gatedContentLead.count({ where: { ...LW, downloadedAt: { not: null } } }),
+      prisma.contact.count({ where: LW }),
+      prisma.newsletter.count({ where: LW }),
       prisma.newsletterUnsubscribe.count(),
-      prisma.gatedContentLead.count({ where: { dripUnsubscribedAt: { not: null } } }),
+      prisma.gatedContentLead.count({ where: { ...LW, dripUnsubscribedAt: { not: null } } }),
     ])
 
   return {
@@ -120,6 +125,7 @@ export async function getContentPerformance(): Promise<ContentRow[]> {
   const prisma = await db()
   const rows = await prisma.gatedContentLead.groupBy({
     by: ['contentSlug', 'contentType'],
+    where: LW,
     _count: { _all: true },
     orderBy: { _count: { contentSlug: 'desc' } },
   })
@@ -128,7 +134,7 @@ export async function getContentPerformance(): Promise<ContentRow[]> {
   // filtered subset alongside the total in one query.
   const downloads = await prisma.gatedContentLead.groupBy({
     by: ['contentSlug'],
-    where: { downloadedAt: { not: null } },
+    where: { ...LW, downloadedAt: { not: null } },
     _count: { _all: true },
   })
   const downloadedBySlug = new Map(downloads.map((d) => [d.contentSlug, d._count._all]))
@@ -150,7 +156,7 @@ export async function getContentPerformance(): Promise<ContentRow[]> {
 export async function getRecentLeads(days: number, limit = 25): Promise<LeadRow[]> {
   const prisma = await db()
   const rows = await prisma.gatedContentLead.findMany({
-    where: { createdAt: { gte: since(days) } },
+    where: { ...LW, createdAt: { gte: since(days) } },
     orderBy: { createdAt: 'desc' },
     take: limit,
     select: {
@@ -187,10 +193,10 @@ export async function getDripSequenceHealth(): Promise<DripStage[]> {
   const [byStep, unsubscribed] = await Promise.all([
     prisma.gatedContentLead.groupBy({
       by: ['dripStep'],
-      where: { dripUnsubscribedAt: null },
+      where: { ...LW, dripUnsubscribedAt: null },
       _count: { _all: true },
     }),
-    prisma.gatedContentLead.count({ where: { dripUnsubscribedAt: { not: null } } }),
+    prisma.gatedContentLead.count({ where: { ...LW, dripUnsubscribedAt: { not: null } } }),
   ])
 
   const at = (step: number) => byStep.find((s) => s.dripStep === step)?._count._all ?? 0
@@ -208,7 +214,7 @@ export async function getDripSequenceHealth(): Promise<DripStage[]> {
 export async function getRecentContacts(days: number, limit = 25): Promise<ContactRow[]> {
   const prisma = await db()
   const rows = await prisma.contact.findMany({
-    where: { createdAt: { gte: since(days) } },
+    where: { ...LW, createdAt: { gte: since(days) } },
     orderBy: { createdAt: 'desc' },
     take: limit,
     select: {
@@ -245,7 +251,7 @@ export async function getFleetSizeMix(days: number): Promise<{ label: string; va
   const prisma = await db()
   const rows = await prisma.contact.groupBy({
     by: ['fleetSize'],
-    where: { createdAt: { gte: since(days) } },
+    where: { ...LW, createdAt: { gte: since(days) } },
     _count: { _all: true },
   })
 
@@ -266,6 +272,7 @@ export async function getFleetSizeMix(days: number): Promise<{ label: string; va
 export async function getLeadAttribution(): Promise<AttributionRow[]> {
   const prisma = await db()
   const rows = await prisma.gatedContentLead.findMany({
+    where: LW,
     select: {
       utmSource: true,
       utmCampaign: true,
@@ -313,8 +320,8 @@ export async function getNewsletterHealth(
   const prisma = await db()
   const from = since(days)
   const [subscribers, joined, left, sends] = await Promise.all([
-    prisma.newsletter.count(),
-    prisma.newsletter.count({ where: { createdAt: { gte: from } } }),
+    prisma.newsletter.count({ where: LW }),
+    prisma.newsletter.count({ where: { ...LW, createdAt: { gte: from } } }),
     prisma.newsletterUnsubscribe.count({ where: { unsubscribedAt: { gte: from } } }),
     prisma.newsletterSend.count(),
   ])

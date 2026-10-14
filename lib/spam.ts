@@ -64,13 +64,16 @@ export async function checkContactAbuse(opts: {
   const trimmedMsg = opts.message?.trim() || null
 
   try {
+    // Scoped to this brand: rapidrelay.ai shares the contacts table, and a lead
+    // there must not count against (or duplicate-suppress) one here.
     const recentFromIp = await prisma.contact.count({
-      where: { ipHash, createdAt: { gt: rateSince } },
+      where: { brand: 'lanework', ipHash, createdAt: { gt: rateSince } },
     })
     if (recentFromIp >= RATE_MAX) return 'rate'
 
     const dup = await prisma.contact.findFirst({
       where: {
+        brand: 'lanework',
         createdAt: { gt: dupSince },
         OR: [{ ipHash }, { email: normEmail }],
         // Identical message (or both empty) counts as a repeat.

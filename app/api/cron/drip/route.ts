@@ -59,6 +59,8 @@ export async function GET(request: NextRequest) {
   const now = resolveNow(request)
   const due = await prisma.gatedContentLead.findMany({
     where: {
+      // rapidrelay.ai shares this database; its leads must never get the Lanework drip.
+      brand: 'lanework',
       dripStep: { lt: 3 },
       dripNextSendAt: { lte: now },
       dripUnsubscribedAt: null,
