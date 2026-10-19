@@ -10,7 +10,11 @@
 #   NETLIFY_AUTH_TOKEN — a Netlify personal access token
 #   NETLIFY_SITE_ID    — the site's API ID (Site configuration → General)
 #
-# Pushes to main deploy to production; pull requests get a draft preview URL.
+# Each production deploy costs ~15 Netlify credits, and the team ran out on
+# 2026-10-19, so production deploys are MANUAL ONLY:
+#   - push to main      -> `netlify build` only (free CI check, nothing uploaded)
+#   - workflow_dispatch -> build + deploy main to production (gh workflow run deploy.yml)
+#   - pull request      -> draft preview URL (not a production deploy)
 name: Deploy to Netlify
 
 on:
@@ -44,8 +48,12 @@ jobs:
 
       - run: npm install -g netlify-cli
 
+      - name: Build check
+        if: github.event_name == 'push'
+        run: netlify build --context production
+
       - name: Deploy to production
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'
         run: 'netlify deploy --build --prod --message "$GITHUB_SHA"'
 
       - name: Deploy preview
