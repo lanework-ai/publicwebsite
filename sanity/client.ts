@@ -15,6 +15,14 @@ export const client = createClient({
   // only hit on builds, webhook revalidations, the daily ISR refresh, and the
   // gated-content API routes (one call per form submit or download click).
   useCdn: false,
+  // The production dataset is private (it also holds lead, contact and
+  // subscriber docs), so reads need a token. Server-only: never prefix it with
+  // NEXT_PUBLIC_ and never import this file from a "use client" component.
+  // Falls back to the write token so a missing read token can't blank the site.
+  token: process.env.SANITY_API_READ_TOKEN || process.env.SANITY_API_WRITE_TOKEN,
+  // A token can see drafts, and with an apiVersion before 2025-02-19 the
+  // default perspective is "raw" (drafts included). Pin it to published.
+  perspective: 'published',
 })
 
 // Helper function to generate image URLs
