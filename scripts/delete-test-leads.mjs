@@ -64,7 +64,11 @@ async function deleteTestContacts() {
     `*[_type == "contact" && postgresId in $ids]._id`,
     { ids: contactIds }
   )
-  const sanityIds = [...new Set([...rows.map((r) => r.sanityId).filter(Boolean), ...byPostgresId])]
+  const fromSyncs = rows
+    .map((r) => r.sanityId)
+    .filter(Boolean)
+    .map((id) => (id.includes('.') ? id : `leads.${id}`)) // pre-migration ids, see hiddenLeadId
+  const sanityIds = [...new Set([...fromSyncs, ...byPostgresId])]
   console.log(`Sanity contact doc(s) to delete: ${sanityIds.length ? sanityIds.join(', ') : 'none'}`)
 
   if (DRY_RUN) {
@@ -125,7 +129,12 @@ try {
   }
 
   // Delete Sanity docs first (so the back-reference from Postgres exists if we hit an error mid-loop)
-  const sanityIds = rows.map((r) => r.sanityId).filter(Boolean)
+  // Postgres may hold a pre-migration id X for a doc that now lives at leads.X
+  // (see lib/sanity-write-client.ts hiddenLeadId).
+  const sanityIds = rows
+    .map((r) => r.sanityId)
+    .filter(Boolean)
+    .map((id) => (id.includes('.') ? id : `leads.${id}`))
   if (sanityIds.length > 0) {
     console.log(`\nDeleting ${sanityIds.length} Sanity gatedContentLead doc(s)...`)
     const tx = sanity.transaction()

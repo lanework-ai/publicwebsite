@@ -9,6 +9,22 @@ export const writeClient = createClient({
   useCdn: false, // Must be false for write operations
 })
 
+// Contact, lead and subscriber docs hold personal data, and the production
+// dataset is public (private datasets need a paid Sanity plan). Sanity hides any
+// document whose _id contains a dot from unauthenticated queries, so these docs
+// live under the "leads." path. Studio users and token reads still see them.
+export const LEAD_ID_PREFIX = 'leads.'
+
+function newLeadId() {
+  return `${LEAD_ID_PREFIX}${crypto.randomUUID()}`
+}
+
+// scripts/migrate-leads-to-hidden-ids.mjs moved older docs from X to leads.X,
+// and Postgres (gated_content_leads.sanityId, sanity_syncs) still holds X.
+export function hiddenLeadId(sanityId: string) {
+  return sanityId.includes('.') ? sanityId : `${LEAD_ID_PREFIX}${sanityId}`
+}
+
 // Type definitions
 export interface ContactSyncData {
   postgresId: string
@@ -45,7 +61,7 @@ export async function syncContactToSanity(data: ContactSyncData) {
       submittedAt: data.submittedAt,
     }
 
-    const result = await writeClient.create(doc)
+    const result = await writeClient.create({ _id: newLeadId(), ...doc })
     return { success: true, sanityId: result._id }
   } catch (error) {
     console.error('Failed to sync contact to Sanity:', error)
@@ -94,7 +110,7 @@ export async function syncGatedContentLeadToSanity(data: GatedContentLeadSyncDat
       submittedAt: data.submittedAt,
       downloadedAt: data.downloadedAt,
     }
-    const result = await writeClient.create(doc)
+    const result = await writeClient.create({ _id: newLeadId(), ...doc })
     return { success: true as const, sanityId: result._id }
   } catch (error) {
     console.error('Failed to sync gated content lead to Sanity:', error)
@@ -105,7 +121,7 @@ export async function syncGatedContentLeadToSanity(data: GatedContentLeadSyncDat
 // Patch an existing gated content lead Sanity doc (e.g. set downloadedAt)
 export async function patchGatedContentLeadInSanity(sanityId: string, patch: Record<string, any>) {
   try {
-    await writeClient.patch(sanityId).set(patch).commit()
+    await writeClient.patch(hiddenLeadId(sanityId)).set(patch).commit()
     return { success: true as const }
   } catch (error) {
     console.error('Failed to patch gated content lead in Sanity:', error)
@@ -124,7 +140,7 @@ export async function syncNewsletterToSanity(data: NewsletterSyncData) {
       isActive: data.isActive,
     }
 
-    const result = await writeClient.create(doc)
+    const result = await writeClient.create({ _id: newLeadId(), ...doc })
     return { success: true, sanityId: result._id }
   } catch (error) {
     console.error('Failed to sync newsletter to Sanity:', error)
