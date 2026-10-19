@@ -5,7 +5,7 @@
  *   Matches on: email = 'rapidrelayapp@gmail.com' AND company LIKE 'Rapid Relay (test%'
  *   Run: node scripts/delete-test-leads.mjs
  *
- * --contacts (contact-form enquiries):
+ * --contacts (contact-form inquiries):
  *   Matches on: email = 'rapidrelayapp@gmail.com' AND company LIKE 'Lanework (test%'
  *   Deletes the Sanity contact docs, their sanity_syncs rows, then the contacts rows.
  *   Run: node scripts/delete-test-leads.mjs --contacts

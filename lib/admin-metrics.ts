@@ -92,7 +92,7 @@ export type AttributionRow = {
 /**
  * Lifetime totals. Deliberately NOT range-filtered: at current volume a 7-day
  * window reads as all zeros, which looks broken rather than empty. The detail
- * tables below honour the range instead.
+ * tables below honor the range instead.
  */
 export async function getConversionTotals(): Promise<ConversionTotals> {
   const prisma = await db()
@@ -185,7 +185,7 @@ export async function getRecentLeads(days: number, limit = 25): Promise<LeadRow[
  * Where leads sit in the 3-email drip sequence.
  *
  * Labels describe what was LAST SENT, matching the dripStep comment in
- * prisma/schema.prisma. Labelling by what is next would read off-by-one against
+ * prisma/schema.prisma. Labeling by what is next would read off-by-one against
  * the schema and against the cron in app/api/cron/drip.
  */
 export async function getDripSequenceHealth(): Promise<DripStage[]> {
@@ -210,7 +210,7 @@ export async function getDripSequenceHealth(): Promise<DripStage[]> {
   ]
 }
 
-/** Recent contact-form enquiries. */
+/** Recent contact-form inquiries. */
 export async function getRecentContacts(days: number, limit = 25): Promise<ContactRow[]> {
   const prisma = await db()
   const rows = await prisma.contact.findMany({
@@ -239,14 +239,14 @@ export async function getRecentContacts(days: number, limit = 25): Promise<Conta
     // carrier intents (see the schema comment on Contact.fleetSize).
     fleetSize: r.fleetSize ?? 'Not asked',
     lengthOfHaul: r.lengthOfHaul ?? 'Not asked',
-    // Null on enquiries from before the intent column existed (Oct 2026).
+    // Null on inquiries from before the intent column existed (Oct 2026).
     intent: r.intent ?? '—',
     message: r.message ?? '',
     flagged: r.flagged,
   }))
 }
 
-/** Fleet-size mix across contact enquiries, for the carrier-side split. */
+/** Fleet-size mix across contact inquiries, for the carrier-side split. */
 export async function getFleetSizeMix(days: number): Promise<{ label: string; value: number }[]> {
   const prisma = await db()
   const rows = await prisma.contact.groupBy({

@@ -45,7 +45,7 @@ export default function LabsConnect() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           // fleetSize is sent only when the field was shown AND answered. An investor,
-          // fulfillment, or careers enquiry records no truck count instead of a
+          // fulfillment, or careers inquiry records no truck count instead of a
           // misleading default, and an unanswered field must be omitted rather than
           // sent as '' which would fail the API's band allowlist. It renders as its
           // own row in the admin notification, so it is not repeated in the message.

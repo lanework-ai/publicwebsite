@@ -29,7 +29,7 @@ type VariantMap = Record<string, LpVariant>
 const driverRetention: VariantMap = {
   default: {
     eyebrow: 'FREE WHITE PAPER',
-    headline: 'Driver Retention is a Data Problem',
+    headline: 'Driver Retention Is a Data Problem',
     subhead:
       "Why 94% turnover persists, what $18.7B in industry replacement costs really pays for, and the operational data that actually predicts driver exits.",
   },

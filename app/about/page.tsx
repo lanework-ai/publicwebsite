@@ -112,7 +112,7 @@ export default function AboutPage() {
         </div>
         <p style={{ fontSize: 17, lineHeight: 1.7, color: 'var(--lw-fg-2)', maxWidth: 620, margin: 0 }}>
           The same pattern holds everywhere we look: idle capacity, avoidable turnover, and demand
-          mispriced against what the operation can actually do. It is as true of a fulfillment centre
+          mispriced against what the operation can actually do. It is as true of a fulfillment center
           as it is of a lane network, and in both the losses are well known while the evidence on what
           fixes them is not. We quantify where the leakage is, problem by problem, then test the fix with
           the operators who live it and build the systems that close it.

@@ -312,7 +312,7 @@ export function ConversionCards({
       value: `${totals.downloadRate.toFixed(totals.downloadRate < 10 ? 1 : 0)}%`,
       note: 'of leads',
     },
-    { label: 'Enquiries', value: fmt(totals.contacts), note: 'all time' },
+    { label: 'Inquiries', value: fmt(totals.contacts), note: 'all time' },
   ]
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16 }}>

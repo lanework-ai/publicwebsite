@@ -17,13 +17,13 @@ where a low-resolution PNG shows its edges.
 
 ## How marks are rendered
 
-As **white knockouts**, not in brand colour (`.ll-partner img` in `app/labs-theme.css`).
+As **white knockouts**, not in brand color (`.ll-partner img` in `app/labs-theme.css`).
 That is deliberate and measured: against the `#08090a` canvas several supplied marks
 were not legible, KNX at 22 mean luminance, Truckstop at 40, Ship.cars at 52, which
 at 65% opacity land near 18, 29 and 37. A knockout fixes all of them at once and
 keeps a fifteen-logo row from reading as a badge farm on an otherwise austere page.
 
-To restore brand colour, delete that one rule. Replace the three dark marks above
+To restore brand color, delete that one rule. Replace the three dark marks above
 with light-background variants first, or they will vanish.
 
 ## Expected filenames
@@ -96,13 +96,13 @@ Wanted for the Rapid Load "Connects with" row:
 ## Render height
 
 Marks render at 65% opacity and go to full opacity on hover (`.ll-partner` in
-`app/labs-theme.css`). That muting is what lets full-colour third-party logos sit in
+`app/labs-theme.css`). That muting is what lets full-color third-party logos sit in
 an otherwise austere palette without dominating it.
 
 Per-brand heights live in `LOGO_HEIGHTS` in `Ecosystem.tsx`, defaulting to 20px.
 Wordmark-shaped logos (a word set in type, like Truckstop) need less height than
 square icon marks to carry the same visual weight. If a new logo looks too big or
-too small next to its neighbours, adjust its entry there rather than editing the SVG.
+too small next to its neighbors, adjust its entry there rather than editing the SVG.
 
 ## A note on usage
 

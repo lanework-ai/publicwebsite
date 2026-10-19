@@ -11,7 +11,7 @@
  * and no risk of a broken image pointing at a file that was never added.
  *
  * Marks render at 65% opacity, full on hover (`.ll-partner`), which is what keeps a
- * row of full-colour third-party logos from overwhelming the austere palette.
+ * row of full-color third-party logos from overwhelming the austere palette.
  */
 import { readdirSync } from 'node:fs'
 import { join } from 'node:path'
@@ -56,7 +56,7 @@ const AVAILABLE_LOGOS: Record<string, string> = (() => {
  *
  * Measured mean luminance against the #08090a background (~9): knx 22,
  * truckstop 40, shipcars 52. Everything else sits at 72 or above and is left alone,
- * because most of these marks are badge icons that carry their own coloured disc
+ * because most of these marks are badge icons that carry their own colored disc
  * and already read fine. Do not turn this into a global rule: knocking every mark
  * out to white flattened those discs into featureless circles.
  *
@@ -85,7 +85,7 @@ const NEEDS_LIGHT_PLATE = new Set([
   'transporeon',
   // Deliberately NOT plated: motive (corner luminance 0), macropoint (22) and geotab
   // (50) are near-black tiles that disappear into this canvas and read as if they
-  // were transparent, and project44 (99) is a mid-tone coloured tile that stands on
+  // were transparent, and project44 (99) is a mid-tone colored tile that stands on
   // its own. Putting any of them on a white plate would frame a dark square in white.
 ])
 
@@ -138,7 +138,7 @@ const CATEGORIES: Category[] = [
 ]
 
 /**
- * One partner, as a fixed-footprint labelled cell.
+ * One partner, as a fixed-footprint labeled cell.
  *
  * Matching logo heights does not produce a uniform row, because these marks have
  * wildly different aspect ratios: DAT and Werner are wide wordmarks, most of the
@@ -147,7 +147,7 @@ const CATEGORIES: Category[] = [
  *
  * So every mark instead gets an identical box and is scaled to fit inside it with
  * object-fit: contain. The footprint is uniform even though the artwork is not, and
- * the name sits underneath so a mark nobody recognises is still readable. A brand
+ * the name sits underneath so a mark nobody recognizes is still readable. A brand
  * with no file yet shows its name in the mark slot, so it occupies the same cell as
  * everything else rather than looking like a different kind of thing.
  */

@@ -19,7 +19,7 @@ import { Children, cloneElement, isValidElement, type ReactNode } from 'react'
 
 /**
  * U+00A0. Built with fromCharCode rather than a literal so it cannot be silently
- * normalised back to an ordinary space by an editor or a tool, which is exactly what
+ * normalized back to an ordinary space by an editor or a tool, which is exactly what
  * happened on the first attempt and made the whole function a no-op.
  */
 const NBSP = String.fromCharCode(0xa0)

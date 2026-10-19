@@ -411,7 +411,7 @@
 }
 /* Same full-width sweep as the footer links, but off-white instead of the
    footer's indigo, so the header reads as its own surface. The active page keeps
-   the indigo bar, so colour (not length) separates "pointing at" from "you are here". */
+   the indigo bar, so color (not length) separates "pointing at" from "you are here". */
 .ll-nav-link:hover::after {
   transform: scaleX(1);
   background: var(--lw-fg-2);

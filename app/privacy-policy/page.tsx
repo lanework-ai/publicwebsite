@@ -43,7 +43,7 @@ const sections: LegalSection[] = [
       { p: 'We process personal data to:' },
       {
         ul: [
-          'reply to an enquiry and scope work with you, which is necessary to take steps at your request',
+          'reply to an inquiry and scope work with you, which is necessary to take steps at your request',
           'deliver a paper you asked for and, where you opted in, a short follow-up sequence about the research behind it',
           'send research updates you subscribed to, on the basis of your consent',
           'keep the site secure and prevent automated abuse, which is our legitimate interest',
@@ -51,7 +51,7 @@ const sections: LegalSection[] = [
           'meet legal and accounting obligations',
         ],
       },
-      { p: 'We do not sell personal information, we do not share it for cross-context behavioural advertising, and we do not make automated decisions about you.' },
+      { p: 'We do not sell personal information, we do not share it for cross-context behavioral advertising, and we do not make automated decisions about you.' },
     ],
   },
   {
@@ -73,7 +73,7 @@ const sections: LegalSection[] = [
   {
     heading: '5. Email, consent, and unsubscribing',
     blocks: [
-      { p: 'Requesting a gated white paper enrols you in a short sequence of follow-up emails about that research. Subscribing to research updates adds you to the notes list. These are separate from any correspondence about an active engagement.' },
+      { p: 'Requesting a gated white paper enrolls you in a short sequence of follow-up emails about that research. Subscribing to research updates adds you to the notes list. These are separate from any correspondence about an active engagement.' },
       { p: 'Every marketing and research email carries a one-click unsubscribe header and a visible unsubscribe link. Using either removes you from the newsletter and stops any follow-up sequence immediately, and it also suppresses the address against future sends.' },
       { p: 'You do not need to email anyone to unsubscribe, but if a link ever fails, tell us and we will action it by hand.' },
     ],
@@ -81,8 +81,8 @@ const sections: LegalSection[] = [
   {
     heading: '6. How long we keep it',
     blocks: [
-      { p: 'Enquiries and the correspondence attached to them are kept for as long as there is a live commercial relationship and for a reasonable period afterwards, so that we can pick up a conversation where it left off.' },
-      { p: 'Subscription records are kept until you unsubscribe, after which we retain a suppression record so we do not contact you again by mistake. The hashed IP identifier is stored alongside the enquiry it came with and is only ever read within a short rolling window, one hour for rate limiting and 24 hours for duplicate detection. Analytics data is retained on our provider’s standard schedule.' },
+      { p: 'Inquiries and the correspondence attached to them are kept for as long as there is a live commercial relationship and for a reasonable period afterward, so that we can pick up a conversation where it left off.' },
+      { p: 'Subscription records are kept until you unsubscribe, after which we retain a suppression record so we do not contact you again by mistake. The hashed IP identifier is stored alongside the inquiry it came with and is only ever read within a short rolling window, one hour for rate limiting and 24 hours for duplicate detection. Analytics data is retained on our provider’s standard schedule.' },
       { p: 'Where we no longer need personal data, we delete it or reduce it to a form that no longer identifies you.' },
     ],
   },
@@ -108,7 +108,7 @@ const sections: LegalSection[] = [
     heading: '8. Cookies and analytics',
     blocks: [
       { p: 'The site uses cookies for essential functionality and for product analytics. We do not use advertising cookies and we do not run third-party ad trackers.' },
-      { p: 'You can block or delete cookies in your browser. We honour Global Privacy Control and Do Not Track signals where your browser sends them.' },
+      { p: 'You can block or delete cookies in your browser. We honor Global Privacy Control and Do Not Track signals where your browser sends them.' },
     ],
   },
   {
@@ -121,7 +121,7 @@ const sections: LegalSection[] = [
   {
     heading: '10. International transfers',
     blocks: [
-      { p: 'We are based in North America and our processors are largely United States based, so your data may be transferred to and processed in the United States. Where data moves out of the UK or the European Economic Area, we rely on the appropriate safeguards, including standard contractual clauses.' },
+      { p: 'We are based in North America and our processors are largely United States-based, so your data may be transferred to and processed in the United States. Where data moves out of the UK or the European Economic Area, we rely on the appropriate safeguards, including standard contractual clauses.' },
     ],
   },
   {

@@ -1,7 +1,7 @@
 -- Migration: add brand to contacts
 -- rapidrelay.ai now writes to this database too (its own Supabase project was
 -- deleted), so contacts need the same brand tag newsletters and
--- gated_content_leads already carry. Every existing row is a Lanework enquiry,
+-- gated_content_leads already carry. Every existing row is a Lanework inquiry,
 -- which the default records. Purely additive, so code deployed before this runs
 -- is unaffected.
 --

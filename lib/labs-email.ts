@@ -128,7 +128,7 @@ function gatedDownloadHtml(data: { name: string; contentTitle: string; contentTy
   const body = `
     <tr><td class="px" style="padding:0 40px 0 40px;font-family:${FONT};font-size:16px;line-height:1.65;color:#1a2b3c;">
       <p style="margin:0 0 14px 0;">Hi ${esc(firstName(data.name))},</p>
-      <p style="margin:0;">Thanks for requesting our ${esc(data.contentTypeLabel)}, &#8216;<strong>${esc(data.contentTitle)}</strong>.&#8217; Your download is one click away.</p>
+      <p style="margin:0;">Thanks for requesting our ${esc(data.contentTypeLabel)}, &#8220;<strong>${esc(data.contentTitle)}</strong>.&#8221; Your download is one click away.</p>
     </td></tr>
     <tr><td align="center" style="padding:24px 40px;">${button('Download the PDF', data.downloadUrl)}</td></tr>
     <tr><td class="px" style="padding:0 40px 0 40px;font-family:${FONT};font-size:13px;line-height:1.6;color:#64748b;text-align:center;">
@@ -285,7 +285,7 @@ const genericDripCopy: DripCopyFactory = (ctx) => ({
     heading: 'The data behind the paper',
     preheader: 'More research on the same territory, free to read.',
     paras: [
-      `A couple of days ago you read &#8216;<strong>${esc(ctx.contentTitle)}</strong>.&#8217; If the findings raised questions, the rest of our research digs into the same territory: driver retention, asset utilization, and the operational data behind fleet results.`,
+      `A couple of days ago you read &#8220;<strong>${esc(ctx.contentTitle)}</strong>.&#8221; If the findings raised questions, the rest of our research digs into the same territory: driver retention, asset utilization, and the operational data behind fleet results.`,
       'Everything we publish is independent and free to read.',
     ],
     cta: { label: 'Read the research', href: `${SITE_ROOT}/research` },
@@ -302,7 +302,7 @@ const genericDripCopy: DripCopyFactory = (ctx) => ({
   },
   step3: {
     paras: [
-      `${PERSONAL.name} here. I lead research at Lanework. You read &#8216;${esc(ctx.contentTitle)}&#8217; a couple of weeks ago, and I wanted to ask one thing: did it hold up against what you see in your own network?`,
+      `${PERSONAL.name} here. I lead research at Lanework. You read &#8220;${esc(ctx.contentTitle)}&#8221; a couple of weeks ago, and I wanted to ask one thing: did it hold up against what you see in your own network?`,
       'Whether a finding matches your data or contradicts it, that is the most useful reply you could send us. And if you want us to look at your network directly, we start with a study, not a contract.',
       'Either way, thanks for reading.',
     ],
@@ -316,8 +316,8 @@ const deadheadDripCopy: DripCopyFactory = (ctx) => ({
     heading: 'One in six miles earns nothing',
     preheader: 'The 2024 deadhead number, and what it costs per truck.',
     paras: [
-      `A couple of days ago you read &#8216;<strong>${esc(ctx.contentTitle)}</strong>.&#8217; The number underneath the title is worth sitting with: the average U.S. truckload carrier drove 16.7% of its miles empty in 2024. Across all fleet types the unfiltered range runs 15% to 35%.`,
-      'On a truck running 100,000 miles a year at a 20% empty rate, that is about $37,000 gone. Across a 50 truck fleet it is roughly $1.85M a year. Industry wide the estimate lands somewhere between $27B and $54B.',
+      `A couple of days ago you read &#8220;<strong>${esc(ctx.contentTitle)}</strong>.&#8221; The number underneath the title is worth sitting with: the average U.S. truckload carrier drove 16.7% of its miles empty in 2024. Across all fleet types the unfiltered range runs 15% to 35%.`,
+      'On a truck running 100,000 miles a year at a 20% empty rate, that is about $37,000 gone. Across a 50-truck fleet it is roughly $1.85M a year. Industry-wide, the estimate lands somewhere between $27B and $54B.',
       'It compounds a margin problem that is already tight. Non-fuel operating costs hit a record $1.779 per mile in 2024, against an average truckload operating margin of negative 2.3%.',
     ],
     cta: { label: 'Read the research', href: `${SITE_ROOT}/research` },
@@ -335,7 +335,7 @@ const deadheadDripCopy: DripCopyFactory = (ctx) => ({
   },
   step3: {
     paras: [
-      `${PERSONAL.name} here. I lead research at Lanework. You read &#8216;${esc(ctx.contentTitle)}&#8217; a couple of weeks ago and I wanted to ask one thing: do you know your own deadhead rate, and does it sit above or below the 16.7% average?`,
+      `${PERSONAL.name} here. I lead research at Lanework. You read &#8220;${esc(ctx.contentTitle)}&#8221; a couple of weeks ago, and I wanted to ask one thing: do you know your own deadhead rate, and does it sit above or below the 16.7% average?`,
       'Most operators we talk to either do not measure it at the route level or measure it after the fact, once the empty mile is already paid for. If you have the number and it contradicts what we published, that is genuinely the most useful reply you could send.',
       'And if you want us to look at your network directly, we start with a study, not a contract.',
       'Either way, thanks for reading.',
@@ -344,7 +344,7 @@ const deadheadDripCopy: DripCopyFactory = (ctx) => ({
 })
 
 /**
- * White paper #1: "Driver Retention is a Data Problem". Originally nurtured by the
+ * White paper #1: "Driver Retention Is a Data Problem". Originally nurtured by the
  * Rapid Relay sequence; moved here so both papers are Lanework-voiced. The drip cron
  * routes this slug to the Lanework sender regardless of brand.
  */
@@ -354,9 +354,9 @@ const driverRetentionDripCopy: DripCopyFactory = (ctx) => ({
     heading: 'Bigger fleets lose more drivers',
     preheader: 'A 94% turnover rate, and why it is not about pay.',
     paras: [
-      `A couple of days ago you read &#8216;<strong>${esc(ctx.contentTitle)}</strong>.&#8217; The figure that reframes the whole conversation: large long-haul carriers lose roughly 94% of their drivers every year, against an industry average of 48%.`,
+      `A couple of days ago you read &#8220;<strong>${esc(ctx.contentTitle)}</strong>.&#8221; The figure that reframes the whole conversation: large long-haul carriers lose roughly 94% of their drivers every year, against an industry average of 48%.`,
       'The scale of it is easy to lose track of. Replacing one driver costs about $12,799, and the industry spends an estimated $18.7B a year on departures that were largely preventable.',
-      'The instinct is to read that as a pay problem. Our research does not support that. Route length, home time frequency, and asset utilization explain more of the variation in turnover than pay raises do.',
+      'The instinct is to read that as a pay problem. Our research does not support that. Route length, home-time frequency, and asset utilization explain more of the variation in turnover than pay raises do.',
     ],
     cta: { label: 'Read the research', href: `${SITE_ROOT}/research` },
   },
@@ -373,7 +373,7 @@ const driverRetentionDripCopy: DripCopyFactory = (ctx) => ({
   },
   step3: {
     paras: [
-      `${PERSONAL.name} here. I lead research at Lanework. You read &#8216;${esc(ctx.contentTitle)}&#8217; a couple of weeks ago and I wanted to ask one thing: do you know your own turnover number, and do you know which lanes produce it?`,
+      `${PERSONAL.name} here. I lead research at Lanework. You read &#8220;${esc(ctx.contentTitle)}&#8221; a couple of weeks ago, and I wanted to ask one thing: do you know your own turnover number, and do you know which lanes produce it?`,
       'Most operators can tell us the fleet-wide figure but not the route-level one, and the route level is where the decision that caused the exit actually happened. If your data contradicts what we published, that is genuinely the most useful reply you could send.',
       'And if you want us to look at your network directly, we start with a study, not a contract.',
       'Either way, thanks for reading.',
@@ -600,9 +600,9 @@ export function contactNotificationHtml(contact: ContactNotification): string {
     </td></tr>`
 
   return shell({
-    title: 'New enquiry',
+    title: 'New inquiry',
     preheader: `${contact.name} at ${contact.company}`,
-    heading: 'New enquiry',
+    heading: 'New inquiry',
     body,
     footerVariant: 'internal',
   })
@@ -624,7 +624,7 @@ export async function sendContactNotification(contact: ContactNotification) {
       from: `Lanework <${FROM_EMAIL}>`,
       to: ADMIN_EMAIL,
       replyTo: contact.email,
-      subject: `New enquiry from ${contact.company}`,
+      subject: `New inquiry from ${contact.company}`,
       html: contactNotificationHtml(contact),
     })
     if (error) {

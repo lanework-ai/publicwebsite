@@ -23,7 +23,7 @@ const tmp = mkdtempSync(join(tmpdir(), 'drip-preview-'))
 
 // Papers to render. Add a slug here when a new paper gets its own copy entry.
 const CASES = [
-  { label: 'White paper #1', slug: 'driver-retention-is-a-data-problem', title: 'Driver Retention is a Data Problem' },
+  { label: 'White paper #1', slug: 'driver-retention-is-a-data-problem', title: 'Driver Retention Is a Data Problem' },
   { label: 'White paper #2', slug: 'one-in-six-miles-earns-zero', title: 'One in Six Miles Earns $0' },
   { label: 'Unmapped slug (generic fallback)', slug: 'some-future-paper', title: 'Some Future Paper' },
 ]
@@ -35,7 +35,7 @@ const RECIPIENT = { to: 'preview@example.com', name: 'jordan reyes' }
 const CONTACT_BASE = { name: 'Henry Hansen', email: 'info@example.com', company: 'Example Freight Co' }
 const CONTACT_CASES = [
   {
-    label: 'Full enquiry, multi-line message and long URL',
+    label: 'Full inquiry, multi-line message and long URL',
     file: 'contact-full.html',
     contact: {
       ...CONTACT_BASE,

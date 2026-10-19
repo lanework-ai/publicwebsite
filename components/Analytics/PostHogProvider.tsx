@@ -17,7 +17,7 @@ import { PostHogProvider as PHProvider } from 'posthog-js/react'
 let initialized = false
 
 /**
- * Initialise posthog-js exactly once, DURING RENDER rather than inside an effect.
+ * Initialize posthog-js exactly once, DURING RENDER rather than inside an effect.
  *
  * This ordering is load-bearing. React flushes effects bottom-up — every child's
  * effect runs before its parent's — so an init() in this component's useEffect
@@ -75,7 +75,7 @@ function ensureInitialized() {
     capture_pageleave: true,
     autocapture: true,
     person_profiles: 'identified_only',
-    // posthog-js defaults this to false. The Privacy Policy states that we honour
+    // posthog-js defaults this to false. The Privacy Policy states that we honor
     // Do Not Track and Global Privacy Control, so it has to be on for that claim to
     // be true. There is no advertising business here that would suffer for it.
     respect_dnt: true,

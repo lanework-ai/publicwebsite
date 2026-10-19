@@ -6,8 +6,8 @@
  * and these covers scale that motif into a full composition.
  *
  * Follows the design system's rules rather than typical SaaS cover art:
- * flat and SHADOWLESS, no gradients, no glows, hairline structure, greyscale
- * carrying the field with a single indigo accent doing the signalling.
+ * flat and SHADOWLESS, no gradients, no glows, hairline structure, grayscale
+ * carrying the field with a single indigo accent doing the signaling.
  *
  *   theme 'lanes'   — a graduated lane field. Lengths taper top to bottom like
  *                     the mark; a few lanes break mid-run (the empty mile, the
@@ -60,7 +60,7 @@ function lane(x, y, w, h, fill, opacity) {
   return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h}" rx="${(h / 2).toFixed(2)}" fill="${fill}" fill-opacity="${opacity.toFixed(3)}"/>`
 }
 
-/** Hairline structure: a left rule and one off-centre rule. No grid noise. */
+/** Hairline structure: a left rule and one off-center rule. No grid noise. */
 function structure(W, H, marginX) {
   const yTop = 64
   const yBot = H - 64

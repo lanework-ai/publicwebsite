@@ -56,3 +56,4 @@ next-env.d.ts
 
 # notes-prune.mjs backups (local restore points, not source)
 scripts/notes-prune-backup-*.json
+scripts/fix-cms-copy-backup-*.json

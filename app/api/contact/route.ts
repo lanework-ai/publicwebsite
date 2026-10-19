@@ -66,7 +66,7 @@ const contactSchema = z.object({
     .max(200, 'Company name must not exceed 200 characters')
     .trim(),
   // Optional: only carrier-side intents ask for a truck count. An investor,
-  // fulfillment, or careers enquiry omits it, and a band is still validated
+  // fulfillment, or careers inquiry omits it, and a band is still validated
   // against the allowlist whenever one is sent.
   fleetSize: z
     .enum(fleetSizes, { message: 'Invalid fleet size selection' })

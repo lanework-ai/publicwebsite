@@ -20,8 +20,8 @@ export const metadata = pageMetadata({
  *   - "Account management" covered account termination and credential security. There
  *     are no accounts: there is no login, no admin surface, and no middleware gate.
  *
- * Added instead: a research disclaimer, because the papers publish modelled dollar
- * figures; a licence for that research; and a third-party trademark notice, because
+ * Added instead: a research disclaimer, because the papers publish modeled dollar
+ * figures; a license for that research; and a third-party trademark notice, because
  * vendor and carrier marks appear on the field work pages.
  *
  * TODO: confirm the registered legal entity and the governing jurisdiction. The
@@ -54,7 +54,7 @@ const sections: LegalSection[] = [
   {
     heading: '3. Our research is information, not advice',
     blocks: [
-      { p: 'Our papers, benchmarks, and notes contain estimates and models, including figures expressed in dollars. Those figures are derived from public data sources and from our own modelling, and they describe patterns we observed rather than results you should expect.' },
+      { p: 'Our papers, benchmarks, and notes contain estimates and models, including figures expressed in dollars. Those figures are derived from public data sources and from our own modeling, and they describe patterns we observed rather than results you should expect.' },
       { p: 'Nothing we publish is investment, financial, legal, tax, or other professional advice, and nothing in it is a guarantee of any outcome. We are not licensed advisers. Do not make an investment or operational decision on the basis of a published paper alone; take your own advice and test the assumptions against your own operation.' },
       { p: 'Where a paper cites a third-party source, that source is credited and we do not warrant its accuracy.' },
     ],
@@ -90,7 +90,7 @@ const sections: LegalSection[] = [
   {
     heading: '8. The site is provided as is',
     blocks: [
-      { p: 'The site and its content are provided "as is" and "as available", without warranties of any kind, express or implied, including fitness for a particular purpose. We do not warrant that the site will be uninterrupted or error free, and we may change or withdraw content at any time.' },
+      { p: 'The site and its content are provided "as is" and "as available," without warranties of any kind, express or implied, including fitness for a particular purpose. We do not warrant that the site will be uninterrupted or error-free, and we may change or withdraw content at any time.' },
       { p: 'To the fullest extent the law allows, Lanework is not liable for indirect, incidental, special, consequential, or punitive damages, or for lost profits, revenue, or data, arising from your use of or inability to use the site or from reliance on anything published here. Nothing in these terms excludes liability that cannot lawfully be excluded.' },
     ],
   },

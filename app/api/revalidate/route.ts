@@ -8,7 +8,7 @@
  * This does NOT trigger a Netlify build. `revalidatePath` marks the cached page
  * stale; it regenerates on its next request. The daily `revalidate` stays in place
  * on every route as a safety net, so a misconfigured webhook degrades to today's
- * behaviour rather than serving stale content forever.
+ * behavior rather than serving stale content forever.
  *
  * Setup (one-time):
  *   1. Set SANITY_REVALIDATE_SECRET in the Netlify site env (any long random string).

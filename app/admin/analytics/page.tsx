@@ -277,7 +277,7 @@ export default async function AdminAnalytics({
 
           {contacts.status === 'fulfilled' ? (
             <DataTable
-              title={`Contact enquiries · last ${rangeLabel}`}
+              title={`Contact inquiries · last ${rangeLabel}`}
               columns={[
                 { key: 'when', label: 'Date' },
                 { key: 'name', label: 'Name' },
@@ -304,10 +304,10 @@ export default async function AdminAnalytics({
                 ),
                 flagged: c.flagged ? 'Spam' : '—',
               }))}
-              empty={`No enquiries in the last ${rangeLabel}.`}
+              empty={`No inquiries in the last ${rangeLabel}.`}
             />
           ) : (
-            <WidgetError title="Contact enquiries" message={reason(contacts)} />
+            <WidgetError title="Contact inquiries" message={reason(contacts)} />
           )}
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 16 }}>

@@ -1,6 +1,6 @@
 /**
  * How to partner with Lanework: the unpaid research-partner asks, then what you
- * can commission, organised by the two buyer tracks.
+ * can commission, organized by the two buyer tracks.
  *
  * Single source of truth for the commercial surface, the same pattern as
  * lib/labs/field-work.ts. Scope and duration only: fees are quoted per
@@ -62,7 +62,7 @@ export const tracks: Track[] = [
         persona: 'VP Operations or VP Network Strategy at a carrier, 3PL, or shipper.',
         job: 'Find the margin I am losing to empty miles and turnover, and tell me exactly which lanes to restructure.',
         deliverable:
-          'Every lane ranked by empty-mile rate and fully loaded cost, the lanes with the bilateral density to support closed-loop corridors, relay points positioned against return-origin density, domiciles aligned, and a lane-level view of which routes are manufacturing driver exits. Delivered as a prioritised roadmap with the recovery modelled in dollars.',
+          'Every lane ranked by empty-mile rate and fully loaded cost, the lanes with the bilateral density to support closed-loop corridors, relay points positioned against return-origin density, domiciles aligned, and a lane-level view of which routes are manufacturing driver exits. Delivered as a prioritized roadmap with the recovery modeled in dollars.',
         duration: 'Scoped to fleet size, typically 3 to 6 weeks',
       },
       // TODO(open-q): fulfillment. Hide this card until there is a fulfillment
@@ -73,7 +73,7 @@ export const tracks: Track[] = [
         persona: 'VP Fulfillment or Director of Operations at an e-commerce brand or 3PL.',
         job: 'Tell me why throughput caps out where it does, and what it costs me.',
         deliverable:
-          'Where the constraint actually sits across receiving, pick, pack, and ship, what each hour of it costs, how much of the gap is labour churn rather than process, and the sequence of changes that moves the number. Built from the data your WMS already records.',
+          'Where the constraint actually sits across receiving, pick, pack, and ship, what each hour of it costs, how much of the gap is labor churn rather than process, and the sequence of changes that moves the number. Built from the data your WMS already records.',
         duration: 'Typically 2 to 4 weeks',
       },
       {
@@ -100,7 +100,7 @@ export const tracks: Track[] = [
         persona: 'Operating partners and deal teams with trucking, logistics, or brokerage targets.',
         job: 'Do not let me overpay, and show me the margin I can recover after close.',
         deliverable:
-          'A retention- and deadhead-adjusted view of EBITDA: per-driver replacement cost as a share of revenue, turnover and empty miles decomposed by lane, the gap between hire-time promises and operational reality, and a modelled recovery path. Delivered as a diligence appendix your IC can lean on, built from public benchmarks so every number is auditable.',
+          'A retention- and deadhead-adjusted view of EBITDA: per-driver replacement cost as a share of revenue, turnover and empty miles decomposed by lane, the gap between hire-time promises and operational reality, and a modeled recovery path. Delivered as a diligence appendix your IC can lean on, built from public benchmarks so every number is auditable.',
         duration: '2 to 4 weeks, tied to your deal timeline',
       },
       {

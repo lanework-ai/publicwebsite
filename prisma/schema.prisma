@@ -18,7 +18,7 @@ model Contact {
   email     String
   company   String
   // Only asked for on carrier-side intents; null for investor diligence, careers,
-  // and fulfillment enquiries, where a truck count means nothing.
+  // and fulfillment inquiries, where a truck count means nothing.
   fleetSize String?
   // Typical length of haul; asked alongside fleetSize on the same carrier intents.
   lengthOfHaul String?
@@ -27,7 +27,7 @@ model Contact {
   message   String?
   ipHash    String?
   flagged   Boolean  @default(false)
-  // Which site captured the enquiry: "lanework" | "rapidrelay". rapidrelay.ai
+  // Which site captured the inquiry: "lanework" | "rapidrelay". rapidrelay.ai
   // shares this database, so every Lanework read must filter on it.
   brand     String   @default("lanework")
   createdAt DateTime @default(now())
